@@ -33,3 +33,9 @@ pip install bihu
 3. settings.toml 里面放着其他一些配置
 
 使用请参看 dynaconf 模块。
+
+
+
+## TODO
+
+id_utils 定制钩子，const 定制钩子，通过配置的方式从文件或者其他地方就加载了 一般id的定义和一般常数项的加载。
