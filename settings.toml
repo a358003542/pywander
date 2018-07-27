@@ -1,0 +1,15 @@
+[default]
+SCRAPYD_SERVER = 'http://localhost:6800'
+
+[development]
+
+
+[testing]
+[testing.redis]
+host = '127.0.0.1'
+port = 6379
+
+[production]
+[production.redis]
+host = '127.0.0.1'
+port = 6379

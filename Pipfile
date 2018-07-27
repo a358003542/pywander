@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.douban.com/simple"
+verify_ssl = true
+name = "pypi_douban"
+
+[packages]
+sqlalchemy = "*"
+dynaconf = "*"
+pymysql = "*"
+fluent-logger = "*"
+pymongo = "*"
+"beautifulsoup4" = "*"
+redis = "*"
+requests = "*"
+"e1839a8" = {path = ".", editable = true}
+
+[dev-packages]
+alembic = "*"
+pytest = "*"
+pytest-runner = "*"
+
+[requires]
+python_version = "3.6"
