@@ -5,4 +5,5 @@ include LICENSE
 include .gitignore
 recursive-include tests *.py
 include settings.toml
+recursive-include bihu_plugins *.py
 

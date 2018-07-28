@@ -20,15 +20,8 @@ mongodb = mongodb_client[settings['mongodb'].get('dbname')]
 
 
 
-##################################################################
-#
-# 一些实际的便捷配置
-#
-###################################################################
 
-# 一般小站的缓存
-collection_search = mongodb['search']
-collection_book_info = mongodb['book_info']
-
-# 存放着一些关于网络状态请求的额外的信息
-collection_webs = mongodb['webs']
+## 加载插件
+from bihu.utils.plugin_utils import get_plugin_module_data
+plugin_module_data = get_plugin_module_data(__name__)
+globals().update(plugin_module_data)

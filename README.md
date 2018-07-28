@@ -13,6 +13,8 @@ pip install bihu
 <https://cdwanze.github.io/articles/bihu-module.html>
 
 
+
+
 ## 功能简介
 
 1. web 里面有获取随机user-agent函数等其他辅助函数。
@@ -35,7 +37,8 @@ pip install bihu
 使用请参看 dynaconf 模块。
 
 
+## 更新说明
+
+0.1.3: 引入插件机制，更加方便的定制一些常数项，数据库连接项，唯一id定义项
 
 ## TODO
-
-id_utils 定制钩子，const 定制钩子，通过配置的方式从文件或者其他地方就加载了 一般id的定义和一般常数项的加载。

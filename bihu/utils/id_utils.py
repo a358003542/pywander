@@ -35,23 +35,8 @@ def build_query_id(base_url, params, remove_keys=None):
 
 
 
-def build_operation_id(source, operation, params, remove_keys=None):
-    """
-    某些缓存需求用如下方式来定制可能会更方便一些：
-    针对某个源进行了某个操作 挂上什么参数 然后对应 什么结果
-    source operation 参数 对应同样的结果
-    """
-    data = params.copy()
 
-    if remove_keys:
-        remove_dict_key(data, remove_keys)
-
-    data = OrderedDict(sorted(data.items(), key=lambda t: t[0]))
-
-    url = "{source}/{operation}?{ps}".format(
-        source=source,
-        operation=operation,
-        ps=urlencode(data)
-    )
-    operation_id = md5(url.encode()).hexdigest()
-    return operation_id
+## 加载插件
+from bihu.utils.plugin_utils import get_plugin_module_data
+plugin_module_data = get_plugin_module_data(__name__)
+globals().update(plugin_module_data)
