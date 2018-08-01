@@ -51,7 +51,8 @@ PLUGIN_MAPPING = {
     'const': 'bihu.const',
     'id_utils': 'bihu.utils.id_utils',
     'mongodb_conn': 'bihu.database.mongodb.conn',
-    'sqldb_conn': 'bihu.database.sqldb.conn'
+    'sqldb_conn': 'bihu.database.sqldb.conn',
+    'scrapy_processors': 'bihu.scrapy.processors'
 }
 
 def get_plugin_module(plugin_data, current_module_name):

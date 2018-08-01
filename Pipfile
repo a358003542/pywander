@@ -13,6 +13,7 @@ pymongo = "*"
 redis = "*"
 requests = "*"
 "e1839a8" = {path = ".", editable = true}
+scrapy = "*"
 
 [dev-packages]
 alembic = "*"
