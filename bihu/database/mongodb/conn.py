@@ -3,8 +3,14 @@
 
 
 """
+动态配置系统里面请类似下面做好定义：
 
-这里放着实际的一些连接配置
+[testing.mongodb]
+host = '192.168.99.100'
+port = 27017
+username = ''
+dbname = 'bihu'
+password = ''
 
 """
 
@@ -20,8 +26,3 @@ mongodb = mongodb_client[settings['mongodb'].get('dbname')]
 
 
 
-
-## 加载插件
-from bihu.utils.plugin_utils import get_plugin_module_data
-plugin_module_data = get_plugin_module_data(__name__)
-globals().update(plugin_module_data)

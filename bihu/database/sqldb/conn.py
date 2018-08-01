@@ -28,11 +28,9 @@ def create_sqlalchemy_url(drivername, username=None, password=None, host=None,
     return dburl
 
 
-
-
-
-
-## 加载插件
-from bihu.utils.plugin_utils import get_plugin_module_data
-plugin_module_data = get_plugin_module_data(__name__)
-globals().update(plugin_module_data)
+sqldb_workflow_url = create_sqlalchemy_url('mysql+pymysql',
+                                           host=settings['db_workflow'].get('host', 'localhost'),
+                                           username=settings['db_workflow'].get('username'),
+                                           password=settings['db_workflow'].get('password'),
+                                           port=settings['db_workflow'].get('port', '3306'),
+                                           database=settings['db_workflow'].get('dbname'))

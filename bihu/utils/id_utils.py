@@ -10,9 +10,7 @@ from collections import OrderedDict
 from hashlib import md5
 from urllib.parse import urlencode
 
-
 from bihu.utils import remove_dict_key
-
 
 
 def build_query_id(base_url, params, remove_keys=None):
@@ -32,11 +30,3 @@ def build_query_id(base_url, params, remove_keys=None):
     )
     query_id = md5(url.encode()).hexdigest()
     return query_id
-
-
-
-
-## 加载插件
-from bihu.utils.plugin_utils import get_plugin_module_data
-plugin_module_data = get_plugin_module_data(__name__)
-globals().update(plugin_module_data)

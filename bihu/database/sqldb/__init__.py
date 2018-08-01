@@ -11,7 +11,6 @@ from sqlalchemy.engine import reflection
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -131,4 +130,3 @@ class SQLDataBase(object):
     @property
     def session(self):
         return self._session
-

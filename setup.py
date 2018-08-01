@@ -20,7 +20,7 @@ REQUIREMENTS = []
 
 setup(
     name='bihu',
-    version='0.1.3',
+    version='0.1.4',
     description='the bihu libary',
     long_description=long_description(),
     author='cdwanze',

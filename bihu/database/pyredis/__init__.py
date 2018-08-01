@@ -2,6 +2,15 @@
 # -*-coding:utf-8-*-
 
 
+"""
+
+动态配置系统里面请类似下面做好定义：
+
+[testing.redis]
+host = '127.0.0.1'
+port = 6379
+
+"""
 
 import redis
 from dynaconf import settings
@@ -16,6 +25,7 @@ def get_redis_client(db=0):
 
 
 redis_client = get_redis_client()
+
 
 def set_redis(name, value, expiration=0):
     """

@@ -2,19 +2,18 @@
 # -*-coding:utf-8-*-
 
 
-
 from fluent import sender
 import time
 import logging
 
+
 class FluentdLogger(object):
-    def __init__(self, project_name = 'bihu', host='localhost', port=24224, nanosecond_precision=True):
+    def __init__(self, project_name='bihu', host='localhost', port=24224, nanosecond_precision=True):
         self._logger = sender.FluentSender('fluentd.{0}'.format(project_name), host=host,
                                            port=port, nanosecond_precision=nanosecond_precision)
 
-
     def send(self, domain, msg, curtime=None):
-        curtime = time.time() if curtime is None else curtime # 实际发送的时间，若后面有错误，仍然以这个时间为准
+        curtime = time.time() if curtime is None else curtime  # 实际发送的时间，若后面有错误，仍然以这个时间为准
 
         # msg add source
         msg['source'] = domain
@@ -32,7 +31,6 @@ class FluentdLogger(object):
             if count >= 3:
                 break
 
-
     @property
     def logger(self):
         return self._logger
@@ -48,5 +46,3 @@ def create_mongodb_op_log(query_id, op_type, op_targets):
         'op_targets': op_targets
     }
     return msg
-
-

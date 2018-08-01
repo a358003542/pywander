@@ -6,6 +6,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, MONTHLY
 
+
 def is_same_year(dt1, dt2):
     if (dt1.year == dt2.year):
         return True
@@ -19,18 +20,19 @@ def is_same_month(dt1, dt2):
     else:
         return False
 
+
 def is_same_day(dt1, dt2):
     if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (dt1.day == dt2.day):
         return True
     else:
         return False
 
+
 def is_same_hour(dt1, dt2):
     if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (dt1.day == dt2.day) and (dt1.hour == dt2.hour):
         return True
     else:
         return False
-
 
 
 def round_to_day(dt):
@@ -42,9 +44,11 @@ def round_to_hour(dt):
     res = dt.replace(minute=0, second=0, microsecond=0)
     return res
 
+
 def round_to_minute(dt):
     res = dt.replace(second=0, microsecond=0)
     return res
+
 
 def round_to_second(dt):
     res = dt.replace(microsecond=0)

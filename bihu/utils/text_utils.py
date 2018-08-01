@@ -4,6 +4,7 @@
 
 import re
 
+
 def multi_delimiter_split(string, delimiters='', split_whitespace=True, remove_whitespace=True):
     """
     多个分隔符分割字符串，
@@ -24,4 +25,3 @@ def multi_delimiter_split(string, delimiters='', split_whitespace=True, remove_w
     res = re.split(expr, string)
 
     return res
-

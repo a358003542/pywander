@@ -8,7 +8,6 @@ import logging
 import shutil
 from pathlib import Path
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -28,6 +27,7 @@ def normalized_path(path='.'):
         return path
     else:
         raise TypeError
+
 
 def normalized_path_obj(path='.'):
     """
@@ -109,8 +109,6 @@ def pwd():
     return Path(os.getcwd())
 
 
-
-
 def gen_filetree(startpath='.', filetype=""):
     '''
     利用os.walk 遍历某个目录，收集其内的文件，返回
@@ -140,7 +138,6 @@ def gen_filetree(startpath='.', filetype=""):
                 yield (dirlist, filelist)
             else:
                 yield (['.'], filelist)
-
 
 
 def gen_allfile(startpath='.', filetype=""):
