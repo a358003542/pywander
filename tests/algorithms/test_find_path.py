@@ -2,11 +2,13 @@
 # -*-coding:utf-8-*-
 
 
-from bihu.algorithms.graph.find_path import breadth_first_search, find_shortest_path,depth_first_search
+from bihu.algorithms.graph.find_path import breadth_first_search, find_shortest_path, depth_first_search, \
+    find_shortest_path_bfs, find_shortest_path_dijkstra
+from bihu.algorithms.graph.graph import DirectedGraph, WeightedDirectedGraph
 
 
 def test_bfs():
-    graph = {
+    graph_data = {
         'a': ['b', 'c'],
         'b': ['e', 'd'],
         'd': ['f'],
@@ -14,29 +16,29 @@ def test_bfs():
         'e': [],
         'f': []
     }
-
-    data = breadth_first_search(graph, root='a', target='f')
+    graph1 = DirectedGraph(graph_data)
+    data = breadth_first_search(graph1, start='a', end='f')
     print(data)
 
-
-    graph = {
-        'you': ['alice','bob','claire'],
-        'bob': ['anuj','peggy'],
-        'alice':['peggy'],
-        'claire': ['thom','jonny'],
-        'anuj':[],
-        'peggy':[],
-        'thom':[],
-        'jonny':[]
+    graph_data2 = {
+        'you': ['alice', 'bob', 'claire'],
+        'bob': ['anuj', 'peggy'],
+        'alice': ['peggy'],
+        'claire': ['thom', 'jonny'],
+        'anuj': [],
+        'peggy': [],
+        'thom': [],
+        'jonny': []
     }
-    data = breadth_first_search(graph, root='you',target='anuj')
+    graph2 = DirectedGraph(graph_data2)
 
-    data = find_shortest_path(data, start='you',end='anuj')
+    data = find_shortest_path(graph2, start='you', end='anuj')
+    assert data == ['you', 'bob', 'anuj']
+    data = find_shortest_path_bfs(graph2, start='you', end='anuj')
     assert data == ['you', 'bob', 'anuj']
 
-    data = breadth_first_search(graph, root='you',target='peggy')
-    data = find_shortest_path(data, start='you',end='peggy')
-    assert data == ['you', 'alice', 'peggy'] or data == ['you','bob','peggy']
+    data = find_shortest_path(graph2, start='you', end='peggy')
+    assert data == ['you', 'alice', 'peggy'] or data == ['you', 'bob', 'peggy']
 
 
 def test_dfs():
@@ -50,7 +52,27 @@ def test_dfs():
         'thom': [],
         'jonny': []
     }
-    data = depth_first_search(graph, root='you', target='anuj')
+
+    graph = DirectedGraph(graph)
+    data = depth_first_search(graph, start='you', end='anuj')
 
     print(data)
 
+
+def test_dijkstra():
+    graph = WeightedDirectedGraph()
+    graph.add_node('start')
+    graph.add_edge(('start', 'a'))
+    graph.add_edge(('start','b'))
+    graph.add_edge(('a','end'))
+    graph.add_edge(('b','end'))
+    graph.set_edge_weight(('start', 'a'), 6)
+    graph.set_edge_weight(('start','b'), 2)
+    graph.set_edge_weight(('a','end'), 1)
+    graph.set_edge_weight(('b','end'), 5)
+    graph.add_edge(('b','a'))
+    graph.set_edge_weight(('b','a'),3)
+
+    data = find_shortest_path_dijkstra(graph, 'start', 'end')
+
+    assert data == ['start', 'b', 'a', 'end']
