@@ -14,12 +14,13 @@ redis = "*"
 requests = "*"
 "e1839a8" = {path = ".", editable = true}
 scrapy = "*"
+numpy = "*"
+pandas = "*"
 
 [dev-packages]
 alembic = "*"
 pytest = "*"
 pytest-runner = "*"
-numpy = "*"
 
 [requires]
 python_version = "3.6"
