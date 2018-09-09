@@ -16,6 +16,9 @@ requests = "*"
 scrapy = "*"
 numpy = "*"
 pandas = "*"
+sklearn = "*"
+matplotlib = "*"
+scipy = "*"
 
 [dev-packages]
 alembic = "*"
