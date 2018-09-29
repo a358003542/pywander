@@ -6,6 +6,8 @@ import os
 
 import pandas as pd
 
+class MissingSQLStatementError(Exception):
+    pass
 
 class DataHandler(object):
     """
@@ -14,7 +16,7 @@ class DataHandler(object):
     - python  DataFrame dict ...
     - sql
     """
-    def __init__(self, data_source=None, data_source_type='file', read_data_kwargs=None):
+    def __init__(self, data_source=None, data_source_type='file', sql_query=None, read_data_kwargs=None):
         self.data_source = data_source
         self.read_data_kwargs = read_data_kwargs if read_data_kwargs is not None else {}
 
@@ -26,12 +28,15 @@ class DataHandler(object):
 
             if ext in ['csv', 'txt']:
                 self.df = pd.read_csv(self.data_source, **self.read_data_kwargs)
-            elif ext in ['xlsx']:
+            elif ext in ['xlsx']: # sheet_name
                 self.df = pd.read_excel(self.data_source, **self.read_data_kwargs)
         elif data_source_type == 'python':
             self.df = pd.DataFrame(self.data_source)
         elif data_source_type == 'sql':
-            pass
+            if sql_query is None:
+                raise MissingSQLStatementError
+            else:
+                self.df = pd.read_sql(sql_query, self.data_source, **self.read_data_kwargs)
 
     def set_columns(self, columns):
         self.df.columns = columns
