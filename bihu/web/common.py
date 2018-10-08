@@ -150,7 +150,7 @@ def download(url, filename, download_timeout=30, override=False, **kwargs):
                 f.write(chunk)
             if time.time() - start > download_timeout:
                 content.close()
-                os.path.unlink(filename)
+                os.unlink(filename)
                 logger.warning('{0} download failed'.format(filename))
                 return False
 
