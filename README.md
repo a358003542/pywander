@@ -3,16 +3,22 @@
 bihu通用模块，代码版权归cdwanze所有。
 
 
+
 ## 安装
 ```
 pip install bihu
 ```
 
-## 文档
-
-<https://cdwanze.github.io/articles/bihu-module.html>
 
 
+## TODO
+- 移除dynaconf强制依赖，不再考虑数据库实际连接参数，只接受一个sqlalchemy的通用url表示了。
+
+- 算法等各个问题继续丰富
+
+- ml机器学习部分 在编写的时候，一方面要考虑轻耦合，各个接口各个层次都是开放的，可用的，另一方面考虑 pandas matplotlib keras等等工具更紧密的继承。
+
+- plot_utils 绘图功能
 
 
 ## 功能简介
@@ -36,16 +42,6 @@ pip install bihu
 5. ml 机器学习相关，特色是和pandas等工具更加紧密的集成
  - knn
 
-
-## 项目配置管理
-
-本项目开发遵循12因素应用配置管理原则：
-
-1. .env 不进入版本库，控制整个项目的配置选择，目前选用了三个阶段： development testing production，分别对应于 本机早期开发， 实际上机测试  和 生产环境
-2. .secrets.toml 里面放着一些私密的配置信息，不进入版本库
-3. settings.toml 里面放着其他一些配置
-
-使用请参看 dynaconf 模块。
 
 
 ## 更新说明

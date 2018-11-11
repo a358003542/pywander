@@ -20,7 +20,7 @@ REQUIREMENTS = []
 
 setup(
     name='bihu',
-    version='0.1.6',
+    version='0.1.8',
     description='the bihu libary',
     long_description=long_description(),
     author='cdwanze',
@@ -31,10 +31,4 @@ setup(
     include_package_data=True,
     setup_requires=REQUIREMENTS ,
     install_requires=REQUIREMENTS ,
-    # entry_points = {
-    #     'console_scripts': [
-    #         'convert_image=expython.image.convert_image:main',
-    #         'resize_image=expython.image.resize_image:main'
-    #     ]
-    # }
 )

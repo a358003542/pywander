@@ -1,29 +1,21 @@
 [[source]]
 url = "https://pypi.douban.com/simple"
 verify_ssl = true
-name = "pypi_douban"
+name = "pypi"
 
 [packages]
-sqlalchemy = "*"
-dynaconf = "*"
-pymysql = "*"
-fluent-logger = "*"
-pymongo = "*"
-"beautifulsoup4" = "*"
-redis = "*"
 requests = "*"
-"e1839a8" = {path = ".", editable = true}
-scrapy = "*"
-numpy = "*"
-pandas = "*"
-sklearn = "*"
-matplotlib = "*"
-scipy = "*"
+"beautifulsoup4" = "*"
 
 [dev-packages]
-alembic = "*"
 pytest = "*"
 pytest-runner = "*"
+numpy = "*"
+matplotlib = "*"
+scipy = "*"
+pandas = "*"
+sklearn = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.6"

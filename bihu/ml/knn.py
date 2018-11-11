@@ -11,8 +11,6 @@ from .base import DataHandler
 from .utils import data_normalize, input_data, restore_data
 
 
-
-
 class KNN(DataHandler):
     def __init__(self, data_source=None, read_data_kwargs=None, k=5, test_size=0.1):
         super().__init__(data_source=data_source, read_data_kwargs=read_data_kwargs)
@@ -20,7 +18,7 @@ class KNN(DataHandler):
         self.k = k
         self.test_size = test_size
 
-        self.data = None # dataframe for knn algorithm needed data
+        self.data = None  # dataframe for knn algorithm needed data
 
         self.classifier = KNeighborsClassifier(n_neighbors=self.k)
 
@@ -36,9 +34,9 @@ class KNN(DataHandler):
         if label_index is None:
             self.labels = self.df.labels.values
         else:
-            self.labels = self.df.iloc[:,[label_index]].values
+            self.labels = self.df.iloc[:, [label_index]].values
 
-        self.data_set = self.df.iloc[:,picked_features].values
+        self.data_set = self.df.iloc[:, picked_features].values
 
         self.new_data_set, self.ranges, self.min_vals = data_normalize(self.data_set)
 
@@ -54,8 +52,7 @@ class KNN(DataHandler):
         return res
 
     def test(self):
-        self.train_data_set, self.test_data_set, self.train_labels, self.test_labels = train_test_split(self.new_data_set, self.labels, test_size=self.test_size)
+        self.train_data_set, self.test_data_set, self.train_labels, self.test_labels = train_test_split(
+            self.new_data_set, self.labels, test_size=self.test_size)
         res = self.classifier.score(self.test_data_set, self.test_labels)
         return res
-
-

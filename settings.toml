@@ -1,13 +1,43 @@
 [default]
-SCRAPYD_SERVER = 'http://localhost:6800'
 
 [development]
 
 
+
+
 [testing]
 [testing.redis]
-host = '127.0.0.1'
-port = 6379
+host = '192.168.99.100'
+
+[testing.mongodb]
+host = '192.168.99.100'
+port = 27017
+username = ''
+dbname = 'bihu'
+password = ''
+
+[testing.db_spiderctl]
+dbname = 'spiderctl'
+host = '192.168.99.100'
+port = 3306
+username = 'root'
+password = ''
+
+[testing.db_workflow]
+dbname = 'workflow'
+host = '192.168.99.100'
+port = 3306
+username = 'root'
+password = ''
+
+[testing.db_search]
+dbname = 'search'
+host = '192.168.99.100'
+port = 3306
+username = 'root'
+password = ''
+
+
 
 [production]
 [production.redis]
