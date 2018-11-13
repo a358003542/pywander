@@ -9,10 +9,9 @@ import os
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from ..compat import urlsplit, urljoin, urlencode, urlparse, urldefrag
+from ..compat import urlsplit, urljoin, urldefrag
 
 logger = logging.getLogger(__name__)
-
 
 
 def is_relative_url(url):

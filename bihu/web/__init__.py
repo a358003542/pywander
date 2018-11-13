@@ -7,14 +7,13 @@
 
 """
 
-
 from .useragent import get_random_user_agent
 from .common import to_absolute_url
 from .api import Api, memorized_property
 
-
-__all__ = ['get_random_user_agent',
-           'memorized_property',
-           'Api',
-           'to_absolute_url'
-           ]
+__all__ = [
+    'get_random_user_agent',
+    'memorized_property',
+    'Api',
+    'to_absolute_url'
+]

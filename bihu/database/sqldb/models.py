@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from dynaconf import settings
+
 from datetime import datetime
 
 from sqlalchemy import *

@@ -6,10 +6,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# from bihu.utils.log_utils import FluentdLogger
-# fluentd_logger = FluentdLogger()
-
-
 def insert_or_ignore(session, orm, item, unique_key, return_key=None):
     """
     sql常用操作  插入或者忽略

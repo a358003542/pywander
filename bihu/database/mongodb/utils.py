@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from datetime import datetime
+import logging
 
 from pymongo import errors
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -65,11 +63,17 @@ def upsert_item(collection, item, unique_key=None):
         collection.update_one(key, {"$set": item}, upsert=True)
 
 
-
 def get_timeslice_data(collection, field, start_dt, end_dt):
-        targets = collection.find(
-            {field: {'$gte': start_dt, '$lte': end_dt}},
-            no_cursor_timeout=True).batch_size(16)
+    """
+    针对某个字段取一定时间段的记录
+    :param collection:
+    :param field:
+    :param start_dt:
+    :param end_dt:
+    :return:
+    """
+    targets = collection.find(
+        {field: {'$gte': start_dt, '$lte': end_dt}},
+        no_cursor_timeout=True).batch_size(16)
 
-        return targets
-
+    return targets

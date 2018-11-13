@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 requests = "*"
-"beautifulsoup4" = "*"
 
 [dev-packages]
 pytest = "*"
@@ -16,6 +15,9 @@ scipy = "*"
 pandas = "*"
 sklearn = "*"
 jupyter = "*"
+pymongo = "*"
+sqlalchemy = "*"
+"beautifulsoup4" = "*"
 
 [requires]
 python_version = "3.6"
