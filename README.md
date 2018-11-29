@@ -5,8 +5,6 @@
 MIT LICENSE.
 
 
-
-
 ## 安装
 ```
 pip install bihu
@@ -82,7 +80,58 @@ TODO 还在研究中，机器学习中的数据处理流 采用何种形式？
 ### utils部分
 utils里面有很多便捷的函数支持。
 
-- 提升管理员权限工具 admin_utils 用于在windows下提升脚本运行权限
+#### admin_utils
+提升管理员权限工具 admin_utils 用于在windows下提升脚本运行权限
+
+- is_admin 判断是否是管理员权限
+- run_as_admin 已管理员方式运行本脚本
+
+```python
+if __name__ == '__main__':
+    if not is_admin():
+        run_as_admin()
+    else:
+        main()
+```
+
+#### winreg_utils
+windows的注册表读写工具
+1. 默认的Key
+
+    >>> HKEY_CURRENT_USER
+    <regobj Key 'HKEY_CURRENT_USER'>
+    >>> HKLM
+    <regobj Key 'HKEY_LOCAL_MACHINE'>
+
+2. 自组建Key 可以写上一连串path名字
+
+    Key(parent, *name)
+
+3. .subkeys() 列出所有该Key的子Key TODO 数据结构字典化支持按名字索引
+
+4. .name 本Key的名字
+
+5. .names 本Key完整路径名字
+
+6. .get_subkey(name) 根据名字来向下获取子Key
+
+7. .del_subkey(name) 删除某个子Key
+
+8. .values() 列出该Key所包含的子值
+
+9. .items() 列出该Key所包含的子值，不过返回的是字典格式
+
+10. Key['name'] 实际获取某个Key的子值 没找到抛异常
+
+11. Key['name'] = value 修改某个Key的子值
+
+12. get(name) 试着获取某个Key的子值，没找到返回None
+
+13. .delete() 删除本Key
+
+14. .get_data(name) 试着获取某个Key的子值，直接返回值而不是Value对象
+
+
 
 - airflow_utils 对最小时间片的单个任务提供额外的运行状态记录支持
 
@@ -94,6 +143,5 @@ utils里面有很多便捷的函数支持。
 
 - 绘图支持工具 plot_utils 基于matplotlib的绘图便捷支持
 
-- 注册表读写工具 winreg_utils
 
 

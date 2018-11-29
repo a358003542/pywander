@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-##
 """
 winreg_utils
 
@@ -12,7 +11,6 @@ updated by cdwanze.
 Redistributable under the terms of the MIT license:
 
 
-
 This module provides a thin wrapper around the standard _winreg module,
 allowing easier and more pythonic access to the Windows Registry.
 
@@ -20,23 +18,43 @@ All access to the registry is done through Key objects, which (surprise!)
 represent a specific registry key.  To begin, there are pre-existing Key
 objects defined for the HKEY_* root keys, using both long and short names:
 
-  >>> HKEY_CURRENT_USER
-  <regobj Key 'HKEY_CURRENT_USER'>
-  >>> HKLM
-  <regobj Key 'HKEY_LOCAL_MACHINE'>
+1. 默认的Key
 
+    >>> HKEY_CURRENT_USER
+    <regobj Key 'HKEY_CURRENT_USER'>
+    >>> HKLM
+    <regobj Key 'HKEY_LOCAL_MACHINE'>
 
-## Key(parent, *name)
+2. 自组建Key 可以写上一连串path名字
+
+    Key(parent, *name)
+
+3. .subkeys() 列出所有该Key的子Key TODO 数据结构字典化支持按名字索引
+
+4. .name 本Key的名字
+
+5. .names 本Key完整路径名字
+
+6. .get_subkey(name) 根据名字来向下获取子Key
+
+7. .del_subkey(name) 删除某个子Key
+
+8. .values() 列出该Key所包含的子值
+
+9. .items() 列出该Key所包含的子值，不过返回的是字典格式
+
+10. Key['name'] 实际获取某个Key的子值 没找到抛异常
+
+11. Key['name'] = value 修改某个Key的子值
+
+12. get(name) 试着获取某个Key的子值，没找到返回None
+
+13. .delete() 删除本Key
+
+14. .get_data(name) 试着获取某个Key的子值，直接返回值而不是Value对象
+
 
 ## add_child(name)
-
-
-
-## .subkeys  迭代列出所有子键，TODO 数据结构字典化支持按名字索引
-## .get_subkey 根据名字获取某个子键
-## .set_subkey 设置某个子键的值
-## .del_subkey 删除某个子键
-
 
 ## create 实际向注册表提交改动
 
@@ -52,36 +70,9 @@ class NoHKeyError(Exception):
 
 
 class Key(object):
-    """Class representing a registry key.
-
-    Each key has a name and a parent key object.  Its values can be
-    accessed using standard item access syntax, while its subkeys can
-    be accessed using standard attribute access syntax.
-
-    Normally code would not create instance of this class directly.
-    Rather, it would begin with one of the root key objects defined in
-    this module (e.g. HKEY_CURRENT_USER) and then traverse it to load
-    the appropriate key.
-    """
     _hkey = None
 
     def __init__(self, parent, *names, sam=winreg.KEY_READ, create=True, **kwargs):
-        """Construct a new Key object.
-
-        The key's name and parent key must be specified.  If the given
-        name is a backslash-separated path it will be processed one
-        component at a time and the intermediate Key objects will be
-        transparently instantiated.
-
-        The optional argument 'sam' gives the security access mode to use
-        for the key, defaulting to KEY_READ.  It more permissions are required
-        for an attempted operation, we attempt to upgrade the permission
-        automatically.
-
-        If the optional argument 'hkey' is given, it is the underlying
-        key id to be used when accessing the registry. This should really
-        only be used for bootstrapping the root Key objects.
-        """
         if len(names) == 0:
             raise ValueError("a non-empty key name is required")
 
@@ -99,6 +90,92 @@ class Key(object):
 
         self._hkey = self.create_hkey(create=create)
 
+    def subkeys(self):
+        """Iterator over the subkeys of this key."""
+        self.sam |= winreg.KEY_ENUMERATE_SUB_KEYS
+        return SubkeyIterator(self)
+
+    @property
+    def names(self):
+        names = []
+        obj = self
+        while obj.parent is not None:
+            names.append(obj.name)
+            obj = obj.parent
+        names.append(obj.name)
+        return '\\'.join(names[::-1])
+
+    def delete(self):
+        """
+        删除本Key
+        :param child:
+        :return:
+        """
+        winreg.DeleteKey(self.parent.hkey, self.name)
+
+    def get_subkey(self, name):
+        """
+        获取某个子键，如果不存在将抛出异常
+        """
+        child = Key(self, name, create=False)
+        child.hkey = child.create_hkey(create=False)
+        return child
+
+    def del_subkey(self, name):
+        """Delete the named subkey, and any values or keys it contains."""
+        self.sam |= winreg.KEY_WRITE
+
+        winreg.DeleteKey(self.hkey, name)
+
+    def add_subkey(self, child_name, create=True, **kwargs):
+        child = Key(self, child_name, **kwargs)
+        child.hkey = child.create_hkey(create=create)
+        return child
+
+    def values(self):
+        """Iterator over the key's values."""
+        return ValueIterator(self)
+
+    def items(self):
+        res = []
+
+        for item in self.values():
+            d = {}
+            d['name'] = item.name
+            d['value'] = item.value
+            res.append(d)
+        return res
+
+    def keys(self):
+        res = []
+        for item in self.values():
+            name = item.name
+            res.append(name)
+        return res
+
+    def get(self, name):
+        """
+        获取某个子值，不存在不会抛出异常
+        :param name:
+        :return:
+        """
+        try:
+            return self.__getitem__(name)
+        except KeyError:
+            return None
+
+    def get_data(self, name):
+        """
+        获取某个子值，不存在不会抛出异常
+        :param name:
+        :return:
+        """
+        try:
+            reg_value = self.__getitem__(name)
+            return reg_value.data
+        except KeyError:
+            return None
+
     @property
     def hkey(self):
         if not self._hkey:
@@ -115,19 +192,6 @@ class Key(object):
         child.hkey = child.create_hkey(create=create)
         return child
 
-    def add_subkey(self, child_name, create=True, **kwargs):
-        child = Key(self, child_name, **kwargs)
-        child.hkey = child.create_hkey(create=create)
-        return child
-
-    def delete(self):
-        """
-        删除本Key
-        :param child:
-        :return:
-        """
-        winreg.DeleteKey(self.parent.hkey, self.name)
-
     def create_hkey(self, create=True):
         if not self.has_hkey():
             if self.parent is None:
@@ -141,16 +205,6 @@ class Key(object):
 
     def __str__(self):
         return "<regobj Key '%s'>" % (self.names)
-
-    @property
-    def names(self):
-        names = []
-        obj = self
-        while obj.parent is not None:
-            names.append(obj.name)
-            obj = obj.parent
-        names.append(obj.name)
-        return '\\'.join(names[::-1])
 
     def __repr__(self):
         return str(self)
@@ -179,33 +233,6 @@ class Key(object):
                 return _set_hkey(keyobj.parent)
 
         _set_hkey(self)
-
-    def get_subkey(self, name):
-        """
-        获取某个子键，如果不存在将抛出异常
-        """
-        child = Key(self, name, create=False)
-        child.hkey = child.create_hkey(create=False)
-        return child
-
-
-    def del_subkey(self, name):
-        """Delete the named subkey, and any values or keys it contains."""
-        self.sam |= winreg.KEY_WRITE
-
-        winreg.DeleteKey(self.hkey, name)
-
-
-    def get(self, name):
-        """
-        获取某个子键，不存在不会抛出异常
-        :param name:
-        :return:
-        """
-        try:
-            return self.__getitem__(name)
-        except KeyError:
-            return None
 
     def __getitem__(self, name):
         """Item access retrieves key values."""
@@ -244,15 +271,6 @@ class Key(object):
     def __delitem__(self, name):
         """Item deletion deletes key values."""
         winreg.DeleteValue(self.hkey, name)
-
-    def subkeys(self):
-        """Iterator over the subkeys of this key."""
-        self.sam |= winreg.KEY_ENUMERATE_SUB_KEYS
-        return SubkeyIterator(self)
-
-    def values(self):
-        """Iterator over the key's values."""
-        return ValueIterator(self)
 
 
 class Value(object):
