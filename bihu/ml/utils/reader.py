@@ -7,7 +7,7 @@ import os
 import pandas as pd
 
 
-class DataHandler(object):
+class DataFrameHandler(object):
     """
     read data source from
     - file
@@ -49,3 +49,6 @@ class DataHandler(object):
 
     def rename_columns(self, columns):
         self.df.rename(columns=columns, inplace=True)
+
+    def get_df(self):
+        return self.df

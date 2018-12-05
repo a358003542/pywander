@@ -75,7 +75,10 @@ web部分是我研究爬虫的一些结晶，其中比较实用的有：
 ### ml机器学习部分
 个人学习机器学习部分的一些积累，
 
-TODO 还在研究中，机器学习中的数据处理流 采用何种形式？
+- preprocessing 数据预处理支持
+- reader 读取数据支持
+
+- knn 很粗糙地对接了下knn算法 TODO
 
 ### utils部分
 utils里面有很多便捷的函数支持。
@@ -97,16 +100,16 @@ if __name__ == '__main__':
 #### winreg_utils
 windows的注册表读写工具
 1. 默认的Key
-
+```
     >>> HKEY_CURRENT_USER
     <regobj Key 'HKEY_CURRENT_USER'>
     >>> HKLM
     <regobj Key 'HKEY_LOCAL_MACHINE'>
-
+```
 2. 自组建Key 可以写上一连串path名字
-
+```
     Key(parent, *name)
-
+```
 3. .subkeys() 列出所有该Key的子Key TODO 数据结构字典化支持按名字索引
 
 4. .name 本Key的名字

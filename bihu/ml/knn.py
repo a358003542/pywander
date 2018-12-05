@@ -1,24 +1,20 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-import operator
-import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
 from .exceptions import NoInputDataError
-from .base import DataHandler
-from .utils import data_normalize, input_data, restore_data
+from bihu.ml.utils.reader import DataFrameHandler
+from bihu.ml.utils.preprocessing import scale, get_minmax_scaler, inverse_scale
 
 
-class KNN(DataHandler):
-    def __init__(self, data_source=None, read_data_kwargs=None, k=5, test_size=0.1):
-        super().__init__(data_source=data_source, read_data_kwargs=read_data_kwargs)
+class KNN(DataFrameHandler):
+    def __init__(self, data=None, k=5, test_size=0.1):
+        super(KNN, self).__init__(data)
 
         self.k = k
         self.test_size = test_size
-
-        self.data = None  # dataframe for knn algorithm needed data
 
         self.classifier = KNeighborsClassifier(n_neighbors=self.k)
 
@@ -38,17 +34,18 @@ class KNN(DataHandler):
 
         self.data_set = self.df.iloc[:, picked_features].values
 
-        self.new_data_set, self.ranges, self.min_vals = data_normalize(self.data_set)
+        self.minmax_scaler = get_minmax_scaler()
+        self.new_data_set = scale(self.minmax_scaler, self.data_set)
 
     def train(self):
         self.classifier.fit(self.new_data_set, self.labels)
 
     def predict_one(self, data):
-        res = self.classifier.predict(input_data([data], self.ranges, self.min_vals))
+        res = self.classifier.predict(self.minmax_scaler.transform(data))
         return res[0]
 
     def predict_many(self, data):
-        res = self.classifier.predict(input_data(data, self.ranges, self.min_vals))
+        res = self.classifier.predict(self.minmax_scaler.transform(data))
         return res
 
     def test(self):
