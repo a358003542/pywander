@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from bihu.utils.nlp_utils import guess_chapter_id
-from bihu.utils.nlp_utils import bigrams, trigrams, skipgrams
+from utils.nlp_utils import guess_chapter_id
+from utils.nlp_utils import bigrams, trigrams, skipgrams
 
 
 def test_guess_chapter_id():

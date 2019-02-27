@@ -10,7 +10,7 @@ from collections import OrderedDict
 from hashlib import md5
 from urllib.parse import urlencode
 
-from bihu.utils import remove_dict_key
+from utils import remove_dict_key
 
 
 def build_query_id(base_url, params, remove_keys=None):

@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from bihu.ml.knn import KNN
+from ml.knn import KNN
 
 
 def test_knn():

@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from bihu.algorithms.graph.graph import UndirectedGraph, Graph, DirectedGraph
+from algorithms.graph.graph import UndirectedGraph, DirectedGraph
 
 
 

@@ -2,9 +2,9 @@
 # -*-coding:utf-8-*-
 
 
-from bihu.algorithms.graph.find_path import breadth_first_search, find_shortest_path, depth_first_search, \
+from algorithms.graph.find_path import breadth_first_search, find_shortest_path, depth_first_search, \
     find_shortest_path_bfs, find_shortest_path_dijkstra
-from bihu.algorithms.graph.graph import DirectedGraph, WeightedDirectedGraph
+from algorithms.graph.graph import DirectedGraph, WeightedDirectedGraph
 
 
 def test_bfs():

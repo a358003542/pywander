@@ -2,12 +2,11 @@
 # -*-coding:utf-8-*-
 
 import numpy as np
-import pandas as pd
 
-from bihu.ml.utils.preprocessing import scale, get_minmax_scaler, get_standard_scaler, inverse_scale
-from bihu.ml.utils.reader import DataFrameHandler
+from ml.utils import scale, get_minmax_scaler, get_standard_scaler, inverse_scale
+from ml.utils import DataFrameHandler
 
-from bihu.ml.utils.preprocessing import encode, get_onehot_encoder, inverse_encode, get_label_encoder
+from ml.utils import encode, get_onehot_encoder, inverse_encode, get_label_encoder
 
 
 def test_scale():

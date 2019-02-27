@@ -5,7 +5,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 
-from bihu.database.sqldb import SQLDataBase
+from database.sqldb import SQLDataBase
 
 
 sqldb_lianzai = SQLDataBase('your_sqlalchemy_conn', loadtables='xc_novels')

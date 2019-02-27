@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from bihu.ml.utils.reader import DataFrameHandler
+from ml.utils import DataFrameHandler
 
 
 def test_df_handler():

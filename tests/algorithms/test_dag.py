@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from bihu.algorithms.graph.dag import DAG, CyclicError
+from algorithms.graph.dag import DAG, CyclicError
 import logging
 logging.basicConfig(level=logging.DEBUG)
 

@@ -9,12 +9,10 @@
 import os
 import sys
 import logging
-import errno
-import re
 import ast
 
-from .compat import ispy2, ispy3, reduce, basestring
-from .exceptions import NotIntegerError, OutOfRangeError
+from compat import ispy2, ispy3, reduce, basestring
+from exceptions import NotIntegerError, OutOfRangeError
 
 logger = logging.getLogger(__name__)
 

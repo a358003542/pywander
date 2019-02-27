@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from bihu.gfun import (is_even,
-                           is_odd,
-                           NotIntegerError,
-                           del_list,
-                           str2pyobj,
-                           merge_dict,
-                           is_prime,
-                           prime,
-                           fibonacci,
-                           )
+from gfun import (is_even,
+                  is_odd,
+                  NotIntegerError,
+                  del_list,
+                  str2pyobj,
+                  merge_dict,
+                  is_prime,
+                  prime,
+                  fibonacci,
+                  )
 import unittest
 from pytest import raises
 

@@ -5,8 +5,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
 from .exceptions import NoInputDataError
-from bihu.ml.utils.reader import DataFrameHandler
-from bihu.ml.utils.preprocessing import scale, get_minmax_scaler, inverse_scale
+from ml.utils import DataFrameHandler
+from ml.utils import scale, get_minmax_scaler
 
 
 class KNN(DataFrameHandler):

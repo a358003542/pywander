@@ -4,8 +4,8 @@
 
 
 import pytest
-from bihu.algorithms.sort.selection_sort import selection_sort
-from bihu.algorithms.sort.quick_sort import quick_sort
+from algorithms import selection_sort
+from algorithms.sort.quick_sort import quick_sort
 
 
 def test_quick_sort():
