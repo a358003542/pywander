@@ -1,7 +1,0 @@
-include *.txt
-include *.md
-include setup.cfg
-include LICENSE
-include .gitignore
-recursive-include tests *.py
-include settings.toml
