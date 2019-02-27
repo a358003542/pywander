@@ -22,13 +22,20 @@ from mymodule.utils.path_utils import get_project_path
 get_project_path() # 将返回你当前正在开发项目的根目录
 ```
 
+### 必要的依赖
+依赖的话基本上调用谁，谁的功能需要什么就要安装某个python模块，比如database部分，是依赖sqlalchemy的等。下面列出的依赖是必要的依赖：
+
+- loguru 便捷的日志输出 因为很方便，后面写的logger都是从loguru生成的。
 
 
 
-## 测试
+## 模块无关部分
 tests部分里面放着个人开发编写的一些单元测试，仅此而已。
+examples 部分里面放着其他一些样例，仅此而已。
 
+exceptions.py 一些异常 罗列性质 为了避免导入出错 都放在对应的模块文件头部了
 
+consts.py  一些常数 只是罗列性质 为了避免导入出错 都放在对应的模块文件头部了
 
 ## API
 下面API部分简要说明本模块所包含的内容和基本使用情况，更详细的接口请查阅源码。

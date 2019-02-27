@@ -130,18 +130,28 @@ def parse_webpage_images(url, html, name="img", id="", class_="", **kwargs):
     return set(links)
 
 
+
 def download(url, filename, download_timeout=30, override=False, **kwargs):
     """
     High level function, which downloads URL into tmp file in current
     directory and then renames it to filename autodetected from either URL
     or HTTP headers.
-
     :param out: output filename or directory
     :return:    filename where URL is downloaded to
     """
+    logger.info(f'start downloading file {url} to {filename}')
     import time  # https://github.com/kennethreitz/requests/issues/1803
     start = time.time()
+
+    if os.path.exists(filename):
+        if override:
+            logger.info(f'{filename} exist. but i will override it.')
+        else:
+            logger.info(f'{filename} exist.')
+            return
+
     content = requests.get(url, stream=True, **kwargs)
+
     with open(filename, 'wb') as f:
         for chunk in content.iter_content(chunk_size=1024):
             if chunk:
@@ -153,6 +163,7 @@ def download(url, filename, download_timeout=30, override=False, **kwargs):
                 return False
 
     return filename
+
 
 
 def is_url_insite(url, baseurl):

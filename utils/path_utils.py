@@ -11,6 +11,22 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
+def get_project_path(dir=None):
+    """
+    返回mymodule存放的根目录
+
+    如果指定dir 则返回根目录下的一个文件
+
+    :param dir:
+    :return:
+    """
+    path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    if dir:
+        path = os.path.join(path, dir)
+    return path
+
+
 def normalized_path(path='.'):
     """
     默认支持 ~ 符号

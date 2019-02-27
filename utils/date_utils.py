@@ -66,6 +66,29 @@ def get_date_range(months):
     return list(rrule(freq=MONTHLY, dtstart=sdt, until=now))
 
 
+from datetime import datetime
+
+
+def normal_format_now():
+    """
+    标准格式 now
+
+    '2018-12-21 15:39:20'
+    :return:
+    """
+    return datetime.now().__format__('%Y-%m-%d %H:%M:%S')
+
+
+def normal_format_utcnow():
+    """
+    标准格式 utcnow 服务器那边记录时间应该都是 utcnow
+
+    '2018-12-21 15:39:20'
+    :return:
+    """
+    return datetime.utcnow().__format__('%Y-%m-%d %H:%M:%S')
+
+
 utcnow = datetime.utcnow()
 one_week_ago = datetime.utcnow() - relativedelta(weeks=1)
 one_day_ago = datetime.utcnow() - relativedelta(days=1)
