@@ -4,7 +4,9 @@
 
 import pandas as pd
 
-from recommender.exceptions import NoInputDataError
+
+class NoInputDataError(Exception):
+    pass
 
 
 class DataReader(object):
