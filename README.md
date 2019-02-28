@@ -32,7 +32,7 @@ get_project_path() # 将返回你当前正在开发项目的根目录
 ## 模块无关部分
 tests部分里面放着个人开发编写的一些单元测试，仅此而已。
 examples 部分里面放着其他一些样例，仅此而已。
-
+notebooks 一些jupyter notebook .
 exceptions.py 一些异常 罗列性质 为了避免导入出错 都放在对应的模块文件头部了
 
 consts.py  一些常数 只是罗列性质 为了避免导入出错 都放在对应的模块文件头部了
