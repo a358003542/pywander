@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+import time
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
@@ -66,9 +67,6 @@ def get_date_range(months):
     return list(rrule(freq=MONTHLY, dtstart=sdt, until=now))
 
 
-from datetime import datetime
-
-
 def normal_format_now():
     """
     标准格式 now
@@ -87,6 +85,34 @@ def normal_format_utcnow():
     :return:
     """
     return datetime.utcnow().__format__('%Y-%m-%d %H:%M:%S')
+
+
+def get_timestamp():
+    """
+    获得当前的timestamp
+    :return:
+    """
+    timestamp = int(time.time())
+    return timestamp
+
+
+def get_dt_fromtimestamp(timestamp, utc=True):
+    """
+    根据timestamp获得对应的datetime对象
+
+    :param timestamp:
+    :param utc:
+    :return:
+    """
+    if isinstance(timestamp, str):
+        timestamp = int(timestamp)
+
+    if utc:
+        dt = datetime.utcfromtimestamp(timestamp)
+    else:
+        dt = datetime.fromtimestamp(timestamp)
+
+    return dt
 
 
 utcnow = datetime.utcnow()
