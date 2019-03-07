@@ -30,42 +30,44 @@ get_project_path() # 将返回你当前正在开发项目的根目录
 
 
 ## 模块无关部分
-tests部分里面放着个人开发编写的一些单元测试，仅此而已。
-examples 部分里面放着其他一些样例，仅此而已。
-notebooks 一些jupyter notebook .
-exceptions.py 一些异常 罗列性质 为了避免导入出错 都放在对应的模块文件头部了
+- tests部分里面放着个人开发编写的一些单元测试，仅此而已。
+- examples 部分里面放着其他一些样例，仅此而已。
+- notebooks 一些jupyter notebook
 
-consts.py  一些常数 只是罗列性质 为了避免导入出错 都放在对应的模块文件头部了
 
 ## API
 下面API部分简要说明本模块所包含的内容和基本使用情况，更详细的接口请查阅源码。
 
 
-### gfun部分
-初学python的可以看看里面的内容，定义了斐波那契函数和计算素数之类的。
+### 顶层部分
+- gfun 早期学习python的一些东西 后面会慢慢整理出去的 
+- exceptions 一些异常
+- consts 一些常数
+
+### algorithms算法部分
+个人学习算法的一些积累 没有太大实用价值 可做学习时的参考
+
+### compat
+python2和python3兼容性模块 历史原因保留在这里 并没怎么用了 
 
 
 
-### web部分
-web部分是我研究爬虫的一些结晶，其中比较实用的有：
 
-- 获得一个随机的User-Agent get_random_user_agent
-
-- 将一个url，相对的或者绝对的，转成绝对url to_absolute_url
-
-- 下载操作 download
 
 ### database部分
  database 里面放着很多便捷的对接数据库的通用操作模式。
 
+#### mongodb
 - mongodb连接操作 get_mongodb_client
 
 - mongodb插入操作 加入了去重逻辑 insert_item
 
 - mongodb upsert 操作 upsert_item
 
+#### sqldb
+sqldb利用sqlalchemy完成连接操作
 
-- sqldb利用sqlalchemy完成连接操作，具体根据host，port等参数返回sqlalchemy支持的url create_sqlalchemy_url
+- create_sqlalchemy_url 创建sqlalchemy支持的url
 
 - SQLDataBase类 输入sqlalchemy支持的url格式，连接数据库后的一些操作，本类主要用于sqlalchemy的非原生ORM操作。
 ```
@@ -85,17 +87,28 @@ web部分是我研究爬虫的一些结晶，其中比较实用的有：
 - sqldb更新一个记录操作 update_one
 
 
-### algorithms算法部分
-个人学习算法的一些积累。
-
 
 ### ml机器学习部分
 个人学习机器学习部分的一些积累，
 
-- preprocessing 数据预处理支持
-- reader 读取数据支持
+
+- preprocessing 数据预处理支持 新增 ZeroMinMaxScaler2  同原0-1缩放 不同的是不会取值1,取值范围为 [0,1)
+
+- reader 对接pandas io的 读取数据操作
 
 - knn 很粗糙地对接了下knn算法 TODO
+
+
+### stream_processing
+流处理操作模式
+
+比如：
+```
+filter_all = build_stream_function(filter_zh_ratio, filter_zhtext_length, filter_text_length)
+
+```
+这样就将多个过滤函数连接成为一个流处理函数。
+
 
 ### utils部分
 utils里面有很多便捷的函数支持。
@@ -113,6 +126,90 @@ if __name__ == '__main__':
     else:
         main()
 ```
+
+
+- airflow_utils 对最小时间片的单个任务提供额外的运行状态记录支持
+
+#### date_utils
+- is_same_year 输入两个datetime 对象，判断是否是同一年
+- is_same_month  判断两个datetime对象是否是同一月
+- is_same_day 判断两个datetime对象是否是同一天
+- is_same_hour 判断两个datetime对象是否是同一时
+- round_to_day     datetime对象round到天，其他归零
+- round_to_hour datetime对象round到小时，更小的刻度归零
+- round_to_minute  datetime对象round到分钟
+- round_to_second datetime对象round到秒
+
+- get_date_range 参数是往前数的月份，TODO 其他参数补上
+```
+from utils.date_utils import get_date_range
+get_date_range(5)
+Out[3]: 
+[datetime.datetime(2018, 10, 7, 2, 7, 1),
+ datetime.datetime(2018, 11, 7, 2, 7, 1),
+ datetime.datetime(2018, 12, 7, 2, 7, 1),
+ datetime.datetime(2019, 1, 7, 2, 7, 1),
+ datetime.datetime(2019, 2, 7, 2, 7, 1),
+ datetime.datetime(2019, 3, 7, 2, 7, 1)]
+```
+
+- normal_format_now     标准格式 now '2018-12-21 15:39:20'
+- normal_format_utcnow
+- get_timestamp 获得当前的timestamp
+- get_dt_fromtimestamp 根据timestamp获得对应的datetime对象
+
+#### df_utils
+pandas的DataFrame对象的一些便捷操作函数
+
+- change_df_type     
+输入 df column_name type
+
+将df的某个列的类型更改为某个type 比如float等
+
+- rename_df_columns 重新设置列名    
+
+- rename_df_column_by_index 将index column 名字修改为 to
+
+- rename_df_column_by_name 将某个column 名字修改为 to
+
+- get_all_column 获取一列所有的值 默认去重
+
+#### dll_utils
+介绍了如何利用python对接dll文件
+
+#### encrypt_utils
+加密解密
+
+- pbkdf2_sha256 加密
+- encrypt_message 加密某个信息
+- decrypt_message 解密某个信息
+
+
+#### file_utils
+- bigfile_read 大文件读写模式
+
+
+#### id_utils
+
+- build_query_id
+唯一id生成 
+根据关键和某个字典参数 生成 唯一的文件名或者唯一的id等等
+
+
+#### path_utils
+路径处理工具
+
+- get_project_path 返回mymodule存放的根目录
+- normalized_path 输入路径规范化 支持 '.' '~' 表达
+
+- etc... 
+
+
+
+
+- 绘图支持工具 plot_utils 基于matplotlib的绘图便捷支持
+
+
 
 #### winreg_utils
 windows的注册表读写工具
@@ -152,16 +249,11 @@ windows的注册表读写工具
 14. .get_data(name) 试着获取某个Key的子值，直接返回值而不是Value对象
 
 
+### web部分
+web部分是我研究爬虫的一些结晶，其中比较实用的有：
 
-- airflow_utils 对最小时间片的单个任务提供额外的运行状态记录支持
+- 获得一个随机的User-Agent get_random_user_agent
 
-- 日期工具  date_utils
+- 将一个url，相对的或者绝对的，转成绝对url to_absolute_url
 
-- 自然语言处理工具 nlp_utils
-
-- 路径处理工具 path_utils
-
-- 绘图支持工具 plot_utils 基于matplotlib的绘图便捷支持
-
-
-
+- 下载操作 download

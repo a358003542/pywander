@@ -60,11 +60,10 @@ def pbkdf2_sha256(password, salt, iterations=100000, dklen=32):
 
 
 
-def encrypt_message(message):
+def encrypt_message(message, key):
     """
-    key = b'424bfd418aa397b5eda54e66b2ecdeb3'
+    key is bytes
     """
-    key = b'424bfd418aa397b5eda54e66b2ecdeb3'
     cipher = AES.new(key, AES.MODE_EAX)
     ciphertext, tag = cipher.encrypt_and_digest(message.encode())
     nonce = cipher.nonce
@@ -78,12 +77,17 @@ def encrypt_message(message):
     return ciphertext_info
 
 
-def decrypt_message(ciphertext_info):
+def decrypt_message(ciphertext_info, key):
+    """
+    key is bytes
+    :param ciphertext_info:
+    :param key:
+    :return:
+    """
     ciphertext, tag, nonce = ciphertext_info.split('_')
     ciphertext = binascii.unhexlify(ciphertext)
     tag = binascii.unhexlify(tag)
     nonce = binascii.unhexlify(nonce)
-    key = b'424bfd418aa397b5eda54e66b2ecdeb3'
     cipher = AES.new(key, AES.MODE_EAX, nonce)
     message = cipher.decrypt_and_verify(ciphertext, tag)
     message = message.decode()
