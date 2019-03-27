@@ -9,6 +9,12 @@ from dateutil.rrule import rrule, MONTHLY
 
 
 def is_same_year(dt1, dt2):
+    """
+    判断两个datetime 对象是否是同一年
+    :param dt1:
+    :param dt2:
+    :return:
+    """
     if (dt1.year == dt2.year):
         return True
     else:
@@ -16,6 +22,12 @@ def is_same_year(dt1, dt2):
 
 
 def is_same_month(dt1, dt2):
+    """
+    判断两个datetime对象是否是同一月
+    :param dt1:
+    :param dt2:
+    :return:
+    """
     if (dt1.year == dt2.year) and (dt1.month == dt2.month):
         return True
     else:
@@ -23,6 +35,12 @@ def is_same_month(dt1, dt2):
 
 
 def is_same_day(dt1, dt2):
+    """
+    判断两个datetime对象是否是同一天
+    :param dt1:
+    :param dt2:
+    :return:
+    """
     if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (dt1.day == dt2.day):
         return True
     else:
@@ -30,6 +48,12 @@ def is_same_day(dt1, dt2):
 
 
 def is_same_hour(dt1, dt2):
+    """
+    判断两个datetime对象是否是同一时
+    :param dt1:
+    :param dt2:
+    :return:
+    """
     if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (dt1.day == dt2.day) and (dt1.hour == dt2.hour):
         return True
     else:
@@ -37,21 +61,41 @@ def is_same_hour(dt1, dt2):
 
 
 def round_to_day(dt):
+    """
+    datetime对象round到天，更小的刻度归零
+    :param dt:
+    :return:
+    """
     res = dt.replace(hour=0, minute=0, second=0, microsecond=0)
     return res
 
 
 def round_to_hour(dt):
+    """
+    datetime对象round到小时，更小的刻度归零
+    :param dt:
+    :return:
+    """
     res = dt.replace(minute=0, second=0, microsecond=0)
     return res
 
 
 def round_to_minute(dt):
+    """
+    datetime对象round到分钟
+    :param dt:
+    :return:
+    """
     res = dt.replace(second=0, microsecond=0)
     return res
 
 
 def round_to_second(dt):
+    """
+    datetime对象round到秒
+    :param dt:
+    :return:
+    """
     res = dt.replace(microsecond=0)
     return res
 
