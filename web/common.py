@@ -9,8 +9,7 @@ import os
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from compat import urlsplit, urljoin, urldefrag
-
+from urllib.parse import urlsplit, urljoin, urldefrag
 logger = logging.getLogger(__name__)
 
 
