@@ -3,12 +3,13 @@
 
 """
 
-实用pandas的dataframe结构是为了更清晰的表达
+pandas的dataframe结构是为了更清晰的表达
 
 
 """
 
 import pandas as pd
+from algorithms.tree.binary_decision_tree import BinaryDecisionTree
 
 
 class Knapsack(object):
@@ -49,7 +50,6 @@ class Item(object):
             return True
         else:
             return False
-
 
 
 def greedy_algorithm(knapsack, items):
@@ -116,6 +116,107 @@ def dynamic_programming(knapsack, items):
                         for item in df.iloc[i - 1][j - items[i].weight].items:
                             test_knapsack.add_item(item)
                     df.iloc[i][j] = test_knapsack
-    print(df)
+
     return df.iloc[len_i - 1][len_j]
 
+
+item_a = Item('a', 6, 3)
+item_b = Item('b', 7, 3)
+item_c = Item('c', 8, 2)
+item_d = Item('d', 9, 5)
+items = [item_a, item_b, item_c, item_d]
+
+import heapq
+
+
+class PriorityQueue:
+    def __init__(self):
+        self._queue = []
+        self._index = 0
+
+    def push(self, item, priority):
+        heapq.heappush(self._queue, (-priority, self._index, item))
+        self._index += 1
+
+    def pop(self):
+        return heapq.heappop(self._queue)[-1]
+
+
+def dynamic_programming2(items, max_node=None):
+    """
+    利用决策树来进行动态规划
+
+    引入优先级队列来减少决策树构建成本
+    :param knapsack:
+    :param items:
+    :return:
+    """
+
+    tree = BinaryDecisionTree(data={
+        'pre': [],
+        'post': items,
+        'value': 0,
+        'freespace': 5
+    })
+
+    q = PriorityQueue()
+    q.push(tree, 0)
+
+    node_num = 1
+    while q._queue:
+        if max_node and node_num > max_node:
+            break
+
+        target = q.pop()
+        import copy
+        data = copy.deepcopy(target.data)
+        data_pre = data['pre']
+        data_post = data['post']
+        data_value = data['value']
+        data_freespace = data['freespace']
+
+        try:
+            item = data_post.pop(0)
+
+            data = {
+                'pre': data_pre,
+                'post': data_post,
+                'value': data_value,
+                'freespace': data_freespace
+            }
+            node = target.append(data, new_decision=(item.name, False))
+            node_num += 1
+            q.push(node, data_value)
+
+            data_pre = data_pre + [item]
+            data_value += item.value
+            data_freespace -= item.weight
+
+            data = {
+                'pre': data_pre,
+                'post': data_post,
+                'value': data_value,
+                'freespace': data_freespace
+            }
+            if data_freespace < 0:
+                pass
+            else:
+                node = target.append(data, new_decision=(item.name, True))
+                node_num += 1
+                q.push(node, data_value)
+        except IndexError:
+            pass
+
+    max_value = 0
+    target_node = None
+    for node in tree.introspection():
+        value = node.data['value']
+        if value > max_value:
+            target_node = node
+            max_value = value
+
+    return target_node
+
+
+if __name__ == '__main__':
+    best_node = dynamic_programming2(items, max_node=10)
