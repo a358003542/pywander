@@ -41,7 +41,8 @@ fig, ax = plt.subplots()
 
 # from matplotlib.axes._axes import Axes
 
-def line_plot1(ax, y_values, x_ticks, xlabel='', ylabel='', ylim=None, **kwargs):
+def line_plot1(ax, y_values, x_ticks, xlabel='', ylabel='', ylim=None,
+               **kwargs):
     """
     绘制直线图
     :param ax:
@@ -74,7 +75,8 @@ def pie_plot(ax, labels, sizes, **kwargs):
     """
 
     ax.axis('equal')  # 确保画成一个圆
-    out = ax.pie(sizes, labels=labels, autopct='%2.0f%%', startangle=90, **kwargs)
+    out = ax.pie(sizes, labels=labels, autopct='%2.0f%%', startangle=90,
+                 **kwargs)
     return out
 
 
@@ -135,6 +137,41 @@ def scatter_plot1(ax, X, xlabel='', ylabel='', title='', **kwargs):
         ax.set_title(title)
 
     out = ax.scatter(x_group, y_group, **kwargs)
+    return out
+
+
+def scatter_plot(ax, x, y, xlabel='', ylabel='', title='', **kwargs):
+    """
+    :param ax:
+    :param X:
+    :return:
+    """
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    if ylabel:
+        ax.set_ylabel(ylabel)
+    if title:
+        ax.set_title(title)
+
+    out = ax.scatter(x, y, **kwargs)
+    return out
+
+
+def polyfit_plot(ax, x, y, deg=1, xlabel='', ylabel='', title='', **kwargs):
+    """
+    多项式拟合绘图
+    :return:
+    """
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    if ylabel:
+        ax.set_ylabel(ylabel)
+    if title:
+        ax.set_title(title)
+
+    predict_func = np.poly1d(np.polyfit(x, y, deg))
+
+    out = ax.plot(x, y, '.', x, predict_func(x), '-', **kwargs)
     return out
 
 
