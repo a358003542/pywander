@@ -252,7 +252,6 @@ windows的注册表读写工具
 ### web部分
 web部分是我研究爬虫的一些结晶，其中比较实用的有：
 
-- 获得一个随机的User-Agent get_random_user_agent
 
 - 将一个url，相对的或者绝对的，转成绝对url to_absolute_url
 

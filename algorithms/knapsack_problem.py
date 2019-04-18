@@ -84,7 +84,8 @@ def dynamic_programming(knapsack, items):
     len_i = len(items)
     len_j = knapsack.freespace
 
-    df = pd.DataFrame(index=[item.name for item in items], columns=range(1, len_j + 1))
+    df = pd.DataFrame(index=[item.name for item in items],
+                      columns=range(1, len_j + 1))
     for i in range(len_i):
         for j in range(1, len_j + 1):
             if i == 0:  # 第一行
@@ -99,7 +100,8 @@ def dynamic_programming(knapsack, items):
                 if j - items[i].weight == 0:
                     check_value = rightnow_item_value
                 elif j - items[i].weight >= 1:
-                    check_value = rightnow_item_value + df.iloc[i - 1][j - items[i].weight].all_items_value()
+                    check_value = rightnow_item_value + df.iloc[i - 1][
+                        j - items[i].weight].all_items_value()
                 else:
                     check_value = 0
 
@@ -126,20 +128,7 @@ item_c = Item('c', 8, 2)
 item_d = Item('d', 9, 5)
 items = [item_a, item_b, item_c, item_d]
 
-import heapq
-
-
-class PriorityQueue:
-    def __init__(self):
-        self._queue = []
-        self._index = 0
-
-    def push(self, item, priority):
-        heapq.heappush(self._queue, (-priority, self._index, item))
-        self._index += 1
-
-    def pop(self):
-        return heapq.heappop(self._queue)[-1]
+from queue import PriorityQueue
 
 
 def dynamic_programming2(items, max_node=None):
@@ -160,14 +149,14 @@ def dynamic_programming2(items, max_node=None):
     })
 
     q = PriorityQueue()
-    q.push(tree, 0)
+    q.put((0, tree))
 
     node_num = 1
-    while q._queue:
+    while not q.empty():
         if max_node and node_num > max_node:
             break
 
-        target = q.pop()
+        _, target = q.get()
         import copy
         data = copy.deepcopy(target.data)
         data_pre = data['pre']
@@ -186,7 +175,7 @@ def dynamic_programming2(items, max_node=None):
             }
             node = target.append(data, new_decision=(item.name, False))
             node_num += 1
-            q.push(node, data_value)
+            q.put((-data_value, node))
 
             data_pre = data_pre + [item]
             data_value += item.value
@@ -203,7 +192,7 @@ def dynamic_programming2(items, max_node=None):
             else:
                 node = target.append(data, new_decision=(item.name, True))
                 node_num += 1
-                q.push(node, data_value)
+                q.put((-data_value, node))
         except IndexError:
             pass
 
@@ -216,6 +205,26 @@ def dynamic_programming2(items, max_node=None):
             max_value = value
 
     return target_node
+
+
+def test_priority_queue():
+    """
+    因为认为数字越大越优先出来，所以实践中最好都带上负号
+    这样数字越大越优先出来
+    权重相同的会按照插入的顺序先插先出
+    :return:
+    """
+    q = PriorityQueue()
+    q.put((-1, '1'))
+    q.put((-20, '20'))
+    q.put((-2, '2'))
+    q.put((-3, '3-1'))
+    q.put((-3, '3-2'))
+    q.put((-3, '3-3'))
+
+    while not q.empty():
+        _, data = q.get()
+        print(data)
 
 
 if __name__ == '__main__':
