@@ -10,26 +10,31 @@ from collections import OrderedDict
 from hashlib import md5
 from urllib.parse import urlencode
 import shortuuid
-from utils import remove_dict_key
 
 
-def build_query_id(base_url, params, remove_keys=None):
+def build_unique_key(base_key, *args, **kwargs):
     """
-    针对某个网络上的url请求，get请求，加上参数，最后返回什么结果的 唯一id标识
+    缓存唯一id标识生成函数
+
+    :param base_key: 基本的区分key值 比如函数名
+    :param args: 必填参数
+    :param kwargs: 其他参数
+    :return:
     """
-    data = params.copy()
+    args_id = ""
+    kwargs_id = ""
 
-    if remove_keys:
-        remove_dict_key(data, remove_keys)
+    if args:
+        args_id = '_'.join(args)
 
-    data = OrderedDict(sorted(data.items(), key=lambda t: t[0]))
+    if kwargs:
+        kwargs = OrderedDict(sorted(kwargs.items(), key=lambda t: t[0]))
+        kwargs_id = urlencode(kwargs)
 
-    url = "{base_url}?{ps}".format(
-        base_url=base_url,
-        ps=urlencode(data)
-    )
-    query_id = md5(url.encode()).hexdigest()
-    return query_id
+    key = '_'.join([i for i in [base_key, args_id, kwargs_id] if i])
+
+    key = md5(key.encode()).hexdigest()
+    return key
 
 
 def one_activation_code(length=6):

@@ -18,33 +18,27 @@ def get_related_value(d, item):
     raise ValueError("Can not found the related value.")
 
 
-def remove_dict_key(d, keys):
+def remove_dict_key(d, key, inplace=True):
     """
-    就地删除某个字典的key
-    :param d:
-    :param key:
-    :return:
-    """
-    if isinstance(keys, str):
-        keys = [keys]
+    删除某个字典的某个key
 
-    for key in keys:
+    inplace = True 就地删除
+
+    """
+    if inplace:
+        new_d = d.copy()
+        try:
+            del new_d[key]
+        except KeyError:
+            pass
+        return new_d
+    else:
         try:
             del d[key]
         except KeyError:
             pass
-            # logger.warning('there is not {0} key.'.format(key))
-    return d
 
-
-def remove_dict_key_safely(d, key):
-    new_d = d.copy()
-    try:
-        del new_d[key]
-    except KeyError:
-        pass
-        # logger.warning('there is not {0} key.'.format(key))
-    return new_d
+        return d
 
 
 class LastElements(deque):

@@ -7,6 +7,17 @@
 MIT LICENSE
 
 
+## CHANGE_LOG
+remove_dict_key 增加 inplace 选项，从而将remove_dict_key_safely 函数功能融合进来。
+
+get_dt_fromtimestamp 新增 multiplier参数，从而可以控制 微妙 是否进入timestamp 和 选择几位微妙作为时间戳
+
+get_timestamp 新增 multiplier 参数 从而可以控制 微妙 单位
+
+dt_to_timestamp 新增函数 接收 datetime object 和可选参数 multiplier ，将一个datetime object 转成时间戳形式。
+
+id_utils 移除 build_query_id 新增 build_unique_key 函数， 根据某个基本的key和必要的参数和选参来输出一个特定唯一的key，可用于缓存，网络请求缓存等。
+
 ## 安装和使用
 已经移除了pip安装过程，觉得对于本项目完全没有必要。把你想要的代码部分复制粘贴到你想要开发的python项目目录下即可，或者称之为绿色安装版吧。
 

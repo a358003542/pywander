@@ -41,7 +41,8 @@ def is_same_day(dt1, dt2):
     :param dt2:
     :return:
     """
-    if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (dt1.day == dt2.day):
+    if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (
+            dt1.day == dt2.day):
         return True
     else:
         return False
@@ -54,7 +55,8 @@ def is_same_hour(dt1, dt2):
     :param dt2:
     :return:
     """
-    if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (dt1.day == dt2.day) and (dt1.hour == dt2.hour):
+    if (dt1.year == dt2.year) and (dt1.month == dt2.month) and (
+            dt1.day == dt2.day) and (dt1.hour == dt2.hour):
         return True
     else:
         return False
@@ -131,25 +133,35 @@ def normal_format_utcnow():
     return datetime.utcnow().__format__('%Y-%m-%d %H:%M:%S')
 
 
-def get_timestamp():
+def get_timestamp(multiplier=1):
     """
     获得当前的timestamp
     :return:
     """
-    timestamp = int(time.time())
-    return timestamp
+    timestamp = time.time()
+
+    timestamp = timestamp * multiplier
+
+    return int(timestamp)
 
 
-def get_dt_fromtimestamp(timestamp, utc=True):
+def dt_to_timestamp(dt, multiplier=1):
+    timestamp = dt.timestamp()
+
+    timestamp = timestamp * multiplier
+
+    return int(timestamp)
+
+
+def get_dt_fromtimestamp(timestamp, utc=True, multiplier=1):
     """
     根据timestamp获得对应的datetime对象
-
-    :param timestamp:
-    :param utc:
-    :return:
     """
+
     if isinstance(timestamp, str):
-        timestamp = int(timestamp)
+        timestamp = float(timestamp)
+
+    timestamp = timestamp * multiplier
 
     if utc:
         dt = datetime.utcfromtimestamp(timestamp)
