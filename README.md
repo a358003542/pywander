@@ -1,10 +1,5 @@
 # mymodule
-个人学习研究python的结晶, 一个大杂烩性质的通用模块【但也不是什么都往里面扔，而是作者确实感觉到有实用价值】
-
-
-
-## LICENSE
-MIT LICENSE
+a general purpose python module.
 
 
 ## CHANGE_LOG

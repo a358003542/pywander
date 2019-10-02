@@ -9,10 +9,9 @@ import logging
 memory = {}
 
 
-
 class memorized_property(property):
-    def __init__(self,*args,**kwargs):
-        super(memorized_property,self).__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super(memorized_property, self).__init__(*args, **kwargs)
 
     def __get__(self, obj, objtype=None):
         if obj is None:

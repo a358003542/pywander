@@ -100,3 +100,21 @@ class NotSupportedWarning(UserWarning):
 
 class UnDefinedError():
     '''UndefinedError, lately we will talk about it. '''
+
+
+class CyclicError(Exception):
+    pass
+
+
+class GraphError(RuntimeError):
+    """
+    A base-class for the various kinds of errors that occur in the the python-graph class.
+    """
+    pass
+
+
+class AdditionError(GraphError):
+    """
+    This error is raised when trying to add a node or edge already added to the graph or digraph.
+    """
+    pass

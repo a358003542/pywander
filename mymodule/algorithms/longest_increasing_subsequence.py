@@ -12,7 +12,8 @@ import pandas as pd
 
 
 def longest_increasing_subsequence(seq_one, seq_two):
-    df = pd.DataFrame(index=[item for item in seq_one], columns=[item for item in seq_two])
+    df = pd.DataFrame(index=[item for item in seq_one],
+                      columns=[item for item in seq_two])
 
     for i, c1 in enumerate(seq_one):
         for j, c2 in enumerate(seq_two):
@@ -24,4 +25,3 @@ def longest_increasing_subsequence(seq_one, seq_two):
             else:
                 df.iloc[i][j] = 0
     print(df)
-

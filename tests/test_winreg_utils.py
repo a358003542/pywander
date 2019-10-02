@@ -5,7 +5,7 @@ import pytest
 
 @pytest.mark.skip(reason="i have test it")
 def test_winreg_utils():
-    from utils.winreg_utils import Key, HKCR
+    from mymodule.utils.winreg_utils import Key, HKCR
     k = Key(HKCR, '.py')
 
     print(k)

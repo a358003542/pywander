@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from gfun import (is_even,
+from mymodule.gfun import (is_even,
                   is_odd,
                   NotIntegerError,
                   del_list,

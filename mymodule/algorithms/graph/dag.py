@@ -3,15 +3,13 @@
 
 
 from copy import deepcopy
+
+from mymodule.exceptions import CyclicError
 from .graph import DirectedGraph
 
 import logging
 
 logger = logging.getLogger(__name__)
-
-
-class CyclicError(Exception):
-    pass
 
 
 class DAG(DirectedGraph):

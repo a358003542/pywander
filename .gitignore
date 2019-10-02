@@ -62,7 +62,6 @@ bin/
 .idea/
 
 .env
-.secrets.toml
 Pipfile
 Pipfile.lock
 .pytest_cache/

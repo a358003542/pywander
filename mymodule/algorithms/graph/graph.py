@@ -17,19 +17,7 @@ edge 边
 from abc import abstractmethod
 from abc import ABC
 
-
-class GraphError(RuntimeError):
-    """
-    A base-class for the various kinds of errors that occur in the the python-graph class.
-    """
-    pass
-
-
-class AdditionError(GraphError):
-    """
-    This error is raised when trying to add a node or edge already added to the graph or digraph.
-    """
-    pass
+from mymodule.exceptions import AdditionError
 
 
 class Graph(ABC):
@@ -105,7 +93,8 @@ class Graph(ABC):
         @rtype:  string
         @return: String representing the graph.
         """
-        return "<{0}.{1} {2}>".format(self.__class__.__module__, self.__class__.__name__, str(self))
+        return "<{0}.{1} {2}>".format(self.__class__.__module__,
+                                      self.__class__.__name__, str(self))
 
     def __iter__(self):
         """
@@ -572,7 +561,6 @@ class WeightedDirectedGraph(DirectedGraph):
         """
         return list(self.graph_dict[node].keys())
 
-
     def add_node(self, node):
         """
         Add given node to the graph.
@@ -605,7 +593,6 @@ class WeightedDirectedGraph(DirectedGraph):
         else:
             self.graph_dict[u][v] = {}
 
-
     def del_edge(self, edge):
         """
         Remove an directed edge from the graph.
@@ -617,21 +604,16 @@ class WeightedDirectedGraph(DirectedGraph):
         if v in self.graph_dict[u]:
             self.graph_dict[u].pop(v)
 
-
     def edge_attr(self, edge, key):
-        u,v = edge
+        u, v = edge
         return self.graph_dict[u][v].get(key)
-
 
     def set_edge_attr(self, edge, key, value):
         u, v = edge
         self.graph_dict[u][v][key] = value
 
-
     def edge_weight(self, edge):
         return self.edge_attr(edge, self.WEIGHT_ATTRIBUTE_NAME)
 
-
     def set_edge_weight(self, edge, weight=DEFAULT_WEIGHT):
         self.set_edge_attr(edge, self.WEIGHT_ATTRIBUTE_NAME, weight)
-
