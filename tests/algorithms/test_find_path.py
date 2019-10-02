@@ -2,9 +2,9 @@
 # -*-coding:utf-8-*-
 
 
-from algorithms.graph.find_path import breadth_first_search, find_shortest_path, depth_first_search, \
+from mymodule.algorithms.graph.find_path import breadth_first_search, find_shortest_path, depth_first_search, \
     find_shortest_path_bfs, find_shortest_path_dijkstra
-from algorithms.graph.graph import DirectedGraph, WeightedDirectedGraph
+from mymodule.algorithms.graph.graph import DirectedGraph, WeightedDirectedGraph
 
 
 def test_bfs():

@@ -4,8 +4,8 @@
 
 
 import pytest
-from algorithms import selection_sort
-from algorithms.sort.quick_sort import quick_sort
+from mymodule.algorithms.sort import selection_sort
+from mymodule.algorithms.sort.quick_sort import quick_sort
 
 
 def test_quick_sort():

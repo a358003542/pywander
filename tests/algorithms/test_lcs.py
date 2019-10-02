@@ -2,14 +2,17 @@
 # -*-coding:utf-8-*-
 
 
-from algorithms import longest_common_subsequence
+from mymodule.algorithms.longest_common_subsequence import \
+    longest_common_subsequence
 
 
 def test_lcs():
     longest_common_subsequence('fort', 'fosh')
     longest_common_subsequence('fish', 'fosh')
 
-from algorithms.longest_increasing_subsequence import longest_increasing_subsequence
+
+from mymodule.algorithms.longest_increasing_subsequence import \
+    longest_increasing_subsequence
 
 
 def test_lis():
