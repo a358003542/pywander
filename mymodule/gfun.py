@@ -48,8 +48,6 @@ def humanize_bytes(n, precision=1):
     # URL: http://code.activestate.com/recipes/577081/
     """Return a humanized string representation of a number of bytes.
 
-    Assumes `from __future__ import division`.
-
 >>> humanize_bytes(1)
 '1 B'
 >>> humanize_bytes(1024)

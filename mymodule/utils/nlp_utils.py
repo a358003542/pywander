@@ -6,39 +6,9 @@ import re
 import logging
 from itertools import chain, combinations
 
+from mymodule.nlp.zhnumber import int_zhnumber
+
 logger = logging.getLogger(__name__)
-
-
-def zhnumber(string):
-    """
-    ref https://github.com/binux/binux-tools/blob/master/python/chinese_digit.py
-    """
-    chs_arabic_map = {u'零': 0, u'一': 1, u'二': 2, u'三': 3, u'四': 4, u'五': 5, u'六': 6, u'七': 7, u'八': 8, u'九': 9,
-                      u'十': 10, u'百': 100, u'千': 1000,
-                      u'壹': 1, u'贰': 2, u'叁': 3, u'肆': 4, u'伍': 5, u'陆': 6, u'柒': 7, u'捌': 8, u'玖': 9, u'拾': 10,
-                      u'佰': 100, u'仟': 1000, u'萬': 10000, u'万': 10000}
-
-    result = 0
-    pre = 0
-    res = list(map(lambda k: chs_arabic_map[k], string))
-
-    for d in res:
-        # 如果等于1万
-        if d == 10000:
-            result += pre
-            result = result * d
-            pre = 0
-        # 如果等于十或者百，千
-        elif d >= 10:
-            if pre == 0:
-                tmp = 1
-            result += d * pre
-            pre = 0
-        # 如果是个位数
-        else:
-            pre = d
-    result += pre
-    return result
 
 
 def guess_chapter_id(string, ):
@@ -55,7 +25,7 @@ def guess_chapter_id(string, ):
 
     if g:
         try:
-            chapter_id = zhnumber(g.group(1))
+            chapter_id = int_zhnumber(g.group(1))
             return chapter_id
         except Exception as e:
             return 0

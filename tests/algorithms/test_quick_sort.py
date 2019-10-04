@@ -2,7 +2,6 @@
 # -*-coding:utf-8-*-
 
 
-
 import pytest
 from mymodule.algorithms.sort import selection_sort
 from mymodule.algorithms.sort.quick_sort import quick_sort
