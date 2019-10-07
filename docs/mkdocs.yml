@@ -1,0 +1,11 @@
+site_name: Mymodule
+nav:
+    - Home: index.md
+    - zhnumber: zhnumber.md
+    - sqlalchemy_helper: sqlalchemy_helper.md
+    - functools_helper: functools_helper.md
+    - common: common.md
+    - crawler: crawler.md
+    - datetime_helper: datetime_helper.md
+    - winreg_helper: winreg_helper.md
+theme: readthedocs

@@ -59,7 +59,6 @@ def pbkdf2_sha256(password, salt, iterations=100000, dklen=32):
     return key
 
 
-
 def encrypt_message(message, key):
     """
     key is bytes

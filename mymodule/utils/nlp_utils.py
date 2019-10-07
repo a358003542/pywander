@@ -6,7 +6,7 @@ import re
 import logging
 from itertools import chain, combinations
 
-from mymodule.nlp.zhnumber import int_zhnumber
+from mymodule.zhnumber import int_zhnumber
 
 logger = logging.getLogger(__name__)
 

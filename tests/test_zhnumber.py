@@ -3,7 +3,7 @@
 
 from mymodule.utils.nlp_utils import guess_chapter_id
 from mymodule.utils.nlp_utils import bigrams, trigrams, skipgrams
-from mymodule.nlp.zhnumber import int_zhnumber, zhnumber
+from mymodule.zhnumber import int_zhnumber, zhnumber
 
 
 def test_zhnumber():

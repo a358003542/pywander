@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mymodule.gfun import (is_even,
-                  is_odd,
-                  NotIntegerError,
-                  del_list,
-                  str2pyobj,
-                  merge_dict,
-                  is_prime,
-                  prime,
-                  fibonacci,
-                  )
+from mymodule.exceptions import NotIntegerError
+from mymodule.common import str2pyobj
+from mymodule.dict_helper import merge_dict
+from mymodule.list_helper import del_list
+from mymodule.math_helper import is_even, is_odd, is_prime, prime, fibonacci
 import unittest
 from pytest import raises
 

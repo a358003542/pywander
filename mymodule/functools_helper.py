@@ -26,3 +26,34 @@ def build_stream_function(*funcs):
     """
 
     return reduce(lambda f, g: lambda d: g(f(d)), funcs)
+
+
+def flatten(inlst):
+    '''
+    将 **多层** 列表或元组变成一维 **列表**
+
+        >>> flatten((1,2,(3,4),((5,6))))
+        [1, 2, 3, 4, 5, 6]
+        >>> flatten([[1,2,3],[[4,5],[6]]])
+        [1, 2, 3, 4, 5, 6]
+
+    '''
+    lst = []
+    for x in inlst:
+        if not isinstance(x, (list, tuple)):
+            lst.append(x)
+        else:
+            lst += flatten(x)
+    return lst
+
+
+def sumall(*args):
+    '''将所有的数字都加起来，支持多层结构。
+>>> sumall(1,1,2,3,[1,2,3])
+13
+>>> sumall(1,1,2,3,[1,2,3],(4,5,6),[[5,5],[6]])
+44
+>>>
+    '''
+    args = flatten(args)
+    return sum(args)

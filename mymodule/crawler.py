@@ -10,6 +10,7 @@ import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
 from urllib.parse import urlsplit, urljoin, urldefrag
+
 logger = logging.getLogger(__name__)
 
 
@@ -129,7 +130,6 @@ def parse_webpage_images(url, html, name="img", id="", class_="", **kwargs):
     return set(links)
 
 
-
 def download(url, filename, download_timeout=30, override=False, **kwargs):
     """
     High level function, which downloads URL into tmp file in current
@@ -162,7 +162,6 @@ def download(url, filename, download_timeout=30, override=False, **kwargs):
                 return False
 
     return filename
-
 
 
 def is_url_insite(url, baseurl):

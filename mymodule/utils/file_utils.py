@@ -2,7 +2,8 @@
 # -*-coding:utf-8-*-
 
 
-def bigfile_read(filename, process_line=None, line_start=0, line_count=10000, mode='r', encoding='utf8'):
+def bigfile_read(filename, process_line=None, line_start=0, line_count=10000,
+                 mode='r', encoding='utf8'):
     """
     filename 要处理的文件名
     process_line 每一行的处理函数 默认打印动作 默认传入第一个参数 当前行数 第二个参数 具体行内容
@@ -29,5 +30,3 @@ def bigfile_read(filename, process_line=None, line_start=0, line_count=10000, mo
 
             if count >= line_count:
                 break
-
-# TODO 写一个装饰器 将普通函数封装 行处理函数

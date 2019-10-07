@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-
 import sys
+
 version_major = sys.version_info.major
 version_minor = sys.version_info.minor
 ######
@@ -23,7 +23,6 @@ is_py25 = ispy25 = (is_py2 and version_minor == 5)
 is_py26 = ispy26 = (is_py2 and version_minor == 6)
 is_py27 = ispy27 = (is_py2 and version_minor == 7)
 
-
 # ---------
 # Platforms
 # ---------
@@ -31,20 +30,10 @@ is_windows = 'win32' == sys.platform.lower()
 is_linux = 'linux' == sys.platform.lower()
 is_msys = 'msys' == sys.platform.lower()
 
-
-from urllib.parse import urlparse, urlunparse, urljoin, urlsplit, urlencode, quote, unquote, quote_plus, unquote_plus, urldefrag
-from io import StringIO
-from collections import OrderedDict
-
 builtin_str = str
 str = str
 bytes = bytes
 basestring = (str, bytes)
 numeric_types = (int, float)
-
-from functools import reduce
-
-
-
 
 # if __name__ == '__main__':

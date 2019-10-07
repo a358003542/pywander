@@ -17,7 +17,8 @@ def is_admin():
     import win32security
     # WARNING: requires Windows XP SP2 or higher!
     try:
-        adminSid = win32security.CreateWellKnownSid(win32security.WinBuiltinAdministratorsSid, None)
+        adminSid = win32security.CreateWellKnownSid(
+            win32security.WinBuiltinAdministratorsSid, None)
         return win32security.CheckTokenMembership(None, adminSid)
     except:
         traceback.print_exc()
