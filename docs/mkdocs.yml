@@ -8,4 +8,5 @@ nav:
     - crawler: crawler.md
     - datetime_helper: datetime_helper.md
     - winreg_helper: winreg_helper.md
+    - encoding: encoding.md
 theme: readthedocs
