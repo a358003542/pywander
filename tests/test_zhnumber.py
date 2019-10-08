@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mymodule.utils.nlp_utils import guess_chapter_id
+from mymodule.text_helper import guess_chapter_id
 from mymodule.utils.nlp_utils import bigrams, trigrams, skipgrams
 from mymodule.zhnumber import int_zhnumber, zhnumber
 
@@ -9,6 +9,7 @@ from mymodule.zhnumber import int_zhnumber, zhnumber
 def test_zhnumber():
     assert zhnumber(0) == '零'
     assert zhnumber(1) == '一'
+    assert zhnumber(11) == '一十一'
     assert zhnumber(15156) == '一万五千一百五十六'
     assert zhnumber(101) == '一百零一'
     assert zhnumber(1001) == '一千零一'
@@ -16,6 +17,7 @@ def test_zhnumber():
 
 
 def test_int_zhnumber():
+    assert int_zhnumber('一') == 1
     assert int_zhnumber('十一') == 11
     assert int_zhnumber('二十二') == 22
     assert int_zhnumber('一百零三') == 103

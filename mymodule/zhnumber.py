@@ -49,10 +49,11 @@ def zhnumber(number):
     :param int:
     :return:
     """
-    try:
-        int(number)
-    except Exception as e:
-        raise ValueError('incorrect number format error.')
+    if not isinstance(number, int):
+        try:
+            int(number)
+        except Exception as e:
+            raise ValueError('incorrect number format error.')
 
     zhnumber_ref = [
         (100000000,'亿'),
@@ -82,7 +83,7 @@ def zhnumber(number):
             flag = True
             last_suffix = suffix
         else:
-            if flag and suffix[-1] != last_suffix[-1]:
+            if flag and suffix and last_suffix and suffix[-1] != last_suffix[-1]:
                 result += '零'
                 flag = False
 

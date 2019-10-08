@@ -66,11 +66,11 @@ python系统内的异常
 """
 
 
-
 class ConfigFileNotFoundError(FileNotFoundError):
     """
     配置文件没有找到
     """
+
 
 class RequireArgumentError(Exception):
     """
@@ -118,3 +118,9 @@ class AdditionError(GraphError):
     This error is raised when trying to add a node or edge already added to the graph or digraph.
     """
     pass
+
+
+class GuessFailed(Warning):
+    """
+    某些猜测性试探性函数失败抛出异常
+    """

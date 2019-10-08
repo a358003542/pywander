@@ -6,32 +6,7 @@ import re
 import logging
 from itertools import chain, combinations
 
-from mymodule.zhnumber import int_zhnumber
-
 logger = logging.getLogger(__name__)
-
-
-def guess_chapter_id(string, ):
-    g = re.search(r'第([\d\s]+)章', string)
-
-    if g:
-        try:
-            chapter_id = int(g.group(1))
-            return chapter_id
-        except Exception as e:
-            return 0
-
-    g = re.search(r'第([零一二三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟萬\s]+)章', string)
-
-    if g:
-        try:
-            chapter_id = int_zhnumber(g.group(1))
-            return chapter_id
-        except Exception as e:
-            return 0
-
-    logger.warning('interpreter chapter id failed {0}'.format(string))
-    return 0
 
 
 ##########################################################################
@@ -189,7 +164,8 @@ def skipgrams(sequence, n, k, **kwargs):
     # the **kwargs padding, it's for the algorithm to detect the SENTINEL
     # object on the right pad to stop inner loop.
     SENTINEL = object()
-    for ngram in ngrams(sequence, n + k, pad_right=True, right_pad_symbol=SENTINEL):
+    for ngram in ngrams(sequence, n + k, pad_right=True,
+                        right_pad_symbol=SENTINEL):
         head = ngram[:1]
         tail = ngram[1:]
         for skip_tail in combinations(tail, n - 1):
@@ -198,7 +174,8 @@ def skipgrams(sequence, n, k, **kwargs):
             yield head + skip_tail
 
 
-def multi_delimiter_split(string, delimiters='', split_whitespace=True, remove_whitespace=True):
+def multi_delimiter_split(string, delimiters='', split_whitespace=True,
+                          remove_whitespace=True):
     """
     多个分隔符分割字符串，
 

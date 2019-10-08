@@ -9,4 +9,5 @@ nav:
     - datetime_helper: datetime_helper.md
     - winreg_helper: winreg_helper.md
     - encoding: encoding.md
+    - text_helper: text_helper.md
 theme: readthedocs
