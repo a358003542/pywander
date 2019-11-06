@@ -3,6 +3,7 @@
 import copy
 import logging
 
+from sqlalchemy.engine.url import URL
 from mymodule.sqldb.utils import logger
 
 logger = logging.getLogger(__name__)
