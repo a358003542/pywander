@@ -18,7 +18,7 @@ setup(
     name='mymodule',
     version=mymodule.__version__,
     description='a general purpose python module.',
-    url='https://github.com/a358003542/mymodule',
+    url='https://github.com/a358003542/wanze_python_project',
     long_description=long_description(),
     author='wanze',
     author_email='a358003542@gmail.com',
