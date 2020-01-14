@@ -3,7 +3,7 @@
 
 
 def del_list(lst, indexs):
-    '''
+    """
     del list base a index list
 
 >>> del_list([0,1,2,3,4,5],[2,3])
@@ -20,7 +20,7 @@ def del_list(lst, indexs):
 >>> lst
 [1, 5]
 
-    '''
+    """
     count = 0
     for index in sorted(indexs):
         index = index - count
@@ -30,7 +30,7 @@ def del_list(lst, indexs):
 
 
 def group_list(lst, n=1):
-    '''
+    """
     group a list, in some case, it is maybe useful.
 
 >>> list(group_list(list(range(10)),0))
@@ -45,7 +45,7 @@ AssertionError
 >>> list(group_list(list(range(10)),4))
 [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9]]
 
-    '''
+    """
     assert n > 0
     for i in range(0, len(lst), n):
         yield lst[i:i + n]

@@ -4,7 +4,7 @@
 from collections import ChainMap
 from functools import reduce
 
-from mymodule.compat import ispy2, ispy3
+from .compat import ispy2, ispy3
 
 
 def gen_dict_strset(d):
@@ -16,9 +16,10 @@ def gen_dict_strset(d):
 
 
 def compare_dict_include(d, include=None):
-    '''
-    <=  compare two dict object include or contained relationship
-    return True : d totally contain the include with the same content
+    """
+    compare two dict object include or contained relationship
+
+    return True : d totally contain the second dict
 
 >>> compare_dict_include({'a':1},{})
 True
@@ -30,7 +31,7 @@ True
 True
 >>> compare_dict_include({'a':1,'b':2},{'b':2})
 True
-    '''
+    """
     include = include if include is not None else {}
 
     if include == {}:  # always True
@@ -45,7 +46,7 @@ True
 
 
 def check_dict_has(d, has=None):
-    '''
+    """
     does the dict object has some keys
 
 >>> check_dict_has({'a':1,'b':2},[])
@@ -57,7 +58,7 @@ False
 >>> check_dict_has({'a':1,'b':2},['a','b'])
 True
 
-    '''
+    """
     has = has if has is not None else []
 
     if has == []:  # always True
@@ -72,6 +73,7 @@ True
 def merge_dict(*args):
     """
     将多个字典值合并，如果key相同，则以后面的为准。
+
     ref : http://stackoverflow.com/questions/38987/\
     how-can-i-merge-two-python-dictionaries-in-a-single-expression
     """
@@ -85,8 +87,7 @@ def merge_dict(*args):
     elif ispy3:
         res = dict(reduce(add, [list(d.items()) for d in args]))
         return res
-    else:
-        raise Exception('unbelievable')
+
 
 
 def merge_dict_proxy(*args):

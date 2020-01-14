@@ -17,6 +17,8 @@ is_py33 = ispy33 = (is_py3 and version_minor == 3)
 is_py34 = ispy34 = (is_py3 and version_minor == 4)
 is_py35 = ispy35 = (is_py3 and version_minor == 5)
 is_py36 = ispy36 = (is_py3 and version_minor == 6)
+is_py37 = ispy37 = (is_py3 and version_minor == 7)
+is_py38 = ispy38 = (is_py3 and version_minor == 8)
 #######
 is_py24 = ispy24 = (is_py2 and version_minor == 4)
 is_py25 = ispy25 = (is_py2 and version_minor == 5)

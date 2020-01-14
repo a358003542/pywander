@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mymodule.text_helper import guess_chapter_id
-from mymodule.utils.nlp_utils import bigrams, trigrams, skipgrams
-from mymodule.zhnumber import int_zhnumber, zhnumber
+from my_python_module.text_helper import guess_chapter_id
+from my_python_module.utils.nlp_utils import bigrams, trigrams, skipgrams
+from my_python_module.zhnumber import int_zhnumber, zhnumber
 
 
 def test_zhnumber():

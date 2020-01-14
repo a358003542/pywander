@@ -11,7 +11,7 @@ need the `dateutil` module.
 - round_to_minute  datetime对象round到分钟
 - round_to_second datetime对象round到秒
 
-- get_date_range 参数是往前数的月份，TODO 其他参数补上
+- get_date_range 返回一个时间片列表，以当前时间为终点，向前数几个月
 ```
 from utils.date_utils import get_date_range
 get_date_range(5)
@@ -24,7 +24,10 @@ Out[3]:
  datetime.datetime(2019, 3, 7, 2, 7, 1)]
 ```
 
-- normal_format_now     标准格式 now '2018-12-21 15:39:20'
+- normal_format_now  标准格式 now '2018-12-21 15:39:20'
+
 - normal_format_utcnow
+
 - get_timestamp 获得当前的timestamp
+
 - get_dt_fromtimestamp 根据timestamp获得对应的datetime对象

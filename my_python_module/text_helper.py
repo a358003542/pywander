@@ -8,9 +8,9 @@ short text process tools
 
 import re
 
-from mymodule.utils.nlp_utils import logger
-from mymodule.zhnumber import int_zhnumber
-from mymodule.exceptions import GuessFailed
+from .utils.nlp_utils import logger
+from .zhnumber import int_zhnumber
+from .exceptions import GuessFailed
 
 
 def multi_delimiter_split(string, delimiters='', split_whitespace=True,

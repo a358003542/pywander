@@ -64,7 +64,7 @@ def humanize_bytes(n, precision=1):
 
 
 def beep(a, b):
-    '''make a sound , ref:\
+    """make a sound , ref:\
      http://stackoverflow.com/questions/16573051/python-sound-alarm-when-code-finishes
     you need install  ``apt-get install sox``
 
@@ -72,7 +72,7 @@ def beep(a, b):
     :param b: duration
 
     create a background thread,so this function does not block the main program
-    '''
+    """
     if sys.platform == "win32":
         import winsound
 
@@ -104,10 +104,10 @@ def str2pyobj(val):
 
 
 def str2num(val):
-    '''
+    """
     str to int or float or raise a Exception. in some case maybe you just want
     to do some number type transform.
-    '''
+    """
     assert isinstance(val, basestring)
     try:
         return int(val)

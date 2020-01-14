@@ -9,7 +9,7 @@ pandas的dataframe结构是为了更清晰的表达
 """
 
 import pandas as pd
-from mymodule.algorithms.tree.binary_decision_tree import BinaryDecisionTree
+from .tree.binary_decision_tree import BinaryDecisionTree
 
 
 class Knapsack(object):

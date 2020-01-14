@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mymodule.exceptions import NotIntegerError
-from mymodule.common import str2pyobj
-from mymodule.dict_helper import merge_dict
-from mymodule.list_helper import del_list
-from mymodule.math_helper import is_even, is_odd, is_prime, prime, fibonacci
+from my_python_module.exceptions import NotIntegerError
+from my_python_module.common import str2pyobj
+from my_python_module.dict_helper import merge_dict
+from my_python_module.list_helper import del_list
+from my_python_module.math_helper import is_even, is_odd, is_prime, prime, fibonacci
 import unittest
 from pytest import raises
 

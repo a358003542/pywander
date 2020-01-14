@@ -79,27 +79,27 @@ class RequireArgumentError(Exception):
 
 
 class FatalError():
-    '''Fatal Error, the program need shutdown imediately'''
+    """Fatal Error, the program need shutdown imediately"""
 
 
 class NotIntegerError(ValueError):
-    '''Need input is a integer'''
+    """Need input is a integer"""
 
 
 class NotFloatError(ValueError):
-    '''Need input is a float'''
+    """Need input is a float"""
 
 
 class OutOfRangeError(ValueError):
-    '''The input required a range'''
+    """The input required a range"""
 
 
 class NotSupportedWarning(UserWarning):
-    '''This feature is not supported, program will ignore it.'''
+    """This feature is not supported, program will ignore it."""
 
 
 class UnDefinedError():
-    '''UndefinedError, lately we will talk about it. '''
+    """UndefinedError, lately we will talk about it. """
 
 
 class CyclicError(Exception):

@@ -3,8 +3,8 @@
 
 
 import pytest
-from mymodule.algorithms.sort import selection_sort
-from mymodule.algorithms.sort.quick_sort import quick_sort
+from my_python_module.algorithms.sort import selection_sort
+from my_python_module.algorithms.sort.quick_sort import quick_sort
 
 
 def test_quick_sort():

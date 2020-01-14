@@ -5,7 +5,7 @@ import pytest
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from mymodule.algorithms.search.binary_search import binary_search, binary_insert, binary_search_slow
+from my_python_module.algorithms.search.binary_search import binary_search, binary_insert, binary_search_slow
 
 
 def test_binary_search():

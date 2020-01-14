@@ -17,7 +17,7 @@ edge 边
 from abc import abstractmethod
 from abc import ABC
 
-from mymodule.exceptions import AdditionError
+from my_python_module.exceptions import AdditionError
 
 
 class Graph(ABC):

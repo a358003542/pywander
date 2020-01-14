@@ -3,13 +3,17 @@ need the `requests` and `beautifulsoup4` module.
 
 ### is_relative_url
 
-is the url is a relative url (including the `/what` )
+is the url a relative url (including the `/what` )
 
 ### to_absolute_url
-
+use the baseurl and the target url generate the target absolute url, no matter of the target url is relative url or absolute url. just make sure the baseurl is definitely in this site domain.
+```text
+to_absolute_url(baseurl, url)
+```
 
 ### remove_url_fragment
-
+remove the target url fragment like `#sec1` and the parameters on url will keeped still.
+    
 ### parse_webpage_links
 
 input html content, and use the beautifulsoup parse it, get all the

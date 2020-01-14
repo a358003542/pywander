@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from mymodule.algorithms.graph.graph import UndirectedGraph, DirectedGraph
+from my_python_module.algorithms.graph.graph import UndirectedGraph, DirectedGraph
 
 
 

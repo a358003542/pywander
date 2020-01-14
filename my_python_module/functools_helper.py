@@ -14,7 +14,8 @@ def build_compose_function(*funcs):
     :param args:
     :return:
     """
-    return reduce(lambda f, g: lambda *args, **kwargs: g(f(*args, **kwargs)), funcs)
+    return reduce(lambda f, g: lambda *args, **kwargs: g(f(*args, **kwargs)),
+                  funcs)
 
 
 def build_stream_function(*funcs):
@@ -29,7 +30,7 @@ def build_stream_function(*funcs):
 
 
 def flatten(inlst):
-    '''
+    """
     将 **多层** 列表或元组变成一维 **列表**
 
         >>> flatten((1,2,(3,4),((5,6))))
@@ -37,7 +38,7 @@ def flatten(inlst):
         >>> flatten([[1,2,3],[[4,5],[6]]])
         [1, 2, 3, 4, 5, 6]
 
-    '''
+    """
     lst = []
     for x in inlst:
         if not isinstance(x, (list, tuple)):
@@ -48,12 +49,12 @@ def flatten(inlst):
 
 
 def sumall(*args):
-    '''将所有的数字都加起来，支持多层结构。
+    """将所有的数字都加起来，支持多层结构。
 >>> sumall(1,1,2,3,[1,2,3])
 13
 >>> sumall(1,1,2,3,[1,2,3],(4,5,6),[[5,5],[6]])
 44
 >>>
-    '''
+    """
     args = flatten(args)
     return sum(args)

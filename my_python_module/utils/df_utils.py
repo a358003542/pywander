@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-
+import logging
 import pandas as pd
-from loguru import logger
+
+logger = logging.getLogger(__name__)
 
 """
 pandas的DataFrame的一些便捷操作函数
@@ -88,6 +89,7 @@ def get_all_column(df, column_name, remove_duplicate=True):
     column_values = list(column_values)
 
     return column_values
+
 
 import pandas as pd
 

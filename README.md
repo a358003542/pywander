@@ -1,8 +1,13 @@
-# mymodule
+# my_python_module
 a general purpose python module.
 
+## USAGE
+copy the code or install it as a offline pypi package.
 
 ## CHANGE_LOG
+### 0.2.0
+大修
+
 ### 0.1.2
 add encoding submodule.
 ### 0.1.1

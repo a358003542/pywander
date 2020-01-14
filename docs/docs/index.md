@@ -1,4 +1,4 @@
-# mymodule
+# my_python_module
 
 
 ## algorithms算法部分
@@ -10,7 +10,9 @@ python2和python3兼容性模块 历史原因保留在这里 并没怎么用了
 
 
 ### utils部分
-utils里面有很多便捷的函数支持。
+utils里面有很多便捷的函数支持。 
+
+TODO utils文件夹里面的部分重要性偏低一点。
 
 #### admin_utils
 提升管理员权限工具 admin_utils 用于在windows下提升脚本运行权限
@@ -62,7 +64,7 @@ pandas的DataFrame对象的一些便捷操作函数
 #### path_utils
 路径处理工具
 
-- get_project_path 返回mymodule存放的根目录
+- get_project_path 返回my_python_module存放的根目录
 - normalized_path 输入路径规范化 支持 '.' '~' 表达
 
 - etc... 

@@ -4,7 +4,7 @@
 
 from copy import deepcopy
 
-from mymodule.exceptions import CyclicError
+from my_python_module.exceptions import CyclicError
 from .graph import DirectedGraph
 
 import logging

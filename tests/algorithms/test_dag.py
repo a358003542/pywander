@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from mymodule.algorithms.graph.dag import DAG, CyclicError
+from my_python_module.algorithms.graph.dag import DAG, CyclicError
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
