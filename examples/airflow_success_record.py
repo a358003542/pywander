@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 import logging
-from bihu.workflow import StatusRecordHandler
+from my_python_module.utils.airflow_utils import StatusRecordHandler
 
 
 def aggregation_qidian_all_books(ds, **kwargs):

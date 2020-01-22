@@ -3,15 +3,13 @@
 
 
 from setuptools import setup, find_packages
-import codecs
+import os
 import my_python_module
 
 REQUIREMENTS = []
-
-
-def long_description():
-    with codecs.open('README.md', encoding='utf-8') as f:
-        return f.read()
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 
 setup(
@@ -19,7 +17,8 @@ setup(
     version=my_python_module.__version__,
     description='a general purpose python module.',
     url='https://github.com/a358003542/my_python_module',
-    long_description=long_description(),
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='wanze',
     author_email='a358003542@gmail.com',
     maintainer='wanze',

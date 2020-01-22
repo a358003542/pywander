@@ -23,21 +23,6 @@ TODO utils文件夹里面的部分重要性偏低一点。
 
 - airflow_utils 对最小时间片的单个任务提供额外的运行状态记录支持
 
-#### df_utils
-pandas的DataFrame对象的一些便捷操作函数
-
-- change_df_type     
-输入 df column_name type
-
-将df的某个列的类型更改为某个type 比如float等
-
-- rename_df_columns 重新设置列名    
-
-- rename_df_column_by_index 将index column 名字修改为 to
-
-- rename_df_column_by_name 将某个column 名字修改为 to
-
-- get_all_column 获取一列所有的值 默认去重
 
 #### dll_utils
 介绍了如何利用python对接dll文件
@@ -59,14 +44,5 @@ pandas的DataFrame对象的一些便捷操作函数
 - build_query_id
 唯一id生成 
 根据关键和某个字典参数 生成 唯一的文件名或者唯一的id等等
-
-
-#### path_utils
-路径处理工具
-
-- get_project_path 返回my_python_module存放的根目录
-- normalized_path 输入路径规范化 支持 '.' '~' 表达
-
-- etc... 
 
 

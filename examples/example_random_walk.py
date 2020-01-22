@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from algorithms.random_walk import drunk_test, UsualDrunk
-from utils.plot_utils import polyfit_plot
+from my_python_module.algorithms.random_walk import drunk_test, UsualDrunk
+from my_python_module.matplotlib_helper import polyfit_plot
 import matplotlib.pyplot as plt
 
 num_steps_batch = list(range(100, 10000, 100))
