@@ -11,6 +11,9 @@ import sys
 import logging
 import ast
 
+from operator import add
+from functools import reduce
+
 from .compat import basestring
 
 logger = logging.getLogger(__name__)
@@ -116,6 +119,13 @@ def str2num(val):
             return float(val)
         except Exception as e:
             raise e
+
+
+def mapping(hashkey, n=10):
+    """
+    利用hashkey进行分桶操作
+    """
+    return reduce(add, [ord(i) for i in hashkey]) % n
 
 
 if __name__ == "__main__":

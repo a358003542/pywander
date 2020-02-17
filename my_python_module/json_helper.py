@@ -32,6 +32,11 @@ def get_json_data(json_filename):
         return res
 
 
+def get_json_value(json_filename, k):
+    res = get_json_data(json_filename)
+    return res.get(k)
+
+
 def set_json_value(json_filename, k, v):
     """
     对json文件的某个k设置某个值v
