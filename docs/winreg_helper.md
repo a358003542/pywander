@@ -1,39 +1,80 @@
 ## winreg_helper
 windows的注册表读写工具
-1. 默认的Key
+
+### 默认的Key
 ```
     >>> HKEY_CURRENT_USER
     <regobj Key 'HKEY_CURRENT_USER'>
     >>> HKLM
     <regobj Key 'HKEY_LOCAL_MACHINE'>
 ```
-2. 自组建Key 可以写上一连串path名字
+### Key
+自组建Key 可以写上一连串path名字
 ```
-    Key(parent, *name)
+Key(HKLM, *name)
+
+Key(HKLM, *['SOFTWARE', 'Microsoft', 'Windows', 'CurrentVersion', 'Uninstall'])
+<regobj Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall'>
 ```
-3. .subkeys() 列出所有该Key的子Key TODO 数据结构字典化支持按名字索引
+默认 `create=True` ，也就是会自动创建Key，如果设置为 `False` 而Key不存在会抛出 OSError
 
-4. .name 本Key的名字
+### subkeys
+列出本Key的所有子Key
 
-5. .names 本Key完整路径名字
+```text
+key.subkeys()
+```
 
-6. .get_subkey(name) 根据名字来向下获取子Key
+### name
+本Key的名字
+```text
+key.name
+```
+### names
+本Key完整路径名字
+```text
+Key.names
+```
 
-7. .del_subkey(name) 删除某个子Key
+### get_subkey
+根据名字来向下获取子Key 
+```text
+key.get_subkey(name)
+```
 
-8. .values() 列出该Key所包含的子值
+### del_subkey
+删除某个子Key
+```text
+key.del_subkey(name)
+```
 
-9. .items() 列出该Key所包含的子值，不过返回的是字典格式
+### values
+列出该Key所包含的子值
+```text
+key.values()
+```
 
-10. Key['name'] 实际获取某个Key的子值 没找到抛异常
+### items
+列出该Key所包含的子值，不过返回的是字典格式
+```text
+key.items()
+```
+### Key的子值操作
+```text
+Key['name'] 实际获取某个Key的子值 没找到抛异常
+Key['name'] = value 修改某个Key的子值
+key.get(name) 试着获取某个Key的子值，没找到返回None
+Key[''] = 'what' 默认的子值
+key.get_data(name) 试着获取某个Key的子值，直接返回值而不是Value对象
+```
 
-11. Key['name'] = value 修改某个Key的子值
+### delete
+删除本Key
+```
+key.delete() 
+```
 
-12. get(name) 试着获取某个Key的子值，没找到返回None
 
-13. .delete() 删除本Key
-
-14. .get_data(name) 试着获取某个Key的子值，直接返回值而不是Value对象
 
 
 

@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 """
-winreg_utils
+winreg_helper
 
 base on Ryan Kelly Copyright 2009,  (ryan@rfk.id.au)'s regobj.py
 
