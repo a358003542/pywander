@@ -6,7 +6,7 @@ winreg_helper
 
 base on Ryan Kelly Copyright 2009,  (ryan@rfk.id.au)'s regobj.py
 
-updated by cdwanze.
+updated by wanze.
 
 Redistributable under the terms of the MIT license:
 
@@ -26,8 +26,9 @@ objects defined for the HKEY_* root keys, using both long and short names:
     <regobj Key 'HKEY_LOCAL_MACHINE'>
 
 2. 自组建Key 可以写上一连串path名字
-
-    Key(parent, *name)
+    Key(HKLM, '\where\where')
+    Key(HKLM, ['where','where'])
+    Key(parent, names)
 
 3. .subkeys() 列出所有该Key的子Key TODO 数据结构字典化支持按名字索引
 
@@ -72,7 +73,11 @@ class NoHKeyError(Exception):
 class Key(object):
     _hkey = None
 
-    def __init__(self, parent, *names, sam=winreg.KEY_READ, create=True, **kwargs):
+    def __init__(self, parent, names, sam=winreg.KEY_READ, create=True,
+                 **kwargs):
+        if isinstance(names, str):
+            names = names.split('\\')
+
         if len(names) == 0:
             raise ValueError("a non-empty key name is required")
 

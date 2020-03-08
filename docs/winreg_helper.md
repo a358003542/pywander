@@ -11,11 +11,14 @@ windows的注册表读写工具
 ### Key
 自组建Key 可以写上一连串path名字
 ```
-Key(HKLM, *name)
+    Key(HKLM, '\where\where')
+    Key(HKLM, ['where','where'])
+    Key(parent, names)
 
-Key(HKLM, *['SOFTWARE', 'Microsoft', 'Windows', 'CurrentVersion', 'Uninstall'])
+Key(HKLM, ['SOFTWARE', 'Microsoft', 'Windows', 'CurrentVersion', 'Uninstall'])
 <regobj Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall'>
 ```
+
 默认 `create=True` ，也就是会自动创建Key，如果设置为 `False` 而Key不存在会抛出 OSError
 
 ### subkeys
