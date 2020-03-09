@@ -45,7 +45,7 @@ class BinarySearchTree(object):
             return self
 
     def introspection(self):
-        '''walk a round,and get myself information'''
+        """walk a round,and get myself information"""
         stack = []
         node = self
         while stack or node:

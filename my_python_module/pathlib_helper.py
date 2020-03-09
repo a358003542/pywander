@@ -126,7 +126,7 @@ def pwd():
 
 
 def gen_filetree(startpath='.', filetype=""):
-    '''
+    """
     利用os.walk 遍历某个目录，收集其内的文件，返回
     (文件路径列表, 本路径下的文件列表)
     比如:
@@ -137,7 +137,7 @@ def gen_filetree(startpath='.', filetype=""):
     第一个可选参数 startpath  默认值 '.'
     第二个参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
-    '''
+    """
     for root, dirs, files in os.walk(startpath):
         filelist = []
         for f in files:
@@ -157,13 +157,13 @@ def gen_filetree(startpath='.', filetype=""):
 
 
 def gen_allfile(startpath='.', filetype=""):
-    '''
+    """
     利用os.walk 遍历某个目录，收集其内的文件，返回符合条件的文件路径名
     是一个生成器。
     第一个可选参数 startpath  默认值 '.'
     第二个参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
-    '''
+    """
 
     for dirlist, filelist in gen_filetree(startpath=startpath,
                                           filetype=filetype):

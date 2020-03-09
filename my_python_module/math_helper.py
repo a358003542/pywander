@@ -4,8 +4,43 @@
 from .exceptions import NotIntegerError, OutOfRangeError
 
 
+def number_radix_conversion(number, output_radix, input_radix=None):
+    """
+    number radix conversion.
+    number+input_radix: if given number is a string, then you must give the
+    input_radix parameter.
+    the radix support input: ['bin', 'oct', 'dec', 'hex', 2, 8, 10, 16]
+    """
+    name_map = {'bin': 2, 'oct': 8, 'dec': 10, 'hex': 16}
+
+    for index, radix in enumerate([input_radix, output_radix]):
+        if radix is None:
+            continue
+
+        if radix not in ['bin', 'oct', 'dec', 'hex', 2, 8, 10, 16]:
+            raise Exception("sorry not supported.")
+
+        if radix in name_map.keys():
+            if index == 0:
+                input_radix = name_map[radix]
+            elif index == 1:
+                output_radix = name_map[radix]
+
+    if isinstance(number, str) and input_radix:
+        number = int(number, input_radix)
+
+    if output_radix == 2:
+        return f'{number:b}'
+    elif output_radix == 8:
+        return f'{number:o}'
+    elif output_radix == 10:
+        return f'{number:d}'
+    elif output_radix == 16:
+        return f'{number:x}'
+
+
 def is_even(n):
-    '''is this number is even, required input n is a integer.
+    """is this number is even, required input n is a integer.
 
 >>> is_even(0)
 True
@@ -14,7 +49,7 @@ False
 >>> is_even(-2)
 True
 
-    '''
+    """
     if not isinstance(n, int):
         raise NotIntegerError
 
@@ -25,12 +60,12 @@ True
 
 
 def is_odd(n):
-    '''is this number is odd, required input n is a integer.'''
+    """is this number is odd, required input n is a integer."""
     return not is_even(n)
 
 
 def is_prime(n):
-    '''test input integer n is a prime.
+    """test input integer n is a prime.
 >>> is_prime(0)
 False
 >>> is_prime(-5)
@@ -46,7 +81,7 @@ True
 >>> is_prime(123)
 False
 
-    '''
+    """
     if not isinstance(n, int):
         raise NotIntegerError
 
@@ -61,7 +96,7 @@ False
 
 
 def gen_prime(n):
-    '''到第n个的所有素数的生成器函数'''
+    """到第n个的所有素数的生成器函数"""
     count = 0
     x = 1
     while count < n:
@@ -72,7 +107,7 @@ def gen_prime(n):
 
 
 def gen2_prime(n):
-    '''到小于某个数n的所有素数的生成器函数'''
+    """到小于某个数n的所有素数的生成器函数"""
     for x in range(n):
         if is_prime(x):
             yield x
@@ -91,8 +126,8 @@ def last_gen(genobj):
 
 
 def prime(n):
-    '''第n个素数 根据last_gen函数，所以integer类型不用判断了
-    名字取做prime而不是index_prime是因为计数从1开始。'''
+    """第n个素数 根据last_gen函数，所以integer类型不用判断了
+    名字取做prime而不是index_prime是因为计数从1开始。"""
     if n <= 0:
         raise OutOfRangeError("第零个或者第负数个素数？")
     else:
@@ -100,7 +135,7 @@ def prime(n):
 
 
 def gen_fibonacci(n):
-    '''到第n个的斐波那契数列生成器函数'''
+    """到第n个的斐波那契数列生成器函数"""
     if not isinstance(n, int):
         raise NotIntegerError
 
@@ -114,7 +149,7 @@ def gen_fibonacci(n):
 
 
 def fibonacci(n):
-    '''第几个斐波那契数'''
+    """第几个斐波那契数"""
     if n <= 0:
         raise OutOfRangeError("没有零个或小于零个斐波那契数的概念那。")
     else:
@@ -122,7 +157,7 @@ def fibonacci(n):
 
 
 def gen_factorial(stop, start=1):
-    '''start*....stop的生成器，默认start=1'''
+    """start*....stop的生成器，默认start=1"""
     if not isinstance(stop, int):
         raise NotIntegerError
     if not isinstance(start, int):
@@ -144,7 +179,7 @@ def gen_factorial(stop, start=1):
 
 
 def factorial(stop, start=1):
-    '''start*....stop的值，默认start=1即为stop!的值'''
+    """start*....stop的值，默认start=1即为stop!的值"""
     if stop <= 0:
         raise OutOfRangeError("负数和零的阶乘没有意义")
     elif stop < start:

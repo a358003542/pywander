@@ -10,12 +10,12 @@ import shortuuid
 
 
 def one_activation_code(length=6):
-    '''
+    """
     长度默认6位
     小写字母或数字 考虑l和1看不太清楚,将l去除了。
     这样还是会有四十几亿的可能性。'abcdefghijkmnopqrstuvwxyz0123456789'
     shortuuid 使用os.urandom，引入机器随机，基本保证激活码不重复。
-    '''
+    """
 
     res = shortuuid.ShortUUID(
         alphabet='abcdefghijkmnopqrstuvwxyz0123456789').random(length)
