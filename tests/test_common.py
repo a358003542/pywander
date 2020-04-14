@@ -12,3 +12,6 @@ def test_humanize_bytes():
 def test_str2pyobj():
     x = str2pyobj('{"a":1}')
     assert isinstance(x, dict)
+
+def test_config_read(sample_config):
+    assert sample_config['a'] == 1

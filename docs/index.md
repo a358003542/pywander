@@ -1,12 +1,11 @@
 # my_python_module
-
+a general purpose python module.
 
 ## algorithms算法部分
 个人学习算法的一些积累 没有太大实用价值 可做学习时的参考
 
 ## compat
 python2和python3兼容性模块 历史原因保留在这里 并没怎么用了 
-
 
 
 ### utils部分

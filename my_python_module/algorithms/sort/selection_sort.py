@@ -9,7 +9,7 @@
 """
 
 
-def selection_sort2(seq):
+def selection_sort(seq):
     res = list(seq.copy())
     for i in range(0, len(res)):
         minimum = i
@@ -21,9 +21,8 @@ def selection_sort2(seq):
     return res
 
 
-def selection_sort(seq):
+def selection_sort2(seq):
     """
-    两种写法速度都差不多的，那么优先写的直白点的。
     :param seq:
     :return:
     """
