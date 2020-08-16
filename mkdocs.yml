@@ -1,17 +1,15 @@
 site_name: MyPythonModule
 nav:
     - Home: index.md
+    - basic: basic.md
     - common: common.md
     - crawler: crawler.md
     - datetime_helper: datetime_helper.md
-    - dict_helper: dict_helper.md
     - encoding: encoding.md
     - functools_helper: functools_helper.md
     - json_helper: json_helper.md
-    - list_helper: list_helper.md
     - math_helper: math_helper.md
     - matplotlib_helper: matplotlib_helper.md
-
     - zhnumber: zhnumber.md
     - sqlalchemy_helper: sqlalchemy_helper.md
     - winreg_helper: winreg_helper.md

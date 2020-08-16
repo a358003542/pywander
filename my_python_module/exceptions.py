@@ -68,13 +68,13 @@ python系统内的异常
 
 class ConfigFileNotFoundError(FileNotFoundError):
     """
-    配置文件没有找到
+    The config file not found.
     """
 
 
 class RequireArgumentError(Exception):
     """
-    需要某个参数但是没有提供
+    Require some argument
     """
 
 
@@ -92,6 +92,10 @@ class NotFloatError(ValueError):
 
 class OutOfRangeError(ValueError):
     """The input required a range"""
+
+
+class OutOfChoiceError(ValueError):
+    """The parameter is out of given choice"""
 
 
 class NotSupportedWarning(UserWarning):
@@ -122,5 +126,5 @@ class AdditionError(GraphError):
 
 class GuessFailed(Warning):
     """
-    某些猜测性试探性函数失败抛出异常
+    Your function do some guess operation but cause a failed, this is a warning.
     """

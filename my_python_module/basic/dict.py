@@ -76,6 +76,10 @@ def merge_dict(*args):
 
     ref : http://stackoverflow.com/questions/38987/\
     how-can-i-merge-two-python-dictionaries-in-a-single-expression
+
+>>> merge_dict({'a': 1, 'b': 2}, {'b': 10, 'c': 11})
+{'a': 1, 'b': 10, 'c': 11}
+
     """
 
     def add(x, y):
@@ -87,3 +91,14 @@ def merge_dict(*args):
     elif ispy3:
         res = dict(reduce(add, [list(d.items()) for d in args]))
         return res
+
+
+def sorted_dict_by_value(d, **kwargs):
+    """
+    sorted dict by it's value
+
+>>> sorted_dict_by_value({'andy':5,'Andy':1,'black':9,'Black':55})
+[('Andy', 1), ('andy', 5), ('black', 9), ('Black', 55)]
+
+    """
+    return sorted(d.items(), key=lambda i: i[1], **kwargs)
