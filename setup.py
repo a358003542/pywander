@@ -32,6 +32,5 @@ setup(
                  'Programming Language :: Python :: 3'],
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
-    setup_requires=REQUIREMENTS,
     install_requires=REQUIREMENTS,
 )

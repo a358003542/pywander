@@ -209,4 +209,5 @@ def hjjs(year):
     }
 
 
-hjjs(2020)
+if __name__ == '__main__':
+    hjjs(2020)
