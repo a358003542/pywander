@@ -3,15 +3,11 @@ a general purpose python module.
 
 ## basic
 
+## math
 
 ## algorithms
-个人学习算法的一些积累 没有太大实用价值 可做学习时的参考
 
-## compat
-python2和python3兼容性模块 历史原因保留在这里 并没怎么用了 
-
-
-## utils部分
+## utils
 utils里面有很多便捷的函数支持。 
 
 ### admin_utils
@@ -44,5 +40,11 @@ utils里面有很多便捷的函数支持。
 - build_query_id
 唯一id生成 
 根据关键和某个字典参数 生成 唯一的文件名或者唯一的id等等
+
+
+## compat
+python2和python3兼容性模块 历史原因保留在这里 并没怎么用了 
+
+
 
 

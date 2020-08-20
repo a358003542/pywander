@@ -7,8 +7,7 @@ nav:
     - datetime_helper: datetime_helper.md
     - encoding: encoding.md
     - functools_helper: functools_helper.md
-    - json_helper: json_helper.md
-    - math_helper: math_helper.md
+    - math: math.md
     - matplotlib_helper: matplotlib_helper.md
     - zhnumber: zhnumber.md
     - sqlalchemy_helper: sqlalchemy_helper.md

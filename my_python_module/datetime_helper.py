@@ -153,7 +153,7 @@ def dt_to_timestamp(dt, multiplier=1):
     return int(timestamp)
 
 
-def get_dt_fromtimestamp(timestamp, utc=True, multiplier=1):
+def get_dt_fromtimestamp(timestamp, utc=False, multiplier=1):
     """
     根据timestamp获得对应的datetime对象
     """
