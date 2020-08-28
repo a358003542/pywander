@@ -1,17 +1,20 @@
 site_name: MyPythonModule
 nav:
     - Home: index.md
+    - advanced: advanced.md
+    - algorithm: algorithm.md
     - basic: basic.md
+    - helper: helper.md
+    - math: math.md
     - common: common.md
     - crawler: crawler.md
-    - datetime_helper: datetime_helper.md
     - encoding: encoding.md
-    - functools_helper: functools_helper.md
-    - math: math.md
-    - matplotlib_helper: matplotlib_helper.md
+    - encrypt: encrypt.md
+    - run_as_admin: run_as_admin.md
+    - unique_key: unique_key.md
+    - winreg: winreg.md
     - zhnumber: zhnumber.md
-    - sqlalchemy_helper: sqlalchemy_helper.md
-    - winreg_helper: winreg_helper.md
+    - zhouyi: zhouyi.md
 
 
 theme: readthedocs

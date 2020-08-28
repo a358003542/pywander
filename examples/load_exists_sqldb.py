@@ -5,7 +5,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 
-from my_python_module.sqlalchemy_helper import SQLDataBase
+from my_python_module.helper.sqlalchemy_helper import SQLDataBase
 
 sqldb_lianzai = SQLDataBase('your_sqlalchemy_conn', loadtables='xc_novels')
 

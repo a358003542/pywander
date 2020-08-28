@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 import logging
-from my_python_module.utils.airflow_utils import StatusRecordHandler
+from my_python_module.helper.airflow import StatusRecordHandler
 
 
 def aggregation_qidian_all_books(ds, **kwargs):
