@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.algorithm.knapsack_problem import Item, Knapsack, greedy_algorithm, dynamic_programming
+from my_python_module.algorithm.problems.knapsack_problem import Item, Knapsack, greedy_algorithm, dynamic_programming
 
 def test_greedy_algorithem():
     item_1 = Item('吉他', 1500, 15)

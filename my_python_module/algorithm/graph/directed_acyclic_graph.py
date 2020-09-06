@@ -3,16 +3,17 @@
 
 
 from copy import deepcopy
+from collections import deque
 
-from my_python_module.exceptions import CyclicError
-from .graph import DirectedGraph
+from my_python_module.exceptions import NotAcyclicError
+from .directed_graph import DirectedGraph
 
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class DAG(DirectedGraph):
+class DirectedAcyclicGraph(DirectedGraph):
     def __init__(self, graph_dict=None):
         super().__init__(graph_dict=graph_dict)
 
@@ -23,7 +24,7 @@ class DAG(DirectedGraph):
         super().add_edge(edge)
 
         if not self.sort():
-            raise CyclicError
+            raise NotAcyclicError
 
     def outdegree(self, src):
         """
@@ -51,9 +52,9 @@ class DAG(DirectedGraph):
         remove edge src -> dest
         """
         src, dest = edge
-        super(DAG, self).del_edge((src, dest))
+        super(DirectedAcyclicGraph, self).del_edge((src, dest))
 
-        ## clear data
+        # clear data
         if self.indegree(src) == 0 and self.outdegree(src) == 0:
             if src in self.graph_dict:
                 del self.graph_dict[src]
@@ -81,7 +82,6 @@ class DAG(DirectedGraph):
         target = deepcopy(self)
         top_order = []
 
-        from collections import deque
         queue = deque()
         for k in target.nodes():
             if target.indegree(k) == 0:

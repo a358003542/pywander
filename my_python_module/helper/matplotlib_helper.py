@@ -32,7 +32,7 @@ def set_matplotlib_support_chinese(font='SimHei'):
     from matplotlib import rcParams
 
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'].insert(0, font)  # 插入中文字体
+    rcParams['font.sans-serif'].insert_child(0, font)  # 插入中文字体
     rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 
 

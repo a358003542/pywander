@@ -106,20 +106,28 @@ class UnDefinedError():
     """UndefinedError, lately we will talk about it. """
 
 
-class CyclicError(Exception):
-    pass
-
-
-class GraphError(RuntimeError):
+class GraphError(Exception):
     """
-    A base-class for the various kinds of errors that occur in the the python-graph class.
+    A base-class for the various kinds of errors that occur in the the graph class.
     """
     pass
 
+class TreeError(Exception):
+    """
+    A base-class for the various kinds of errors that occur in the the tree class.
+    """
 
 class AdditionError(GraphError):
     """
-    This error is raised when trying to add a node or edge already added to the graph or digraph.
+    This error is raised when trying to add a node or edge already added
+    to the graph or digraph.
+    """
+    pass
+
+
+class NotAcyclicError(GraphError):
+    """
+    not acyclic graph error
     """
     pass
 

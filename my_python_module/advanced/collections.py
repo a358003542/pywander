@@ -19,9 +19,9 @@ def get_related_value(d, item):
 
 def remove_dict_key(d, key, inplace=True):
     """
-    删除某个字典的某个key
+    delete some key in dict
 
-    inplace = True 就地删除
+    inplace = True : delete in origin dict
 
     """
     if inplace:

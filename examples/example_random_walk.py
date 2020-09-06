@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.algorithm.random_walk import drunk_test, UsualDrunk
+from my_python_module.algorithm.problems.random_walk import drunk_test, UsualDrunk
 from my_python_module.helper.matplotlib_helper import polyfit_plot
 import matplotlib.pyplot as plt
 

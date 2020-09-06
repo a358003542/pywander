@@ -102,7 +102,7 @@ class SQLDataBase(object):
         :return:
         """
         _table = self._meta.tables[table_name]
-        self._conn.execute(_table.insert(), data)
+        self._conn.execute(_table.insert_child(), data)
 
     def execute(self, statement, *multiparams, **params):
         """

@@ -4,6 +4,7 @@
 from functools import reduce
 from functools import wraps
 
+
 def build_compose_function(*funcs):
     """
     组建一个符合函数流对象 数据处理流模式
@@ -59,18 +60,3 @@ def sumall(*args):
     args = flatten(args)
     return sum(args)
 
-
-
-
-def func_cache(cache, key, ):
-    """
-    this decorator will decorator a function and try to return a value based on
-    cache.
-    """
-    def _mydecorator(func):
-        @wraps(func)
-        def wraper_func(*args, **kwargs):
-
-            return func(*args, **kwargs)
-        return wraper_func
-    return _mydecorator
