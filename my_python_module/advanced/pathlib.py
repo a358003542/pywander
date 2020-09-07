@@ -20,14 +20,15 @@ def get_project_path(dir=None):
     :param dir:
     :return:
     """
-    path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    path = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
     if dir:
         path = os.path.join(path, dir)
     return path
 
 
-def normalized_path(path='.'):
+def normalized_path(path='.') -> str:
     """
     默认支持 ~ 符号
 
@@ -45,7 +46,7 @@ def normalized_path(path='.'):
         raise TypeError
 
 
-def normalized_path_obj(path='.'):
+def normalized_path_obj(path='.') -> Path:
     """
     默认支持 ~ 符号
 
@@ -82,7 +83,8 @@ def rm(path, recursive=False):
 
 def mkdirs(path, mode=0o777):
     """
-    Recursive directory creation function base on os.makedirs with a little error handling.
+    Recursive directory creation function base on os.makedirs
+    with a little error handling.
     """
     try:
         os.makedirs(path, mode=mode)
