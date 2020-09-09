@@ -19,11 +19,7 @@ class UndirectedGraph(Graph):
         """
         Initialize a graph.
         """
-
-        if graph_data is None:
-            self.graph_data = {}
-        else:
-            self.graph_data = graph_data
+        self.graph_data = graph_data if graph_data is not None else {}
 
     def nodes(self):
         """

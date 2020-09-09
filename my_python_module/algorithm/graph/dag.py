@@ -1,67 +1,42 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-
+import logging
 from copy import deepcopy
 from collections import deque
 
 from my_python_module.exceptions import NotAcyclicError
 from .directed_graph import DirectedGraph
 
-import logging
-
 logger = logging.getLogger(__name__)
 
 
 class DirectedAcyclicGraph(DirectedGraph):
-    def __init__(self, graph_data=None):
-        super().__init__(graph_data=graph_data)
-
     def add_edge(self, edge):
         """
-        加入闭环判断
+        add acyclic judgement.
         """
         super().add_edge(edge)
 
         if not self.sort():
+            self.remove_edge(edge)
             raise NotAcyclicError
-
-    def outdegree(self, src):
-        """
-        Returns the degree of the vertex 'src'
-        """
-        count = 0
-        if src in self.graph_data:
-            count = len(self.graph_data[src])
-
-        return count
-
-    def indegree(self, src):
-        """
-        Returns the in degree of the vertex 'src'
-        """
-        count = 0
-        for k, v in self.graph_data.items():
-            if src in v:
-                count += 1
-
-        return count
 
     def remove_edge(self, edge):
         """
-        remove edge src -> dest
+        remove edge start -> end
         """
-        src, dest = edge
-        super(DirectedAcyclicGraph, self).del_edge((src, dest))
+        start, end = edge
+        super(DirectedAcyclicGraph, self).del_edge((start, end))
 
         # clear data
-        if self.indegree(src) == 0 and self.outdegree(src) == 0:
-            if src in self.graph_data:
-                del self.graph_data[src]
+        if self.in_degree(start) == 0 and self.out_degree(start) == 0:
+            if start in self.graph_data:
+                del self.graph_data[start]
 
-        if self.indegree(dest) == 0 and self.outdegree(dest) == 0:
-            if dest in self.graph_data:
-                del self.graph_data[dest]
+        if self.in_degree(end) == 0 and self.out_degree(end) == 0:
+            if end in self.graph_data:
+                del self.graph_data[end]
 
     def sort(self):
         """
@@ -84,7 +59,7 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         queue = deque()
         for k in target.nodes():
-            if target.indegree(k) == 0:
+            if target.in_degree(k) == 0:
                 queue.append(k)
                 logger.debug('queue append {0}'.format(k))
 
@@ -95,7 +70,7 @@ class DirectedAcyclicGraph(DirectedGraph):
             for m in self.neighbors(n):
                 target.remove_edge((n, m))
                 logger.debug('remove n->m {0} {1}'.format(n, m))
-                if target.indegree(m) == 0:
+                if target.in_degree(m) == 0:
                     logger.debug('append {0}'.format(m))
                     queue.append(m)
 

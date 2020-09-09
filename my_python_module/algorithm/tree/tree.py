@@ -101,6 +101,11 @@ class Tree(object):
         else:
             target.children.append(Tree(child_name, parent=target))
 
+    def remove_child(self, child_name):
+        target = self[child_name]
+        parent = target.parent
+        parent.children.remove(target)
+
     def __getitem__(self, name):
         """
         get target node only return first found one

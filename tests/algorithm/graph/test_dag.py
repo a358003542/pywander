@@ -2,11 +2,10 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.algorithm.graph.directed_acyclic_graph import DirectedAcyclicGraph, NotAcyclicError
-import logging
-logging.basicConfig(level=logging.DEBUG)
-
 import pytest
+from my_python_module.algorithm.graph.dag import \
+    DirectedAcyclicGraph, NotAcyclicError
+
 
 def test_dag():
     dag = DirectedAcyclicGraph()
@@ -21,6 +20,6 @@ def test_dag():
     assert dag.sort()
 
     with pytest.raises(NotAcyclicError):
-        dag.add_edge(('g','a'))
+        dag.add_edge(('g', 'a'))
 
-    print(dag)
+    assert not dag.has_edge(('g', 'a'))

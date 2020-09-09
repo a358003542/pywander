@@ -18,11 +18,7 @@ class DirectedGraph(Graph):
         """
         Initialize a graph.
         """
-
-        if graph_data is None:
-            self.graph_data = {}
-        else:
-            self.graph_data = graph_data
+        self.graph_data = graph_data if graph_data is not None else {}
 
     def nodes(self):
         """
@@ -108,6 +104,27 @@ class DirectedGraph(Graph):
         u, v = edge
         if v in self.graph_data[u]:
             self.graph_data[u].remove(v)
+
+    def out_degree(self, node):
+        """
+        return the target node's out degree
+        """
+        count = 0
+        if node in self.graph_data:
+            count = len(self.graph_data[node])
+
+        return count
+
+    def in_degree(self, node):
+        """
+        return the target node's in degree
+        """
+        count = 0
+        for k, v in self.graph_data.items():
+            if node in v:
+                count += 1
+
+        return count
 
     def __ne__(self, other):
         """
