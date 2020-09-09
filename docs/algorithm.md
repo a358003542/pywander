@@ -110,7 +110,22 @@ def test_tree():
     assert [i.name for i in tree.shortest_path_to('h')] == ['a', 'c', 'h']
 
 ```
+#### BinarySearchTree
+```
+tree = BinarySearchTree(8)
 
+    tree.insert(3)
+    tree.insert(10)
+    tree.insert(1)
+    tree.insert(6)
+    tree.insert(14)
+    tree.insert(4)
+    tree.insert(7)
+    tree.insert(13)
+
+    assert tree.find(4)
+    assert not tree.find(50)
+```
 ### binary_search
 #### binary_search_func
 ```python

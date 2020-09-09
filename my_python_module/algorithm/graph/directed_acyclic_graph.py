@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 class DirectedAcyclicGraph(DirectedGraph):
-    def __init__(self, graph_dict=None):
-        super().__init__(graph_dict=graph_dict)
+    def __init__(self, graph_data=None):
+        super().__init__(graph_data=graph_data)
 
     def add_edge(self, edge):
         """
@@ -31,8 +31,8 @@ class DirectedAcyclicGraph(DirectedGraph):
         Returns the degree of the vertex 'src'
         """
         count = 0
-        if src in self.graph_dict:
-            count = len(self.graph_dict[src])
+        if src in self.graph_data:
+            count = len(self.graph_data[src])
 
         return count
 
@@ -41,7 +41,7 @@ class DirectedAcyclicGraph(DirectedGraph):
         Returns the in degree of the vertex 'src'
         """
         count = 0
-        for k, v in self.graph_dict.items():
+        for k, v in self.graph_data.items():
             if src in v:
                 count += 1
 
@@ -56,12 +56,12 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         # clear data
         if self.indegree(src) == 0 and self.outdegree(src) == 0:
-            if src in self.graph_dict:
-                del self.graph_dict[src]
+            if src in self.graph_data:
+                del self.graph_data[src]
 
         if self.indegree(dest) == 0 and self.outdegree(dest) == 0:
-            if dest in self.graph_dict:
-                del self.graph_dict[dest]
+            if dest in self.graph_data:
+                del self.graph_data[dest]
 
     def sort(self):
         """

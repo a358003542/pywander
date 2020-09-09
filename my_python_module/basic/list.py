@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+from itertools import product, permutations, combinations, \
+    combinations_with_replacement
 
-def del_list(lst, indexs):
+
+def del_list(lst: list, indexs):
     """
     del list base a index list
 
@@ -29,7 +32,7 @@ def del_list(lst, indexs):
     return lst
 
 
-def group_list(lst, n=1):
+def group_list(lst: list, n=1):
     """
     group a list, in some case, it is maybe useful.
 
@@ -49,3 +52,34 @@ AssertionError
     assert n > 0
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
+
+
+def double_iter(lst: list, mode='combinations'):
+    """
+    if the list is [A, B, C,D ]
+    mode default value is combinations:
+    which means no self-repeat and elements compare with no order.
+    default mode will yield
+    (A,B) (A,C) (A,D) (B,C) ...
+
+    if set mode = product will yield
+    which is equal two for-loop clause
+    (A,A) (A,B) (A,C) (A,D) (B,A) (B,B) ...
+
+    if set mode = permutations, will yield
+    (A,B) (A,C) (A,D) (B,A) (B,C) (B,D) ...
+    which means no self-repeat and elements compare with order.
+
+    if set mode = combinations_with_replacement, will yield
+    (A, A) (A, B) (A, C) (A, D) (B, B) (B, C) (B, D) ...
+    which means with self-repeat and elements compare with no order.
+    """
+
+    if mode == 'combinations':
+        return combinations(lst, 2)
+    elif mode == 'product':
+        return product(lst, repeat=2)
+    elif mode == 'permutations':
+        return permutations(lst, 2)
+    elif mode == 'combinations_with_replacement':
+        return combinations_with_replacement(lst, 2)

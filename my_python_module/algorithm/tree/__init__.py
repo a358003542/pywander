@@ -3,3 +3,4 @@
 
 
 from .tree import Tree
+from .binary_search_tree import BinarySearchTree

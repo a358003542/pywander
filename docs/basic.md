@@ -162,6 +162,30 @@ AssertionError
     """
 ```
 
+#### double_iter
+```
+def double_iter(lst: list, mode='combinations'):
+    """
+    if the list is [A, B, C,D ]
+    mode default value is combinations:
+    which means no self-repeat and elements compare with no order.
+    default mode will yield
+    (A,B) (A,C) (A,D) (B,C) ...
+    
+    if set mode = product will yield
+    which is equal two for-loop clause
+    (A,A) (A,B) (A,C) (A,D) (B,A) (B,B) ...
+    
+    if set mode = permutations, will yield
+    (A,B) (A,C) (A,D) (B,A) (B,C) (B,D) ...
+    which means no self-repeat and elements compare with order.
+    
+    if set mode = combinations_with_replacement, will yield
+    (A, A) (A, B) (A, C) (A, D) (B, B) (B, C) (B, D) ...
+    which means with self-repeat and elements compare with no order.
+    """
+```
+
 ### number
 #### radix_conversion
 

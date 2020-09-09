@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-
+from operator import add
+from functools import reduce
 from collections import OrderedDict
 from urllib.parse import urlencode
 from hashlib import md5
@@ -50,3 +51,10 @@ def random_md5(limit=None):
         return text[:limit]
     else:
         return text
+
+
+def mapping_string(string, n=10):
+    """
+    use md5 hash method to mapping string
+    """
+    return reduce(add, [ord(i) for i in str_md5(string)]) % n
