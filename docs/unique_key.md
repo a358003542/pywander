@@ -21,3 +21,12 @@ def random_md5(limit=None):
     limit 截取最前面的几个
     """
 ```
+
+### mapping_string
+利用md5 hash算法来对输入字符串进行分桶操作。
+```
+def mapping_string(string, n=10):
+    """
+    use md5 hash method to mapping string
+    """
+```

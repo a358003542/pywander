@@ -121,11 +121,6 @@ def str2num(val):
             raise e
 
 
-def mapping(hashkey, n=10):
-    """
-    利用hashkey进行分桶操作
-    """
-    return reduce(add, [ord(i) for i in hashkey]) % n
 
 
 if __name__ == "__main__":

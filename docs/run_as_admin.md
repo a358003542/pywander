@@ -13,6 +13,7 @@ def is_admin():
 ```
 
 ### run_as_admin
+windows下试着以admin的身份运行本python脚本
 ```
 def run_as_admin(cmdLine=None):
     """Attempt to relaunch the current script as an admin using the same

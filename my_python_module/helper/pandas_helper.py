@@ -188,10 +188,6 @@ class DataReader(object):
         return labels
 
 
-
-
-
-
 def to_ndarray(pyobj, dtype=None):
     """
     将一个可迭代的python对象转变成为numpy的ndarray对象

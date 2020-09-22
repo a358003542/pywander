@@ -4,8 +4,16 @@ import copy
 import logging
 
 from sqlalchemy.engine.url import URL
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.engine import reflection
 
 logger = logging.getLogger(__name__)
+
+
+class NoSuchTableError(Exception):
+    pass
 
 
 class SQLDataBase(object):
@@ -191,11 +199,13 @@ def insert_or_ignore(session, orm, item, unique_key, return_key=None):
             return False, None  # True表示记录已存在，有的时候有用
         else:
             return_key = getattr(q, return_key)
-            logger.debug('record {0} already exist in sql database.'.format(return_key))
+            logger.debug(
+                'record {0} already exist in sql database.'.format(return_key))
             return False, return_key
 
 
-def insert_or_update(session, orm, item, unique_key, update_check=lambda target, item: True):
+def insert_or_update(session, orm, item, unique_key,
+                     update_check=lambda target, item: True):
     """
     sql 常用操作 插入或者更新逻辑
 
