@@ -10,6 +10,9 @@ pip install my_python_module
 
 
 ## CHANGE_LOG
+### 0.3.6
+fix a dfs search bug.
+
 ### 0.3.5
 docs refine.
 

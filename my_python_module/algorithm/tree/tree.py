@@ -2,6 +2,7 @@
 # -*-coding:utf-8-*-
 
 import logging
+from my_python_module.algorithm.tree.exceptions import InsertError
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +98,7 @@ class Tree(object):
         target = self[parent_name]
 
         if target.has_child(child_name):
-            raise Exception("child name exists")
+            raise InsertError("child name exists")
         else:
             target.children.append(Tree(child_name, parent=target))
 
@@ -125,6 +126,10 @@ class Tree(object):
 
     def to_json(self):
         return {self.name: [i.to_json() for i in self.children]}
+
+    def to_flatten_list(self):
+        """iter tree with dfs style"""
+        return [i.name for i in self]
 
     @property
     def level(self):

@@ -20,6 +20,21 @@ def test_bfs_search_tree():
     assert graph1_bfs_search_tree['b'].has_child('d')
 
 
+def test_dfs_search_tree():
+    graph1 = DirectedGraph()
+    graph1.add_edge(("name", "symbol"))
+    graph1.add_edge(("symbol", "name"))
+    graph1.add_edge(("symbol", "mass"))
+    graph1.add_edge(("name", "mass"))
+    graph1.add_edge(("mass", "valume"))
+
+    graph1_dfs_search_tree = graph1.dfs_search('name')
+    assert graph1_dfs_search_tree.has_node('mass')
+
+    graph1_dfs_search_tree2 = graph1.dfs_search('mass')
+    assert not graph1_dfs_search_tree2.has_node('name')
+
+
 def test_shortest_path():
     graph_data2 = {
         'you': ['alice', 'bob', 'claire'],

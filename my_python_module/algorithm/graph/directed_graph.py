@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 from my_python_module.algorithm.graph.graph import Graph
-from my_python_module.exceptions import AdditionError
+from my_python_module.algorithm.graph.exceptions import AdditionError
 
 
 class DirectedGraph(Graph):

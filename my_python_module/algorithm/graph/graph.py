@@ -174,10 +174,14 @@ class Graph(ABC):
             """
             Depth-first search sub-function.
             """
-            for other in self.neighbors(node):
-                dfs_tree.insert_child(node, other)
-                dfs(other)
+            visited.append(node)
 
+            for other in self.neighbors(node):
+                if other not in visited:
+                    dfs_tree.insert_child(node, other)
+                    dfs(other)
+
+        visited = []
         dfs_tree = Tree(start)
         dfs(start)
 

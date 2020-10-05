@@ -4,7 +4,8 @@
 
 import pytest
 from my_python_module.algorithm.graph.dag import \
-    DirectedAcyclicGraph, NotAcyclicError
+    DirectedAcyclicGraph
+from my_python_module.algorithm.graph.exceptions import NotAcyclicError
 
 
 def test_dag():

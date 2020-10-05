@@ -5,7 +5,7 @@ import logging
 from copy import deepcopy
 from collections import deque
 
-from my_python_module.exceptions import NotAcyclicError
+from .exceptions import NotAcyclicError
 from .directed_graph import DirectedGraph
 
 logger = logging.getLogger(__name__)
