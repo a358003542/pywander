@@ -54,6 +54,21 @@ AssertionError
         yield lst[i:i + n]
 
 
+def combine_odd_even(lst):
+    """
+    odd and even element do the add operation
+    """
+    res = []
+    for item in group_list(lst, 2):
+        if len(item) > 1:
+            a, b = item
+            res.append(a + b)
+        else:
+            a = item[0]
+            res.append(a)
+    return res
+
+
 def double_iter(lst: list, mode='combinations'):
     """
     if the list is [A, B, C,D ]

@@ -39,16 +39,15 @@ def is_chinese(string):
 from .chinese_stop_words import STOP_WORDS
 
 
-def auto_summary(content):
+def auto_summary(content, user_dict):
     soup = BeautifulSoup(content, 'html.parser')
     page_text = soup.get_text()
     page_text = ' '.join(page_text.split())
 
-    dict_path = os.path.join(os.path.dirname(__file__), 'blog_dict.txt')
     import nltk
     import jieba
 
-    jieba.load_userdict(dict_path)
+    jieba.load_userdict(user_dict)
 
     article_text = page_text.replace('。', '.')
 
