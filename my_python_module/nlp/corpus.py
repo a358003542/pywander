@@ -3,6 +3,7 @@
 
 from nltk.corpus import PlaintextCorpusReader
 from .tokenize import JiebaTokenizer, ChineseSentenceTokenizer
+from my_python_module.nlp.text import ChineseText
 
 
 def load_corpus(root, word_tokenizer=JiebaTokenizer(),
@@ -13,4 +14,12 @@ def load_corpus(root, word_tokenizer=JiebaTokenizer(),
                                  encoding='utf8')
 
 
-gutenberg = load_corpus('D:/nlp_data/corpora/gutenberg')
+zh_gutenberg = load_corpus('D:/nlp_data/corpora/zh_gutenberg')
+
+laozi = ChineseText(zh_gutenberg.words("laozi_s.txt"))
+lunyu = ChineseText(zh_gutenberg.words("lunyu_s.txt"))
+xiyouji = ChineseText(zh_gutenberg.words("xiyouji_s.txt"))
+# hongloumeng = ChineseText(zh_gutenberg.words("hongloumeng_s.txt"))
+# shuihuzhuan = ChineseText(zh_gutenberg.words("shuihuzhuan_s.txt"))
+# sanguoyanyi = ChineseText(zh_gutenberg.words("sanguoyanyi_s.txt"))
+# guwenguanzhi = ChineseText(zh_gutenberg.words("guwenguanzhi_s.txt"))
