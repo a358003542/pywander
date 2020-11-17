@@ -4,44 +4,93 @@
 
 import logging
 import heapq
-
-from .chinese_stop_words import STOP_WORDS
-from .utils import is_chinese
-from .tokenize import ChineseSentenceTokenizer, JiebaTokenizer
+from math import log
+from .utils import is_empty_string
 
 logger = logging.getLogger(__name__)
 
+"""
+将一篇文章按照句子或者段落分开，然后进行tf-idf评分。
 
-def auto_summary(content, word_tokenizer=JiebaTokenizer(),
-                 sent_tokenizer=ChineseSentenceTokenizer()):
-    sentence_list = sent_tokenizer.tokenize(content)
+word(tf) = Cword(target word count in sent)/C(all word count in sent)
 
+word(idf) = log(C(sent count)/C(target word in sent count))
+
+"""
+
+
+def is_word_passed(word, stop_words):
+    if word in stop_words:
+        return True
+    elif is_empty_string(word):
+        return True
+    else:
+        return False
+
+
+def calc_word_frequencies(word_list, stop_words):
     word_frequencies = {}
-    for word in word_tokenizer.tokenize(content):
-        if word not in STOP_WORDS and is_chinese(word):
+    for word in word_list:
+        if not is_word_passed(word, stop_words):
             if word not in word_frequencies.keys():
                 word_frequencies[word] = 1
             else:
                 word_frequencies[word] += 1
 
-    maximum_frequncy = max(word_frequencies.values())
+    return word_frequencies
 
-    for word in word_frequencies.keys():
-        word_frequencies[word] = (word_frequencies[word] / maximum_frequncy)
+
+def auto_summary(content, word_tokenizer=None, sent_tokenizer=None,
+                 stop_words=None, max_len=50):
+    if stop_words is None:
+        from .chinese_stop_words import STOP_WORDS
+        stop_words = STOP_WORDS
+    if sent_tokenizer is None:
+        from .tokenize import ChineseSentenceTokenizer
+        sent_tokenizer = ChineseSentenceTokenizer()
+    if word_tokenizer is None:
+        from fenci.segment import Segment
+        word_tokenizer = Segment()
+
+    sentence_list = sent_tokenizer.tokenize(content)
+
+    sent_count = len(sentence_list)
+    word_in_sent = {}
+
+    for sent_index, sent in enumerate(sentence_list):
+        word_list = word_tokenizer.tokenize(sent)
+
+        for word in word_list:
+            if not is_word_passed(word, stop_words):
+                if word in word_in_sent:
+                    word_in_sent[word].add(sent_index)
+                else:
+                    word_in_sent[word] = {sent_index}
 
     sentence_scores = {}
-    for sent in sentence_list:
-        for word in word_tokenizer.tokenize(sent):
-            if word in word_frequencies.keys():
-                if len(sent.split(' ')) < 30:
-                    if sent not in sentence_scores.keys():
-                        sentence_scores[sent] = word_frequencies[word]
-                    else:
-                        sentence_scores[sent] += word_frequencies[word]
+    for sent_index, sent in enumerate(sentence_list):
+        word_list = word_tokenizer.tokenize(sent)
+        all_word_count = len(word_list)
+        word_frequencies = calc_word_frequencies(word_list, stop_words)
 
-    summary_sentences = heapq.nlargest(7, sentence_scores,
+        for word in word_list:
+            if not is_word_passed(word, stop_words):
+                word_tf = word_frequencies[word] / all_word_count
+                word_idf = log(sent_count / len(word_in_sent[word]), 10)
+
+                word_tf_idf = word_tf * word_idf
+
+                if sent_index in sentence_scores:
+                    sentence_scores[sent_index] += word_tf_idf
+                else:
+                    sentence_scores[sent_index] = word_tf_idf
+
+    summary_sentences = heapq.nlargest(max_len, sentence_scores,
                                        key=sentence_scores.get)
 
-    summary = ' '.join(summary_sentences)
+    # 继续保证文本顺序
+    result = []
+    for i in sorted(summary_sentences):
+        result.append(sentence_list[i])
 
-    return summary
+    return result

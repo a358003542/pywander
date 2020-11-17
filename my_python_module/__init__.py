@@ -3,6 +3,6 @@
 
 
 __softname__ = 'my_python_module'
-__version__ = '0.3.7'
+__version__ = '0.3.8'
 
 

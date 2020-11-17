@@ -4,6 +4,7 @@ nav:
     - advanced: advanced.md
     - algorithm: algorithm.md
     - basic: basic.md
+    - nlp: nlp.md
     - helper: helper.md
     - math: math.md
     - common: common.md

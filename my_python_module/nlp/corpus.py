@@ -2,11 +2,11 @@
 # -*-coding:utf-8-*-
 
 from nltk.corpus import PlaintextCorpusReader
-from .tokenize import JiebaTokenizer, ChineseSentenceTokenizer
+from .tokenize import ChineseSentenceTokenizer
 from my_python_module.nlp.text import ChineseText
+from fenci.segment import Segment
 
-
-def load_corpus(root, word_tokenizer=JiebaTokenizer(),
+def load_corpus(root, word_tokenizer=Segment(),
                 sent_tokenizer=ChineseSentenceTokenizer()):
     return PlaintextCorpusReader(root, r"(?!\.).*\.txt",
                                  word_tokenizer=word_tokenizer,

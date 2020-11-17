@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from my_python_module.nlp.text_helper import guess_chapter_id
-from my_python_module.nlp import bigrams, trigrams, skipgrams
+from my_python_module.nlp.utils import bigrams, trigrams, skipgrams
 from my_python_module.zhnumber import int_zhnumber, zhnumber
 
 
