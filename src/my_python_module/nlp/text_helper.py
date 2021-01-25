@@ -8,8 +8,8 @@ short text process tools
 
 import re
 
-from my_python_module.zhnumber import int_zhnumber
-from my_python_module.exceptions import GuessFailed
+from ..zhnumber import int_zhnumber
+from ..exceptions import GuessFailed
 
 
 def multi_delimiter_split(string, delimiters='', split_whitespace=True,

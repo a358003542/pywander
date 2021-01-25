@@ -2,9 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-"""
-TODO
-"""
+
 
 
 class BinaryDecisionTree(object):

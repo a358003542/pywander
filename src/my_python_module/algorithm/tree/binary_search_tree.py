@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.algorithm.tree import Tree
+from . import Tree
 
 
 class BinarySearchTree(Tree):

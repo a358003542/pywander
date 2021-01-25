@@ -3,9 +3,6 @@
 
 import re
 
-from nltk.util import pad_sequence, ngrams, bigrams, trigrams, skipgrams
-
-
 def is_empty_string(s):
     if re.match('[\s]+', s):
         return True

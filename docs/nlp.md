@@ -1,6 +1,12 @@
 ## nlp
 some nlp tools
 
+### 中文停用词列表
+
+```
+from my_python_module.nlp.chinese_stop_words import STOP_WORDS
+```
+
 ### auto_summary
 将一篇文章按照句子或者段落分开，然后进行tf-idf评分。
 

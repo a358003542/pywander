@@ -2,9 +2,9 @@
 # -*-coding:utf-8-*-
 
 
-from nltk import RegexpTokenizer
-from nltk.tokenize.api import TokenizerI
-from my_python_module.basic.list import combine_odd_even
+from simple_nltk import RegexpTokenizer
+from simple_nltk.tokenize.api import TokenizerI
+from ..list import combine_odd_even
 
 
 class ChineseSentenceTokenizer(RegexpTokenizer):

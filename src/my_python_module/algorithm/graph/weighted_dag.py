@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.algorithm.graph import DirectedAcyclicGraph
-from my_python_module.algorithm.tree import Tree
+from . import DirectedAcyclicGraph
+from ..tree import Tree
 
 
 class WeightedDAG(DirectedAcyclicGraph):

@@ -2,8 +2,8 @@
 # -*-coding:utf-8-*-
 
 from copy import copy
-from my_python_module.algorithm.graph.graph import Graph
-from my_python_module.algorithm.graph.exceptions import AdditionError
+from . import Graph
+from .exceptions import AdditionError
 
 
 class UndirectedGraph(Graph):

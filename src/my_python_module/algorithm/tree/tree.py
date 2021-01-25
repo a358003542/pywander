@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 import logging
-from my_python_module.algorithm.tree.exceptions import InsertError
+from .exceptions import InsertError
 
 logger = logging.getLogger(__name__)
 
