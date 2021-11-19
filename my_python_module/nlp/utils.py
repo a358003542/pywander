@@ -3,11 +3,13 @@
 
 import re
 
+
 def is_empty_string(s):
     if re.match('[\s]+', s):
         return True
     else:
         return False
+
 
 def is_contain_chinese(check_str):
     """

@@ -7,37 +7,6 @@ from collections import deque
 logger = logging.getLogger(__name__)
 
 
-def get_related_value(d, item):
-    if item in d:
-        return d[item]
-
-    if item in d.values():
-        return item
-
-    raise ValueError("Can not found the related value.")
-
-
-def remove_dict_key(d, key, inplace=True):
-    """
-    delete some key in dict
-
-    inplace = True : delete in origin dict
-
-    """
-    if inplace:
-        new_d = d.copy()
-        try:
-            del new_d[key]
-        except KeyError:
-            pass
-        return new_d
-    else:
-        try:
-            del d[key]
-        except KeyError:
-            pass
-
-        return d
 
 
 class LastElements(deque):

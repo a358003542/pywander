@@ -4,7 +4,7 @@
 
 from functools import reduce
 
-from src.my_python_module.compat import ispy2, ispy3
+from my_python_module.compat import ispy2, ispy3
 
 
 def gen_dict_strset(d):

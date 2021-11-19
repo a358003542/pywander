@@ -1,5 +1,5 @@
 ## functools
-### build_stream_function
+### build_compose_function
 
 ```
 def build_compose_function(*funcs):
@@ -13,6 +13,8 @@ def build_compose_function(*funcs):
     :return:
     """
 ```
+### build_stream_function
+和 `build_compose_function` 函数比起来进一步规范流处理函数过程中传递的参数是一个字典值。
 
 流处理操作模式
 ```text
@@ -28,4 +30,17 @@ filter_all = build_stream_function(filter_zh_ratio, filter_zhtext_length, filter
 [1, 2, 3, 4, 5, 6]
 >>> flatten([[1,2,3],[[4,5],[6]]])
 [1, 2, 3, 4, 5, 6]
+```
+
+### sumall
+将所有的数字都加起来，支持多层结构。
+```python
+def sumall(*args):
+    """将所有的数字都加起来，支持多层结构。
+>>> sumall(1,1,2,3,[1,2,3])
+13
+>>> sumall(1,1,2,3,[1,2,3],(4,5,6),[[5,5],[6]])
+44
+>>>
+    """
 ```

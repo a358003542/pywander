@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+import math
 from my_python_module.exceptions import OutOfChoiceError
+from typing import Union
 
-def radix_conversion(number, output_radix, input_radix=10):
+def radix_conversion(number:Union[int,str], output_radix, input_radix=10) -> str:
     """
     number radix conversion.
 
@@ -55,3 +57,9 @@ my_python_module.exceptions.OutOfChoiceError: radix is out of choice.
         return f'{number:x}'
 
 
+def round_half_up(n, decimals=0):
+    """
+    实现常见的那种四舍五入，警告这只是一种近似，如果有精确的小数需求还是推荐使用decimal模块。
+    """
+    multiplier = 10 ** decimals
+    return math.floor(n*multiplier + 0.5) / multiplier
