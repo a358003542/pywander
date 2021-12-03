@@ -2,3 +2,5 @@ python-dateutil
 beautifulsoup4
 requests
 fenci
+diskcache
+my_fake_useragent

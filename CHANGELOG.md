@@ -1,5 +1,10 @@
 ## CHANGE_LOG
 
+### 0.5.2
+关于网络请求，缓存处理根据实践需要而进行的一些更新。
+
+About web request, data cache, based practical practise to do some updates.
+
 ### 0.5.0
 refine this module.
 

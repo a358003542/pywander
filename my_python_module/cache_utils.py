@@ -9,15 +9,10 @@ from dateutil.relativedelta import relativedelta
 from diskcache import Cache
 
 from my_python_module.unique_key import build_unique_key
-from my_python_module.helper.datetime_helper import get_timestamp, get_dt_fromtimestamp
+from my_python_module.datetime_utils import get_timestamp, get_dt_fromtimestamp
 
 logger = logging.getLogger(__name__)
 
-
-user_data_path = os.path.expanduser(os.path.join('~', 'AppData', 'Roaming', 'YOUAPPNAME'))
-if not os.path.exists(user_data_path):
-    os.mkdir(user_data_path)
-cache_path = os.path.join(user_data_path, 'cache')
 
 
 class CacheDB(object):
@@ -49,8 +44,8 @@ class CacheDB(object):
         return self.cache.get(key, **kwargs)
 
 
-
-cachedb = CacheDB(cache_path)
+# 默认就是当前工作目录
+cachedb = CacheDB('cachedb')
 
 
 def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_dt=None):
@@ -115,4 +110,8 @@ def func_cache(use_key='', use_cache_oldest_dt=None, use_cache_callback=default_
         return wraper_func
 
     return _mydecorator
+
+
+
+
 

@@ -1,4 +1,4 @@
-## datetime_helper
+## datetime_utils
 need the `dateutil` module.
 
 - is_same_year 输入两个datetime 对象，判断是否是同一年
