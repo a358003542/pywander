@@ -14,7 +14,6 @@ from my_python_module.datetime_utils import get_timestamp, get_dt_fromtimestamp
 logger = logging.getLogger(__name__)
 
 
-
 class CacheDB(object):
     """
     {
@@ -48,12 +47,14 @@ class CacheDB(object):
 cachedb = CacheDB('cachedb')
 
 
-def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_dt=None):
+def default_use_cache_callback(cache_data, func, args, kwargs,
+                               use_cache_oldest_dt=None):
     timestamp = cache_data.get('timestamp', get_timestamp())
     data_dt = get_dt_fromtimestamp(timestamp)
 
     if use_cache_oldest_dt is None:
-        target_dt = datetime.now() - relativedelta(seconds=86400*14)  # default 14 days
+        target_dt = datetime.now() - relativedelta(
+            seconds=86400 * 14)  # default 14 days
     else:
         target_dt = use_cache_oldest_dt
 
@@ -71,7 +72,8 @@ def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_
             raise Exception(f'execute func {func.__name__} got no data return.')
 
 
-def func_cache(use_key='', use_cache_oldest_dt=None, use_cache_callback=default_use_cache_callback):
+def func_cache(use_key='', use_cache_oldest_dt=None,
+               use_cache_callback=default_use_cache_callback):
     """
     this decorator will decorator a function and try to return a value based on
     cache.
@@ -89,7 +91,8 @@ def func_cache(use_key='', use_cache_oldest_dt=None, use_cache_callback=default_
 
             if cache_data:
                 logger.info('read data from cache ')
-                use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_dt=use_cache_oldest_dt)
+                use_cache_callback(cache_data, func, args, kwargs,
+                                   use_cache_oldest_dt=use_cache_oldest_dt)
                 return cache_data.get('data')
             else:
                 logger.info(f'get data from excute func')
@@ -105,13 +108,9 @@ def func_cache(use_key='', use_cache_oldest_dt=None, use_cache_callback=default_
                     cachedb.set(key, cache_data)
                     return data
                 else:
-                    raise Exception(f'execute func {func.__name__} got no data return.')
+                    raise Exception(
+                        f'execute func {func.__name__} got no data return.')
 
         return wraper_func
 
     return _mydecorator
-
-
-
-
-

@@ -11,8 +11,6 @@ import sys
 import logging
 import ast
 
-from operator import add
-from functools import reduce
 
 from .compat import basestring
 
@@ -121,8 +119,3 @@ def str2num(val):
             raise e
 
 
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
