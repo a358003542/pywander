@@ -5,7 +5,7 @@
 import logging
 import heapq
 from math import log
-from .utils import is_empty_string
+from ..nlp.utils import is_empty_string
 
 logger = logging.getLogger(__name__)
 
@@ -43,10 +43,10 @@ def calc_word_frequencies(word_list, stop_words):
 def auto_summary(content, word_tokenizer=None, sent_tokenizer=None,
                  stop_words=None, max_len=50):
     if stop_words is None:
-        from .chinese_stop_words import STOP_WORDS
+        from ..nlp.chinese_stop_words import STOP_WORDS
         stop_words = STOP_WORDS
     if sent_tokenizer is None:
-        from .tokenize import ChineseSentenceTokenizer
+        from ..nlp.tokenize import ChineseSentenceTokenizer
         sent_tokenizer = ChineseSentenceTokenizer()
     if word_tokenizer is None:
         from fenci.segment import Segment

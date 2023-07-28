@@ -3,7 +3,6 @@ nav:
     - Home: index.md
     - algorithm: algorithm.md
     - nlp: nlp.md
-    - cache_utils: cache_utils.md
     - common: common.md
     - datetime_utils: datetime_utils.md
     - dict: dict.md
@@ -17,7 +16,6 @@ nav:
     - pathlib: pathlib.md
     - str: str.md
     - unique_key: unique_key.md
-    - web_utils: web_utils.md
     - zhnumber: zhnumber.md
 
 

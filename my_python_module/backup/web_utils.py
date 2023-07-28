@@ -1,10 +1,29 @@
-## crawler
-need the `requests` and `beautifulsoup4` and `my_fake_useragent` and `diskcache` modules.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-### URLType
-define four type of URL:
 
-```
+import re
+import logging
+import os
+from enum import Enum
+from collections import defaultdict
+from urllib.parse import urlsplit, urljoin, urldefrag
+from datetime import datetime
+import threading
+
+import requests
+from dateutil.relativedelta import relativedelta
+from bs4 import BeautifulSoup, SoupStrainer
+from my_fake_useragent import UserAgent
+from my_python_module.backup.cache_utils import cachedb, func_cache
+from my_python_module.datetime_utils import get_timestamp, get_dt_fromtimestamp
+from my_python_module.pathlib import mkdirs
+
+logger = logging.getLogger(__name__)
+
+ua = UserAgent(family=['chrome', 'firefox'])
+
+
 class URLType(Enum):
     """
     refUrl: 除了Absolute URL，其他URL都需要根据本URL所在的文章的refUrl才能得到绝对URL
@@ -20,11 +39,8 @@ class URLType(Enum):
     RelativeArticle = 5
     # ’#sec1‘
     InValid = 6
-```
 
 
-### to_absolute_url
-```python
 def to_absolute_url(url, refUrl):
     """
     给定好refUrl，利用urljoin就能得到绝对url
@@ -35,18 +51,14 @@ def to_absolute_url(url, refUrl):
     不能这样简单处理，需要小心地根据URL的各种类型来采取不同的处理策略。
     """
     return urljoin(refUrl, url)
-```
 
 
-
-### is_url_inSite
-```python
 def is_url_inSite(url, refUrl):
     """
     is the url in site.
     the judgement is based on the refUrl's netloc.
 
->>> is_url_inSite('https://code.visualstudio.com/docs',
+>>> is_url_inSite('https://code.visualstudio.com/docs', \
     'https://code.visualstudio.com/docs/python/linting')
 True
     """
@@ -55,13 +67,8 @@ True
         return True
     else:
         return False
-```
 
 
-    
-### is_url_inArticle
-
-```python
 def is_url_inArticle(url, refUrl):
     """
 
@@ -71,10 +78,7 @@ def is_url_inArticle(url, refUrl):
         return True
     else:
         return False
-```
 
-### check_url_type
-```python
 
 def check_url_type(url):
     """
@@ -98,18 +102,15 @@ def check_url_type(url):
         else:
             return URLType.InValid
 
-```
-### get_url_fragment
-```python
+
 def get_url_fragment(url):
     """
     please notice the fragment not include the symbol #
     """
     p = urlsplit(url)
     return p.fragment
-```
-### remove_url_fragment
-```python
+
+
 def remove_url_fragment(url):
     """
     remove url fragment like `#sec1` and the parameters on url will
@@ -117,9 +118,20 @@ def remove_url_fragment(url):
     """
     defragmented, frag = urldefrag(url)
     return defragmented
-```
-### get_webpage_links
-```python
+
+
+REPATTEN_URL = re.compile(
+    r'https?:\/\/[\da-z\.-]+\.[a-z\.]{2,6}[\/\w\.-]*[\?\w=&#]*')
+
+
+def parse_urls(text):
+    """
+    input a text , and return all url we found that based on the re-expression
+    of `REPATTEN_URL` . which is not recommend , recommed use the `wget_links` function.
+    """
+    return re.findall(REPATTEN_URL, text)
+
+
 def get_webpage_links(html, name='a', id="", class_="", **kwargs):
     """
     :param html: 目标网页的text内容
@@ -142,9 +154,28 @@ def get_webpage_links(html, name='a', id="", class_="", **kwargs):
         }
     )
     """
-```
-### get_webpage_images
-```python
+    all_links = defaultdict(list)
+    parse_kwargs = {'name': name}
+    if id:
+        parse_kwargs['id'] = id
+    if class_:
+        parse_kwargs['class_'] = class_
+
+    if html:
+        soup = BeautifulSoup(
+            html, 'html5lib', parse_only=SoupStrainer(**parse_kwargs))
+    else:
+        logger.error('missing content!')
+        return None
+
+    for link in soup.find_all('a', href=True):
+        href = link.get('href')
+
+        all_links[href].append(link)
+
+    return soup, all_links
+
+
 def get_webpage_images(html, name="img", id="", class_="", **kwargs):
     """
     :param html: 目标网页的text内容
@@ -167,32 +198,28 @@ def get_webpage_images(html, name="img", id="", class_="", **kwargs):
         }
     )
     """
-```
-```
-def parse_webpage_links(url, html, name='a', id="", class_="", **kwargs):
-    """
-    :param url: 目标网页的url（或者该网站的base url也是可以的）
-    :param html: 目标网页的text内容
+    all_links = defaultdict(list)
+    parse_kwargs = {'name': name}
+    if id:
+        parse_kwargs['id'] = id
+    if class_:
+        parse_kwargs['class_'] = class_
 
-    input html content, and use the beautifulsoup parse it, get all the
-    <a href="link"> and return the link.
+    if html:
+        soup = BeautifulSoup(
+            html, 'html5lib', parse_only=SoupStrainer(**parse_kwargs))
+    else:
+        logger.error('missing content!')
+        return None
 
-    we will do the extrawork: to_absolute_url and remove_url_fragment.
+    for link in soup.find_all('img', src=True):
+        src = link.get('src')
 
-    sometime you may want the specific  <a href="link"> which is in where id
-    or where class etc.
+        all_links[src].append(link)
 
-    you can set `name="div" id="what"'` to narrow the url target into the SoupStrainer for the first filter, so you can specific which url you want to collect.
-
-    this function will return a set of links.
-
-    """
-```
+    return soup, all_links
 
 
-### download
-比如下载图片
-```
 def download(url, filename, download_timeout=30, override=False, **kwargs):
     """
     High level function, which downloads URL into tmp file in current
@@ -201,12 +228,69 @@ def download(url, filename, download_timeout=30, override=False, **kwargs):
     :param out: output filename or directory
     :return:    filename where URL is downloaded to
     """
-```
+    logger.info(f'start downloading file {url} to {filename}')
+    import time  # https://github.com/kennethreitz/requests/issues/1803
+    start = time.time()
 
-### requests_web
-除了随机的UserAgent之外，网络请求结果会缓存，也就是同样的URL不会再请求两次了。
+    # make sure folder exists
+    mkdirs(os.path.dirname(filename))
 
-```python
+    if os.path.exists(filename):
+        if override:
+            logger.info(f'{filename} exist. but i will override it.')
+        else:
+            logger.info(f'{filename} exist.')
+            return
+
+    content = requests.get(url, stream=True, **kwargs)
+
+    with open(filename, 'wb') as f:
+        for chunk in content.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+            if time.time() - start > download_timeout:
+                content.close()
+                os.unlink(filename)
+                logger.warning('{0} download failed'.format(filename))
+                return False
+
+    return filename
+
+
+def use_cache_callback_requests_web(cache_data, func, args, kwargs,
+                                    use_cache_oldest_dt=None):
+    timestamp = cache_data.get('timestamp', get_timestamp())
+    data_dt = get_dt_fromtimestamp(timestamp)
+
+    if use_cache_oldest_dt is None:
+        target_dt = datetime.now() - relativedelta(
+            seconds=14)  # default 14 days
+    else:
+        target_dt = use_cache_oldest_dt
+
+    if data_dt < target_dt:  # too old then we will re-excute the function
+        t = threading.Thread(target=_update_requests_web,
+                             args=(cache_data, args))
+        t.daemon = True
+        t.start()
+
+
+def _update_requests_web(cache_data, args):
+    logger.info('update_requests_web')
+    headers = {
+        'user-agent': ua.random()
+    }
+    url = args[0]
+    data = requests.get(url, headers=headers, timeout=30)
+
+    cache_data['data'] = data
+    cache_data['timestamp'] = str(get_timestamp())
+    key = cache_data.get('key')
+
+    cachedb.set(key, cache_data)
+    return data
+
+
 @func_cache(use_cache_callback=use_cache_callback_requests_web)
 def requests_web(url):
     """
@@ -216,4 +300,21 @@ def requests_web(url):
     :param url:
     :return:
     """
-```
+    headers = {
+        'user-agent': ua.random()
+    }
+
+    data = requests.get(url, headers=headers, timeout=30)
+
+    return data
+
+
+def is_url_belong(url, baseurl):
+    """
+    is the url belong to the baseurl.
+    the check logic is strict string match.
+    """
+    if url.startswith(baseurl):
+        return True
+    else:
+        return False
