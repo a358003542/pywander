@@ -28,7 +28,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install build
-    - name: install pdoc3
-      run:  pip install pdoc3
+    - name: install requirements
+      run:  pip install -r requirements/requirements_docs.txt
     - name: docs
       run: pdoc --html --output-dir docs my_python_module
