@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+"""
+for the sake of some compat problem
+"""
 import sys
 
 version_major = sys.version_info.major

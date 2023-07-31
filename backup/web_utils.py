@@ -16,7 +16,7 @@ from dateutil.relativedelta import relativedelta
 from bs4 import BeautifulSoup, SoupStrainer
 from my_fake_useragent import UserAgent
 from my_python_module.backup.cache_utils import cachedb, func_cache
-from my_python_module.datetime_utils import get_timestamp, get_dt_fromtimestamp
+from my_python_module.datetime import get_timestamp, get_dt_fromtimestamp
 from my_python_module.pathlib import mkdirs
 
 logger = logging.getLogger(__name__)

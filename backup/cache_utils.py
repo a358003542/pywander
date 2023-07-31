@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 from diskcache import Cache
 
 from my_python_module.unique_key import build_unique_key
-from my_python_module.datetime_utils import get_timestamp, get_dt_fromtimestamp
+from my_python_module.datetime import get_timestamp, get_dt_fromtimestamp
 
 logger = logging.getLogger(__name__)
 

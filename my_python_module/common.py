@@ -3,7 +3,7 @@
 
 
 """
-为本模块其他内容调用的一般性函数
+common module
 """
 
 import os
@@ -18,10 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 def humanize_bytes(n, precision=1):
-    # Author: Doug Latornell
+    """
+    # based on Author: Doug Latornell's work
     # Licence: MIT
     # URL: http://code.activestate.com/recipes/577081/
-    """Return a humanized string representation of a number of bytes.
+
+    Return a humanized string representation of a number of bytes.
 
 >>> humanize_bytes(1)
 '1 B'
@@ -65,8 +67,8 @@ def humanize_bytes(n, precision=1):
 
 
 def beep(a, b):
-    """make a sound , ref:\
-     http://stackoverflow.com/questions/16573051/python-sound-alarm-when-code-finishes
+    """make a sound 
+    ref: http://stackoverflow.com/questions/16573051/python-sound-alarm-when-code-finishes
     you need install  ``apt-get install sox``
 
     :param a: frenquency

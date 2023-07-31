@@ -7,7 +7,7 @@ from functools import reduce
 from my_python_module.compat import ispy2, ispy3
 
 
-def gen_dict_strset(d):
+def _gen_dict_strset(d):
     s = set()
     for k, v in d.items():
         item = str(k) + ':' + str(v)
@@ -37,8 +37,8 @@ True
     if include == {}:  # always True
         return True
 
-    ds_set = gen_dict_strset(d)
-    includes_set = gen_dict_strset(include)
+    ds_set = _gen_dict_strset(d)
+    includes_set = _gen_dict_strset(include)
     if includes_set.issubset(ds_set):
         return True
     else:

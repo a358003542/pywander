@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def write_json(file, data):
     """
-    采用更稳妥的写文件方式，先在另外一个临时文件里面写，确保写操作无误之后再更改文件名
+    wirte data to json file, use a temporary file as a medium
     """
     fp = tempfile.NamedTemporaryFile(mode='wt', encoding='utf8', delete=False)
     try:

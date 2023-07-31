@@ -7,12 +7,12 @@ from .exceptions import NotIntegerError, OutOfRangeError
 def is_even(n):
     """is this number is even, required input n is a integer.
 
->>> is_even(0)
-True
->>> is_even(-1)
-False
->>> is_even(-2)
-True
+    >>> is_even(0)
+    True
+    >>> is_even(-1)
+    False
+    >>> is_even(-2)
+    True
 
     """
     if not isinstance(n, int):
@@ -31,20 +31,20 @@ def is_odd(n):
 
 def is_prime(n):
     """test input integer n is a prime.
->>> is_prime(0)
-False
->>> is_prime(-5)
-False
->>> is_prime(-5.2)
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "__init__.py", line 12, in is_prime
-    raise NotIntegerError
-my_python_module.exceptions.NotIntegerError
->>> is_prime(5)
-True
->>> is_prime(123)
-False
+    >>> is_prime(0)
+    False
+    >>> is_prime(-5)
+    False
+    >>> is_prime(-5.2)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "__init__.py", line 12, in is_prime
+        raise NotIntegerError
+    my_python_module.exceptions.NotIntegerError
+    >>> is_prime(5)
+    True
+    >>> is_prime(123)
+    False
 
     """
     if not isinstance(n, int):
@@ -54,14 +54,14 @@ False
         return True
     elif n < 2 or not n & 1:
         return False
-    for x in range(3, int(n ** 0.5) + 1, 2):
+    for x in range(3, int(n**0.5) + 1, 2):
         if n % x == 0:
             return False
     return True
 
 
 def gen_prime(n):
-    """到第n个的所有素数的生成器函数"""
+    """generate n prime"""
     count = 0
     x = 1
     while count < n:
@@ -72,7 +72,7 @@ def gen_prime(n):
 
 
 def gen2_prime(n):
-    """到小于某个数n的所有素数的生成器函数"""
+    """generate prime smaller than n"""
     for x in range(n):
         if is_prime(x):
             yield x
@@ -80,7 +80,7 @@ def gen2_prime(n):
 
 def last_gen(genobj):
     """
-    迭代一个生成器对象，返回最后一个元素
+    get the last element of the generator
     :param genobj:
     :return:
     """
@@ -91,8 +91,7 @@ def last_gen(genobj):
 
 
 def prime(n):
-    """第n个素数 根据last_gen函数，所以integer类型不用判断了
-    名字取做prime而不是index_prime是因为计数从1开始。"""
+    """get the nth prime"""
     if n <= 0:
         raise OutOfRangeError("第零个或者第负数个素数？")
     else:
@@ -100,7 +99,7 @@ def prime(n):
 
 
 def gen_fibonacci(n):
-    """到第n个的斐波那契数列生成器函数"""
+    """generate fibonacci number"""
     if not isinstance(n, int):
         raise NotIntegerError
 
@@ -114,7 +113,7 @@ def gen_fibonacci(n):
 
 
 def fibonacci(n):
-    """第几个斐波那契数"""
+    """get nth fibonacci number"""
     if n <= 0:
         raise OutOfRangeError("没有零个或小于零个斐波那契数的概念那。")
     else:
@@ -122,7 +121,7 @@ def fibonacci(n):
 
 
 def gen_factorial(stop, start=1):
-    """start*....stop的生成器，默认start=1"""
+    """start*....stop factorial generator default start=1"""
     if not isinstance(stop, int):
         raise NotIntegerError
     if not isinstance(start, int):
@@ -144,7 +143,7 @@ def gen_factorial(stop, start=1):
 
 
 def factorial(stop, start=1):
-    """start*....stop的值，默认start=1即为stop!的值"""
+    """start*....stop factorial"""
     if stop <= 0:
         raise OutOfRangeError("负数和零的阶乘没有意义")
     elif stop < start:
