@@ -24,7 +24,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      
+
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +46,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: 'docs'
+        path: 'docs/my_python_module'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
