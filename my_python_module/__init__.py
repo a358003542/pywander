@@ -5,6 +5,6 @@
 a general python module
 """
 __softname__ = 'my_python_module'
-__version__ = '0.5.6'
+__version__ = '0.5.7'
 
 

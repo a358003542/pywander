@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 import pytest
-from my_python_module.algorithm.select_sort import select_sort, select_sort2
+from my_python_module.algorithm.sort.select_sort import select_sort, select_sort2
 
 
 def test_selection_sort2():
