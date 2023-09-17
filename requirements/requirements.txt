@@ -4,3 +4,4 @@ numpy
 matplotlib
 scikit-learn
 click
+my_fake_useragent
