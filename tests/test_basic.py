@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from my_python_module.common import str2pyobj
+from pywander.common import str2pyobj
 
 
 def test_str2pyobj():

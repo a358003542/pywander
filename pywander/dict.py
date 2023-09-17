@@ -4,7 +4,7 @@
 
 from functools import reduce
 
-from my_python_module.compat import ispy2, ispy3
+from pywander.compat import ispy2, ispy3
 
 
 def _gen_dict_strset(d):

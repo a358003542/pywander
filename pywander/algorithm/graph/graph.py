@@ -14,7 +14,7 @@ from collections import deque
 from abc import abstractmethod
 from abc import ABC
 
-from my_python_module.algorithm.tree import Tree
+from pywander.algorithm.tree import Tree
 
 
 class Graph(ABC):

@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.algorithm.tree import BinarySearchTree
+from pywander.algorithm.tree import BinarySearchTree
 
 
 def test_binary_search_tree():

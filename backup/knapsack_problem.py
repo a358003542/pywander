@@ -9,7 +9,7 @@ pandas的dataframe结构是为了更清晰的表达
 """
 
 import pandas as pd
-from my_python_module.algorithm.tree.binary_decision_tree import BinaryDecisionTree
+from pywander.algorithm.tree.binary_decision_tree import BinaryDecisionTree
 
 
 class Knapsack(object):

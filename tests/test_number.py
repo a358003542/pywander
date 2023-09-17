@@ -2,8 +2,8 @@
 # -*-coding:utf-8-*-
 
 import pytest
-from my_python_module.number import radix_conversion
-from my_python_module.exceptions import OutOfChoiceError
+from pywander.number import radix_conversion
+from pywander.exceptions import OutOfChoiceError
 
 
 def test_number_radix_conversion():

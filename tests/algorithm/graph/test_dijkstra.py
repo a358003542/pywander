@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.algorithm.graph.weighted_dag import WeightedDAG
+from pywander.algorithm.graph.weighted_dag import WeightedDAG
 
 
 def test_dijkstra():

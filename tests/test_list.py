@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.list import del_list, double_iter
+from pywander.list import del_list, double_iter
 
 
 def test_del_list():

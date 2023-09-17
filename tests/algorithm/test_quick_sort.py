@@ -3,8 +3,8 @@
 
 
 import pytest
-from my_python_module.algorithm.sort.select_sort import select_sort
-from my_python_module.algorithm.sort.quick_sort import quick_sort
+from pywander.algorithm.sort.select_sort import select_sort
+from pywander.algorithm.sort.quick_sort import quick_sort
 
 
 def test_quick_sort():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.algorithm.graph.directed_graph import DirectedGraph
+from pywander.algorithm.graph.directed_graph import DirectedGraph
 
 
 def test_dg():

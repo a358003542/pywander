@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.algorithm.graph.graph import Graph
-from my_python_module.algorithm.graph.exceptions import AdditionError
+from pywander.algorithm.graph.graph import Graph
+from pywander.algorithm.graph.exceptions import AdditionError
 
 
 class DirectedGraph(Graph):

@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 import math
-from my_python_module.exceptions import OutOfChoiceError
+from pywander.exceptions import OutOfChoiceError
 from typing import Union
 
 def radix_conversion(number:Union[int,str], output_radix, input_radix=10) -> str:
@@ -26,7 +26,7 @@ def radix_conversion(number:Union[int,str], output_radix, input_radix=10) -> str
 >>> radix_conversion(100,1)
 Traceback (most recent call last):
 ......
-my_python_module.exceptions.OutOfChoiceError: radix is out of choice.
+pywander.exceptions.OutOfChoiceError: radix is out of choice.
 
     """
     name_map = {'bin': 2, 'oct': 8, 'dec': 10, 'hex': 16}

@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.algorithm.graph.undirected_graph import UndirectedGraph
+from pywander.algorithm.graph.undirected_graph import UndirectedGraph
 
 
 def test_ug():

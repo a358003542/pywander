@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.algorithm.tree import Tree
+from pywander.algorithm.tree import Tree
 
 
 def test_tree():

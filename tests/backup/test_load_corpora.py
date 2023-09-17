@@ -2,10 +2,10 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.nlp.corpus import laozi
+from pywander.nlp.corpus import laozi
 from simple_nltk import FreqDist
-from my_python_module.nlp.chinese_stop_words import STOP_WORDS
-from my_python_module.nlp.utils import is_empty_string
+from pywander.nlp.chinese_stop_words import STOP_WORDS
+from pywander.nlp.utils import is_empty_string
 
 
 

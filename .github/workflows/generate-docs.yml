@@ -40,13 +40,13 @@ jobs:
     - name: install requirements
       run:  pip install -r requirements/requirements_docs.txt
     - name: docs
-      run: pdoc --html --output-dir docs my_python_module
+      run: pdoc --html --output-dir docs pywander
     - name: Setup Pages
       uses: actions/configure-pages@v3
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: 'docs/my_python_module'
+        path: 'docs/pywander'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2

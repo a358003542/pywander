@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.nlp.nltk_utils import bigrams, trigrams, skipgrams
+from pywander.nlp.nltk_utils import bigrams, trigrams, skipgrams
 
 
 def test_bigrams():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from my_python_module.dict import merge_dict
+from pywander.dict import merge_dict
 
 
 def test_merge_dict():

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from my_python_module.nlp.text import guess_chapter_id
+from pywander.nlp.text import guess_chapter_id
 
-from my_python_module.zhnumber import int_zhnumber, zhnumber
+from pywander.zhnumber import int_zhnumber, zhnumber
 
 
 def test_zhnumber():

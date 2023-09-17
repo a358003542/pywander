@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.common import humanize_bytes, str2pyobj
+from pywander.common import humanize_bytes, str2pyobj
 
 
 def test_humanize_bytes():

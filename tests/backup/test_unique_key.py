@@ -2,10 +2,10 @@
 # -*-coding:utf-8-*-
 
 import pytest
-from my_python_module.unique_key import mapping_string
-from my_python_module.str import random_string_generator
+from pywander.unique_key import mapping_string
+from pywander.str import random_string_generator
 from collections import defaultdict
-from my_python_module.list import double_iter
+from pywander.list import double_iter
 
 
 @pytest.mark.skip(reason="i have test it")

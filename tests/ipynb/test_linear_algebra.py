@@ -1,4 +1,4 @@
-from my_python_module.ipynb.linear_algebra import solve, combine_system
+from pywander.ipynb.linear_algebra import solve, combine_system
 import numpy as np
 
 

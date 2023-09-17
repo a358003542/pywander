@@ -40,7 +40,7 @@ def is_prime(n):
       File "<stdin>", line 1, in <module>
       File "__init__.py", line 12, in is_prime
         raise NotIntegerError
-    my_python_module.exceptions.NotIntegerError
+    pywander.exceptions.NotIntegerError
     >>> is_prime(5)
     True
     >>> is_prime(123)

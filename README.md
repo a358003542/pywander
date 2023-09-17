@@ -1,11 +1,11 @@
-# my_python_module
+# pywander
 a general purpose python module.
 
 
 ## USAGE
 user just ust the package.
 ```
-pip install my_python_module
+pip install pywander
 ```
 
 ## TEST

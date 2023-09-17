@@ -3,7 +3,7 @@ linear algebra
 
 m : the linear equation system left matrix 
 b : the linear equation right b array 
-s : combine m and b to a entire linear system matrix 
+am : [argumented matrix] combine m and b to a entire linear system matrix 
 v : a vector
 
 """

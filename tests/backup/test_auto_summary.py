@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-from my_python_module.nlp.auto_summary import auto_summary
+from pywander.nlp.auto_summary import auto_summary
 
 
 def test_auto_summary():

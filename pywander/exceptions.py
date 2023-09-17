@@ -110,3 +110,14 @@ class GuessFailed(Warning):
     """
     Your function do some guess operation but cause a failed, this is a warning.
     """
+
+class PillowProcessError(Exception):
+    pass
+
+
+class InkscapeProcessError(Exception):
+    pass
+
+
+class PdftocairoProcessError(Exception):
+    pass

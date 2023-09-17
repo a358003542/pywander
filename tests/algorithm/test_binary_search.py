@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-from my_python_module.algorithm.binary_search import binary_search, \
+from pywander.algorithm.binary_search import binary_search, \
     binary_insert, binary_search_func
 
 

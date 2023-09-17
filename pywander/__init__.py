@@ -4,7 +4,7 @@
 """
 a general python module
 """
-__softname__ = 'my_python_module'
-__version__ = '0.5.7'
+__softname__ = 'pywander'
+__version__ = '0.6.0'
 
 

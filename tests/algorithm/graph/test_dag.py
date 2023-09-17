@@ -3,9 +3,9 @@
 
 
 import pytest
-from my_python_module.algorithm.graph.dag import \
+from pywander.algorithm.graph.dag import \
     DirectedAcyclicGraph
-from my_python_module.algorithm.graph.exceptions import NotAcyclicError
+from pywander.algorithm.graph.exceptions import NotAcyclicError
 
 
 def test_dag():
