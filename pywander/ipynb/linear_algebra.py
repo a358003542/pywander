@@ -78,3 +78,18 @@ def matrix_multiplication(m1, m2):
     notice: ndim=1 array is a vector, can not apply here.
     """
     return np.matmul(m1, m2)
+
+def cos(v1, v2):
+    """
+    calc the cosine similarity between two vectors.
+    Parameters
+    ----------
+    v1
+    v2
+
+    Returns
+    -------
+
+    """
+    cosine = np.dot(v1, v2)/ (l2norm(v1) * l2norm(v2))
+    return cosine
