@@ -6,6 +6,7 @@ import logging
 import os.path
 import subprocess
 import shutil
+
 from PIL import Image
 
 from pywander.pathlib import mkdirs
@@ -13,7 +14,6 @@ from pywander.encoding import convert_encoding
 from pywander.exceptions import PdftocairoProcessError, PillowProcessError, \
     InkscapeProcessError
 from .utils import detect_output_file_exist
-
 
 logger = logging.getLogger(__name__)
 

@@ -11,8 +11,6 @@ from pywander.pathlib import mkdirs
 
 logger = logging.getLogger(__name__)
 
-logger.setLevel(logging.DEBUG)
-
 
 def resize_image(inputimg, width=0, height=0, outputdir='', outputname=''):
     """
@@ -56,7 +54,7 @@ def resize_image(inputimg, width=0, height=0, outputdir='', outputname=''):
             height = ori_h
 
         logger.debug(f'pillow resize target ({width},{height})')
-        im.thumbnail((width, height), Image.ANTIALIAS)
+        im.thumbnail((width, height))
 
         logger.info(os.path.abspath(inputimg))
 
