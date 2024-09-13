@@ -7,23 +7,23 @@ some datetime utils
 
 
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, MONTHLY
 
 
-utcnow = datetime.utcnow()
+utcnow = datetime.now(timezone.utc)
 """current utcnow datetime object"""
-one_week_ago = datetime.utcnow() - relativedelta(weeks=1)
+one_week_ago = datetime.now(timezone.utc) - relativedelta(weeks=1)
 """one_week_ago datetime object"""
-one_day_ago = datetime.utcnow() - relativedelta(days=1)
+one_day_ago = datetime.now(timezone.utc) - relativedelta(days=1)
 """one day ago datetime object"""
-two_day_ago = datetime.utcnow() - relativedelta(days=2)
+two_day_ago = datetime.now(timezone.utc) - relativedelta(days=2)
 """two day ago datetime object"""
-one_hour_ago = datetime.utcnow() - relativedelta(hours=1)
+one_hour_ago = datetime.now(timezone.utc) - relativedelta(hours=1)
 """one hour ago datetime object"""
-one_month_ago = datetime.utcnow() - relativedelta(months=1)
+one_month_ago = datetime.now(timezone.utc) - relativedelta(months=1)
 """one month ago datetime object"""
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from .exceptions import NotIntegerError, OutOfRangeError
+from ..exceptions import NotIntegerError, OutOfRangeError
 
 
 def is_even(n):

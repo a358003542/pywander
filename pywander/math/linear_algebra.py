@@ -1,10 +1,14 @@
 """
 linear algebra
 
+the prefix explanation
+
+a : an array
+v : a vector
 m : the linear equation system left matrix 
 b : the linear equation right b array 
 am : [argumented matrix] combine m and b to a entire linear system matrix 
-v : a vector
+
 
 """
 
