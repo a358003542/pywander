@@ -11,6 +11,8 @@ from diskcache import Cache
 
 from pywander.unique_key import build_unique_key
 from pywander.datetime import get_timestamp, get_dt_fromtimestamp
+from pywander.config import load_config
+
 
 logger = logging.getLogger(__name__)
 
@@ -44,10 +46,11 @@ class CacheDB(object):
         return self.cache.get(key, **kwargs)
 
 
-APP_NAME = None
 
+APP_NAME = load_config.get('APP_NAME', 'pywander')
 
-assert APP_NAME,  "你需要在你自己的应用配置中配置此项才能继续"
+if APP_NAME == 'pywander':
+    logger.warning("你还没有加载好自己的应用配置文件")
 
 user_data_path = os.path.expanduser(
     os.path.join('~', 'AppData', 'Roaming', APP_NAME))
