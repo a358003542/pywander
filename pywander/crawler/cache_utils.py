@@ -3,7 +3,6 @@
 
 import os
 import logging
-import threading
 from functools import wraps
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -45,8 +44,19 @@ class CacheDB(object):
         return self.cache.get(key, **kwargs)
 
 
-# 默认就是当前工作目录
-cachedb = CacheDB('cachedb')
+APP_NAME = None
+
+
+assert APP_NAME,  "你需要在你自己的应用配置中配置此项才能继续"
+
+user_data_path = os.path.expanduser(
+    os.path.join('~', 'AppData', 'Roaming', APP_NAME))
+
+if not os.path.exists(user_data_path):
+    os.mkdir(user_data_path)
+
+cache_path = os.path.join(user_data_path, 'cache')
+cachedb = CacheDB(cache_path)
 
 
 def default_use_cache_callback(cache_data, func, args, kwargs,
@@ -71,7 +81,8 @@ def default_use_cache_callback(cache_data, func, args, kwargs,
             cachedb.set(key, cache_data)
             return data  # not important
         else:
-            raise Exception(f'execute func {func.__name__} got no data return.')
+            raise Exception(
+                f'execute func {func.__name__} got no data return.')
 
 
 def func_cache(use_key='', use_cache_oldest_dt=None,
@@ -117,50 +128,3 @@ def func_cache(use_key='', use_cache_oldest_dt=None,
 
     return _mydecorator
 
-def _update_requests_web(cache_data, args):
-    logger.info('update_requests_web')
-    headers = {
-        'user-agent': ua.random()
-    }
-    url = args[0]
-    data = requests.get(url, headers=headers, timeout=30)
-
-    cache_data['data'] = data
-    cache_data['timestamp'] = str(get_timestamp())
-    key = cache_data.get('key')
-
-    cachedb.set(key, cache_data)
-    return data
-
-def use_cache_callback_requests_web(cache_data, func, args, kwargs,
-                                    use_cache_oldest_dt=None):
-    timestamp = cache_data.get('timestamp', get_timestamp())
-    data_dt = get_dt_fromtimestamp(timestamp)
-
-    if use_cache_oldest_dt is None:
-        target_dt = datetime.now() - relativedelta(
-            seconds=14)  # default 14 days
-    else:
-        target_dt = use_cache_oldest_dt
-
-    if data_dt < target_dt:  # too old then we will re-excute the function
-        t = threading.Thread(target=_update_requests_web,
-                             args=(cache_data, args))
-        t.daemon = True
-        t.start()
-@func_cache(use_cache_callback=use_cache_callback_requests_web)
-def requests_web(url):
-    """
-    有数据则直接使用 没有数据则试着从网络上请求
-    直接使用数据的时候会根据数据的时间戳来判断新旧，如果数据过旧则启动后台更新线程
-
-    :param url:
-    :return:
-    """
-    headers = {
-        'user-agent': ua.random()
-    }
-
-    data = requests.get(url, headers=headers, timeout=30)
-
-    return data
