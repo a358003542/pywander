@@ -47,7 +47,7 @@ class CacheDB(object):
 
 
 
-APP_NAME = load_config.get('APP_NAME', 'pywander')
+APP_NAME = load_config().get('APP_NAME', 'pywander')
 
 if APP_NAME == 'pywander':
     logger.warning("你还没有加载好自己的应用配置文件")
