@@ -9,10 +9,10 @@ from dateutil.relativedelta import relativedelta
 
 from diskcache import Cache
 
+from pywander.functools import lazy
 from pywander.unique_key import build_unique_key
 from pywander.datetime import get_timestamp, get_dt_fromtimestamp
-from pywander.config import load_config
-
+from pywander.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,10 @@ class CacheDB(object):
     def cache(self):
         return self._cache
 
+    @property
+    def directory(self):
+        return self._cache._directory
+
     def set(self, key, value, **kwargs):
         """
         """
@@ -46,24 +50,39 @@ class CacheDB(object):
         return self.cache.get(key, **kwargs)
 
 
+def get_cachedb():
+    """ 
+    默认的cachedb对象
+    """
+    APP_NAME = config.get('APP_NAME')
 
-APP_NAME = load_config().get('APP_NAME', 'pywander')
+    if APP_NAME == 'pywander':
+        logger.warning("你还没有加载好自己的应用配置文件")
+        raise Exception("请配置好CONFIG_MODULE环境变量")
 
-if APP_NAME == 'pywander':
-    logger.warning("你还没有加载好自己的应用配置文件")
+    user_data_path = os.path.expanduser(
+        os.path.join('~', 'AppData', 'Roaming', APP_NAME))
 
-user_data_path = os.path.expanduser(
-    os.path.join('~', 'AppData', 'Roaming', APP_NAME))
+    if not os.path.exists(user_data_path):
+        os.mkdir(user_data_path)
 
-if not os.path.exists(user_data_path):
-    os.mkdir(user_data_path)
+    cache_path = os.path.join(user_data_path, 'cache')
+    cachedb = CacheDB(cache_path)
 
-cache_path = os.path.join(user_data_path, 'cache')
-cachedb = CacheDB(cache_path)
+    return cachedb
 
 
-def default_use_cache_callback(cache_data, func, args, kwargs,
-                               use_cache_oldest_dt=None):
+def lazy_get_cachedb():
+    """
+    """
+
+    return lazy(get_cachedb, CacheDB)()
+
+
+cachedb = lazy_get_cachedb()
+
+
+def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_dt=None):
     timestamp = cache_data.get('timestamp', get_timestamp())
     data_dt = get_dt_fromtimestamp(timestamp)
 
@@ -130,4 +149,3 @@ def func_cache(use_key='', use_cache_oldest_dt=None,
         return wraper_func
 
     return _mydecorator
-
