@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 from my_fake_useragent import UserAgent
 
-from .cache_utils import cachedb, func_cache
+from .cache_utils import func_cache, cachedb
 from pywander.datetime import get_timestamp, get_dt_fromtimestamp
 
 logger = logging.getLogger(__name__)
