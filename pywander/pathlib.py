@@ -4,6 +4,7 @@
 import re
 import errno
 import os
+import sys
 import logging
 import shutil
 from pathlib import Path
@@ -11,21 +12,49 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
-def get_project_path(dir=None):
+def is_pyinstaller_exe_running():
     """
-    返回mymodule存放的根目录
-
-    如果指定dir 则返回根目录下的一个文件
-
-    :param dir:
-    :return:
+    当前是否是exe执行模式
     """
-    path = os.path.dirname(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    if getattr(sys, 'frozen', False):
+        return True
+    else:
+        return False
 
-    if dir:
-        path = os.path.join(path, dir)
-    return path
+def get_pyinstaller_one_exe_data_folder():
+    """
+    pyinstaller制作单exe脚本这样配置
+
+    datas=[ ('file.txt', '.'),],
+
+    额外的文件，实际上这个文件会放在某个临时目录下。
+
+    """
+
+    if getattr(sys, 'frozen', False):
+        # exe执行模式 指向临时文件
+        data_folder_path = sys._MEIPASS
+    else:
+        # 本地脚本测试模式 指向本脚本所在文件夹
+        data_folder_path = os.path.dirname(
+            os.path.abspath(sys.modules['__main__'].__file__)
+        )
+    return data_folder_path
+
+
+def get_pyinstaller_exe_folder():
+    """
+
+    """
+    if getattr(sys, 'frozen', False):
+        # exe执行模式 指向本exe所在文件夹
+        script_path = os.path.dirname(sys.executable)
+    else:
+        # 本地脚本测试模式 指向本脚本所在文件夹
+        script_path = os.path.dirname(
+            os.path.abspath(sys.modules['__main__'].__file__)
+        )
+    return script_path
 
 
 def normalized_path(path='.') -> str:
