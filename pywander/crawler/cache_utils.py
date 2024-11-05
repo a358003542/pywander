@@ -11,7 +11,7 @@ from diskcache import Cache
 
 from pywander.functools import lazy
 from pywander.unique_key import build_unique_key
-from pywander.datetime import get_timestamp, get_dt_fromtimestamp
+from pywander.datetime import timestamp_current, timestamp_to_dt
 from pywander.config import config
 
 logger = logging.getLogger(__name__)
@@ -83,8 +83,8 @@ cachedb = lazy_get_cachedb()
 
 
 def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_dt=None):
-    timestamp = cache_data.get('timestamp', get_timestamp())
-    data_dt = get_dt_fromtimestamp(timestamp)
+    timestamp = cache_data.get('timestamp', timestamp_current())
+    data_dt = timestamp_to_dt(timestamp)
 
     if use_cache_oldest_dt is None:
         target_dt = datetime.now() - relativedelta(
@@ -98,7 +98,7 @@ def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_
 
         if data:
             cache_data['data'] = data
-            cache_data['timestamp'] = str(get_timestamp())
+            cache_data['timestamp'] = str(timestamp_current())
 
             cachedb.set(key, cache_data)
             return data  # not important
@@ -137,7 +137,7 @@ def func_cache(use_key='', use_cache_oldest_dt=None,
                     cache_data = {
                         'data': data,
                         'key': key,
-                        "timestamp": str(get_timestamp())
+                        "timestamp": str(timestamp_current())
                     }
 
                     cachedb.set(key, cache_data)
