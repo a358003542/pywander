@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from my_fake_useragent import UserAgent
 
 from .cache_utils import func_cache, cachedb
-from pywander.datetime import get_timestamp, get_dt_fromtimestamp
+from pywander.datetime import timestamp_current, timestamp_to_dt
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def _update_requests_web(cache_data, args):
     data = requests.get(url, headers=headers, timeout=30)
 
     cache_data['data'] = data
-    cache_data['timestamp'] = str(get_timestamp())
+    cache_data['timestamp'] = str(timestamp_current())
     key = cache_data.get('key')
 
     cachedb.set(key, cache_data)
@@ -35,8 +35,8 @@ def _update_requests_web(cache_data, args):
 
 def use_cache_callback_requests_web(cache_data, func, args, kwargs,
                                     use_cache_oldest_dt=None):
-    timestamp = cache_data.get('timestamp', get_timestamp())
-    data_dt = get_dt_fromtimestamp(timestamp)
+    timestamp = cache_data.get('timestamp', timestamp_current())
+    data_dt = timestamp_to_dt(timestamp)
 
     if use_cache_oldest_dt is None:
         target_dt = datetime.now() - relativedelta(

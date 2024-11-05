@@ -2,80 +2,105 @@
 # -*- coding: utf-8 -*-
 
 """
-some datetime utils
+一些日期时间处理工具
+
+约定dt前缀表示python的datetime object.
+
+约定任何时间获取在没有特别说明时区的情况下均为 utc时区.
+
+约定时间戳指的是Unix时间戳, 即 1730693803 这样的整数秒数. 时间戳默认UTC时区.
+
 """
 
-
 import time
-from datetime import datetime, timezone
+import calendar
+from datetime import datetime, timezone, timedelta
 
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, MONTHLY
 
+timezone_shanghai = timezone(timedelta(hours=8), name='Asia/Shanghai')
 
-utcnow = datetime.now(timezone.utc)
-"""current utcnow datetime object"""
-one_week_ago = datetime.now(timezone.utc) - relativedelta(weeks=1)
-"""one_week_ago datetime object"""
-one_day_ago = datetime.now(timezone.utc) - relativedelta(days=1)
-"""one day ago datetime object"""
-two_day_ago = datetime.now(timezone.utc) - relativedelta(days=2)
-"""two day ago datetime object"""
-one_hour_ago = datetime.now(timezone.utc) - relativedelta(hours=1)
-"""one hour ago datetime object"""
-one_month_ago = datetime.now(timezone.utc) - relativedelta(months=1)
-"""one month ago datetime object"""
-
-
-def dt_to_timestamp(dt, multiplier=1):
+def dt_current(tz=timezone.utc) -> datetime:
     """
-    change datetime object to timestamp
+    当前时间
     """
-    timestamp = dt.timestamp()
-
-    timestamp = timestamp * multiplier
-
-    return int(timestamp)
+    return datetime.now(tz=tz)
 
 
-def get_datetime_range(months):
-    """
-    return a list of datetime range, start from current time, and
-    counted upon previous some months.
-    """
-    now = datetime.utcnow()
-    sdt = now - relativedelta(months=months)
-    return list(rrule(freq=MONTHLY, dtstart=sdt, until=now))
-
-
-def get_dt_fromtimestamp(timestamp, utc=False, multiplier=1):
-    """
-    get datetime object from timestamp
-    """
-
-    if isinstance(timestamp, str):
-        timestamp = float(timestamp)
-
-    timestamp = timestamp * multiplier
-
-    if utc:
-        dt = datetime.utcfromtimestamp(timestamp)
-    else:
-        dt = datetime.fromtimestamp(timestamp)
-
-    return dt
-
-
-def get_timestamp(multiplier=1):
+def timestamp_current() -> int:
     """
     get current timestamp
     :return:
     """
     timestamp = time.time()
 
-    timestamp = timestamp * multiplier
+    return int(timestamp)
+
+
+def dt_one_hour_ago(tz=timezone.utc):
+    """
+    当前时间一小时前
+    """
+    return dt_current(tz=tz) - relativedelta(hours=1)
+
+
+def dt_one_day_ago(tz=timezone.utc):
+    """
+    当前时间一天前
+    """
+    return dt_current(tz=tz) - relativedelta(days=1)
+
+
+def dt_two_day_ago(tz=timezone.utc):
+    """
+    当前时间两天前
+    """
+    return dt_current(tz=tz) - relativedelta(days=2)
+
+
+def dt_one_week_ago(tz=timezone.utc):
+    """
+    当前时间一周前
+    """
+    return dt_current(tz=tz) - relativedelta(weeks=1)
+
+
+def dt_one_month_ago(tz=timezone.utc):
+    """
+    当前时间一个月前
+    """
+    return dt_current(tz=tz) - relativedelta(months=1)
+
+
+def dt_last_day(year, month, tz=timezone.utc):
+    """
+    获取某年某月的最后一天
+    """
+    new_dt = datetime(year=year, month=month, day=calendar.monthrange(year, month)[-1], tzinfo=tz)
+    return new_dt
+
+
+def dt_to_timestamp(dt):
+    """
+    change datetime object to timestamp
+    """
+    timestamp = dt.timestamp()
 
     return int(timestamp)
+
+
+def timestamp_to_dt(timestamp: int | str, tz=timezone.utc):
+    """
+    change timestamp to datetime object
+    """
+
+    if isinstance(timestamp, str):
+        timestamp = int(timestamp)
+
+    dt = datetime.fromtimestamp(timestamp, tz=tz)
+
+    return dt
 
 
 def is_same_year(dt1: datetime, dt2: datetime):
@@ -113,35 +138,26 @@ def is_same_hour(dt1, dt2):
     is the two datetime objects are in the same hour
     """
     if (
-        (dt1.year == dt2.year)
-        and (dt1.month == dt2.month)
-        and (dt1.day == dt2.day)
-        and (dt1.hour == dt2.hour)
+            (dt1.year == dt2.year)
+            and (dt1.month == dt2.month)
+            and (dt1.day == dt2.day)
+            and (dt1.hour == dt2.hour)
     ):
         return True
     else:
         return False
 
 
-def normal_format_now():
+def dt_normal_format(dt):
     """
-    get current normal format for now: '2018-12-21 15:39:20'
-    :return:
+    datetime object return string as normal format for example: '2018-12-21 15:39:20'
     """
-    return datetime.now().__format__("%Y-%m-%d %H:%M:%S")
-
-
-def normal_format_utcnow():
-    """
-    get current normal format for utcnow: '2018-12-21 15:39:20'
-    :return:
-    """
-    return datetime.utcnow().__format__("%Y-%m-%d %H:%M:%S")
+    return dt.__format__("%Y-%m-%d %H:%M:%S")
 
 
 def round_to_day(dt):
     """
-    round a datetime object to day
+    datetime object取整到天,其余比如小时等信息略去为0
     """
     res = dt.replace(hour=0, minute=0, second=0, microsecond=0)
     return res
@@ -149,9 +165,7 @@ def round_to_day(dt):
 
 def round_to_hour(dt):
     """
-    round a datetime object to hour
-    :param dt:
-    :return:
+    datetime object取整到小时,其余比如分钟等信息略去为0
     """
     res = dt.replace(minute=0, second=0, microsecond=0)
     return res
@@ -159,7 +173,7 @@ def round_to_hour(dt):
 
 def round_to_minute(dt):
     """
-    round a datetime object to minute
+    datetime object取整到分钟,其余比如秒等信息略去为0
     """
     res = dt.replace(second=0, microsecond=0)
     return res
@@ -167,7 +181,23 @@ def round_to_minute(dt):
 
 def round_to_second(dt):
     """
-    round a datetime object to second
+    datetime object取整到秒,其余比如微秒等信息略去为0
     """
     res = dt.replace(microsecond=0)
     return res
+
+
+def get_datetime_range(months, tz=timezone.utc):
+    """
+    返回一系列的datetime object 列表, 从当前时间往前数几个月.
+
+    >>> get_datetime_range(1) # doctest: +SKIP
+    [datetime.datetime(2024, 10, 5, 14, 27, 46, tzinfo=datetime.timezone.utc),
+    datetime.datetime(2024, 11, 5, 14, 27, 46, tzinfo=datetime.timezone.utc)]
+
+    >>> get_datetime_range(0) # doctest: +SKIP
+    [datetime.datetime(2024, 11, 5, 14, 27, 53, tzinfo=datetime.timezone.utc)]
+
+    """
+    start_dt = dt_current(tz=tz) - relativedelta(months=months)
+    return list(rrule(freq=MONTHLY, dtstart=start_dt, until=dt_current(tz=tz)))
