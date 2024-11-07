@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-import re
+import time
 import logging
 import os
 from enum import Enum
-from collections import defaultdict
 from urllib.parse import urlsplit, urljoin, urldefrag
 
 import requests
-from bs4 import BeautifulSoup, SoupStrainer
 from my_fake_useragent import UserAgent
-
-from pywander.pathlib import mkdirs
+from pywander.pathlib import mkdirs, to_absolute_path
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +33,7 @@ class URLType(Enum):
     InValid = 6
 
 
-def to_absolute_url(url, refUrl):
+def to_absolute_url(url, ref_url):
     """
     给定好refUrl，利用urljoin就能得到绝对url
     refUrl: 除了绝对URL，其他URL都需要根据本URL所在的文章的Url也就是refUrl
@@ -46,31 +42,42 @@ def to_absolute_url(url, refUrl):
     如果是爬虫，一开始就将遇到的URL转成绝对URL可能是一个好的选择，但其他文档处理情况则
     不能这样简单处理，需要小心地根据URL的各种类型来采取不同的处理策略。
     """
-    return urljoin(refUrl, url)
+    return urljoin(ref_url, url)
 
 
-def is_url_inSite(url, refUrl):
+def is_url_in_site(url, ref_url):
     """
     is the url in site.
     the judgement is based on the refUrl's netloc.
 
->>> is_url_inSite('https://code.visualstudio.com/docs', \
+>>> is_url_in_site('https://code.visualstudio.com/docs', \
     'https://code.visualstudio.com/docs/python/linting')
 True
     """
     p = urlsplit(url)
-    if p.netloc == urlsplit(refUrl).netloc:
+    if p.netloc == urlsplit(ref_url).netloc:
         return True
     else:
         return False
 
 
-def is_url_inArticle(url, refUrl):
+def is_url_in_article(url):
     """
 
     """
     p = urlsplit(url)
     if p.fragment:
+        return True
+    else:
+        return False
+
+
+def is_url_belong(url, baseurl):
+    """
+    is the url belong to the baseurl.
+    the check logic is strict string match.
+    """
+    if url.startswith(baseurl):
         return True
     else:
         return False
@@ -99,12 +106,28 @@ def check_url_type(url):
             return URLType.InValid
 
 
+def get_url_netloc(url):
+    """
+    获取url的netloc属性
+    """
+    p = urlsplit(url)
+    return p.netloc
+
+
 def get_url_fragment(url):
     """
     please notice the fragment not include the symbol #
     """
     p = urlsplit(url)
     return p.fragment
+
+
+def get_url_path(url):
+    """
+    获取url的path属性
+    """
+    p = urlsplit(url)
+    return p.path
 
 
 def remove_url_fragment(url):
@@ -116,117 +139,30 @@ def remove_url_fragment(url):
     return defragmented
 
 
-REPATTEN_URL = re.compile(
-    r'https?:\/\/[\da-z\.-]+\.[a-z\.]{2,6}[\/\w\.-]*[\?\w=&#]*')
-
-
-def parse_urls(text):
+def get_download_filename(url):
     """
-    input a text , and return all url we found that based on the re-expression
-    of `REPATTEN_URL` . which is not recommend , recommed use the `wget_links` function.
+    从下载url中获得文件名, 不一定是有意义的.
     """
-    return re.findall(REPATTEN_URL, text)
-
-
-def get_webpage_links(html, name='a', id="", class_="", **kwargs):
-    """
-    :param html: 目标网页的text内容
-
-    input html content, and use the beautifulsoup parse it, get all the
-    <a href="link"> and return the link.
-
-    sometime you may want the specific  <a href="link"> which is in where id
-    or where class etc.
-
-    you can set `name="div" id="what"'` to narrow the url target into
-    the SoupStrainer for the first filter,
-    so you can specific which url you want to collect.
-
-    this function will return:
-    (
-        soup,
-        {
-            ‘href’: [beatifulsoup4 Tag object, ...]
-        }
-    )
-    """
-    all_links = defaultdict(list)
-    parse_kwargs = {'name': name}
-    if id:
-        parse_kwargs['id'] = id
-    if class_:
-        parse_kwargs['class_'] = class_
-
-    if html:
-        soup = BeautifulSoup(
-            html, 'html5lib', parse_only=SoupStrainer(**parse_kwargs))
-    else:
-        logger.error('missing content!')
-        return None
-
-    for link in soup.find_all('a', href=True):
-        href = link.get('href')
-
-        all_links[href].append(link)
-
-    return soup, all_links
-
-
-def get_webpage_images(html, name="img", id="", class_="", **kwargs):
-    """
-    :param html: 目标网页的text内容
-
-    input a html content , and use the beautifulsoup parse it, get all the
-    <img src="link"> and return the link.
-
-    sometime you may want the specific  <img src="link"> which is in where id
-    or where class etc.
-
-    you can set `name="div" id="what"'` to narrow the url target
-    into the SoupStrainer for the first filter,
-    so you can specific which url you want to collect.
-
-    this function will return:
-    (
-        soup,
-        {
-            ‘src’: [beatifulsoup4 Tag object, ...]
-        }
-    )
-    """
-    all_links = defaultdict(list)
-    parse_kwargs = {'name': name}
-    if id:
-        parse_kwargs['id'] = id
-    if class_:
-        parse_kwargs['class_'] = class_
-
-    if html:
-        soup = BeautifulSoup(
-            html, 'html5lib', parse_only=SoupStrainer(**parse_kwargs))
-    else:
-        logger.error('missing content!')
-        return None
-
-    for link in soup.find_all('img', src=True):
-        src = link.get('src')
-
-        all_links[src].append(link)
-
-    return soup, all_links
+    path = get_url_path(url)
+    filename = os.path.basename(path)
+    return filename
 
 
 def download(url, filename, download_timeout=30, override=False, **kwargs):
     """
-    High level function, which downloads URL into tmp file in current
-    directory and then renames it to filename autodetected from either URL
-    or HTTP headers.
-    :param out: output filename or directory
-    :return:    filename where URL is downloaded to
+    将目标url先下载到临时文件,然后再保存到命名文件.
+
+    :param url: the url
+    :param filename: 指定文件名
     """
+    headers = {
+        'user-agent': ua.random()
+    }
+
     logger.info(f'start downloading file {url} to {filename}')
-    import time  # https://github.com/kennethreitz/requests/issues/1803
     start = time.time()
+
+    filename = to_absolute_path(filename)
 
     # make sure folder exists
     mkdirs(os.path.dirname(filename))
@@ -238,7 +174,7 @@ def download(url, filename, download_timeout=30, override=False, **kwargs):
             logger.info(f'{filename} exist.')
             return
 
-    content = requests.get(url, stream=True, **kwargs)
+    content = requests.get(url, stream=True, headers=headers, **kwargs)
 
     with open(filename, 'wb') as f:
         for chunk in content.iter_content(chunk_size=1024):
@@ -251,14 +187,3 @@ def download(url, filename, download_timeout=30, override=False, **kwargs):
                 return False
 
     return filename
-
-
-def is_url_belong(url, baseurl):
-    """
-    is the url belong to the baseurl.
-    the check logic is strict string match.
-    """
-    if url.startswith(baseurl):
-        return True
-    else:
-        return False
