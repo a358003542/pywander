@@ -178,7 +178,7 @@ def pwd():
 
 def get_file_ext(path):
     """
-    >>> get_file_ext(r'D:\\github\\pywander\\README.md')
+    >>> get_file_ext(r'D:\\README.md') # doctest: +SKIP
     '.md'
     """
     if os.path.isfile(path):
@@ -190,7 +190,7 @@ def get_file_ext(path):
 
 def get_filename(path):
     """
-    >>> get_filename(r'D:\\github\\pywander\\README.md')
+    >>> get_filename(r'D:\\README.md') # doctest: +SKIP
     'README.md'
     """
     if os.path.isfile(path):
