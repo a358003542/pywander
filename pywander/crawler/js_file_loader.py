@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+"""
+javascript文件硬分析来获取必要的信息
+"""
 
 import json
 import pyparsing as pp

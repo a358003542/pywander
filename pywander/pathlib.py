@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+"""
+路径支持
+
+约定对外返回的路径均为字符串类型, Path对象有时把问题弄复杂了, 只供内部使用.
+
+"""
+
 import re
 import errno
 import os
@@ -14,21 +21,23 @@ logger = logging.getLogger(__name__)
 
 def is_pyinstaller_exe_running():
     """
-    当前是否是exe执行模式
+    当前是否是pyinstaller的exe执行模式
     """
     if getattr(sys, 'frozen', False):
         return True
     else:
         return False
 
+
 def get_pyinstaller_one_exe_data_folder():
     """
+    pyinstaller制作的exe执行时获取数据文件夹所在.
+
     pyinstaller制作单exe脚本这样配置
 
     datas=[ ('file.txt', '.'),],
 
     额外的文件，实际上这个文件会放在某个临时目录下。
-
     """
 
     if getattr(sys, 'frozen', False):
@@ -44,7 +53,7 @@ def get_pyinstaller_one_exe_data_folder():
 
 def get_pyinstaller_exe_folder():
     """
-
+    获取pyinstaller制作的exe的当前执行所在文件夹
     """
     if getattr(sys, 'frozen', False):
         # exe执行模式 指向本exe所在文件夹
@@ -57,13 +66,11 @@ def get_pyinstaller_exe_folder():
     return script_path
 
 
-def normalized_path(path='.') -> str:
+def normalized_path(path: str | Path) -> str:
     """
-    默认支持 ~ 符号
+    将路径规范化 支持 ~ 符号
 
     返回的是字符串
-
-    which default support the `~`
     """
     if isinstance(path, Path):
         return str(path.expanduser())
@@ -75,13 +82,17 @@ def normalized_path(path='.') -> str:
         raise TypeError
 
 
-def normalized_path_obj(path='.') -> Path:
+def to_absolute_path(path):
+    """
+    返回标准化的绝对路径
+    在normalized_path的基础上还引入当前路径添加等
+    """
+    return os.path.abspath(normalized_path(path))
+
+
+def _normalized_path(path) -> Path:
     """
     默认支持 ~ 符号
-
-    返回的是 Path 对象
-    :param path:
-    :return:
     """
     if isinstance(path, Path):
         return path.expanduser()
@@ -100,7 +111,7 @@ def rm(path, recursive=False):
     use `shutil.rmtree` to remove the non-empty directory,you need add `recursive=True`
 
     """
-    path = normalized_path_obj(path)
+    path = _normalized_path(path)
     if recursive:
         shutil.rmtree(path)
     else:
@@ -122,41 +133,82 @@ def mkdirs(path, mode=0o777):
             logger.error('file exists: {0}'.format(e))
 
 
-def ls(path=".", glob=False):
+def _ls(path=".", glob=False):
     """
-    like ls common， return Path object
+    like ls common
 
     if `glob` set to True, then you can use the glob language for ls.
     """
     if glob:
         import glob
-        return [normalized_path_obj(p) for p in glob.glob(path)]
+        return [_normalized_path(p) for p in glob.glob(path)]
     else:
-        return [p for p in normalized_path_obj(path).iterdir()]
+        return [p for p in _normalized_path(path).iterdir()]
+
+
+def ls(path=".", glob=False):
+    """
+    like ls common
+
+    if `glob` set to True, then you can use the glob language for ls.
+    """
+    return [str(p) for p in _ls(path=path, glob=glob)]
 
 
 def ls_file(path=".", glob=False):
     """
     based on ls function but only return file.
     """
-    return [p for p in ls(path, glob=glob) if p.is_file()]
+    return [str(p) for p in _ls(path, glob=glob) if p.is_file()]
 
 
 def ls_dir(path=".", glob=False):
     """
     based on ls function, but only return directory.
     """
-    return [p for p in ls(path, glob=glob) if p.is_dir()]
+    return [str(p) for p in _ls(path, glob=glob) if p.is_dir()]
 
 
 def pwd():
     """
     get current directory
     """
-    return Path(os.getcwd())
+    return os.getcwd()
 
 
-def gen_filetree(startpath='.', filetype=""):
+def get_file_ext(path):
+    """
+    >>> get_file_ext(r'D:\\github\\pywander\\README.md')
+    '.md'
+    """
+    if os.path.isfile(path):
+        _, ext = os.path.splitext(path)
+        return ext
+    else:
+        raise ValueError
+
+
+def get_filename(path):
+    """
+    >>> get_filename(r'D:\\github\\pywander\\README.md')
+    'README.md'
+    """
+    if os.path.isfile(path):
+        return os.path.basename(path)
+    else:
+        raise ValueError
+
+def remove_window_illegal_symbol(s):
+    """
+    移除windows下的非法字符
+
+    >>> remove_window_illegal_symbol('ad >> ? / e  dddd ?')
+    'ad    e  dddd '
+    """
+    new_s = re.sub(r'[/\\:*?"<>|]','',s)
+    return new_s
+
+def gen_filetree(start_path='.', filetype=""):
     """
     利用os.walk 遍历某个目录，收集其内的文件，返回
     (文件路径列表, 本路径下的文件列表)
@@ -165,16 +217,16 @@ def gen_filetree(startpath='.', filetype=""):
 (['shortly', 'templates'], ['shortly.py'])
 (['shortly', 'static'], ['shortly.py'])
 
-    第一个可选参数 startpath  默认值 '.'
+    第一个可选参数 start_path  默认值 '.'
     第二个参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
     """
-    for root, dirs, files in os.walk(startpath):
+    for root, dirs, files in os.walk(start_path):
         filelist = []
         for f in files:
-            fileName, fileExt = os.path.splitext(f)
+            file_name, file_ext = os.path.splitext(f)
             if filetype:
-                if re.search(filetype, fileExt):
+                if re.search(filetype, file_ext):
                     filelist.append(f)
             else:
                 filelist = files
@@ -182,21 +234,21 @@ def gen_filetree(startpath='.', filetype=""):
             dirlist = root.split(os.path.sep)
             dirlist = dirlist[1:]
             if dirlist:
-                yield (dirlist, filelist)
+                yield dirlist, filelist
             else:
-                yield (['.'], filelist)
+                yield ['.'], filelist
 
 
-def gen_allfile(startpath='.', filetype=""):
+def gen_allfile(start_path='.', filetype=""):
     """
     利用os.walk 遍历某个目录，收集其内的文件，返回符合条件的文件路径名
     是一个生成器。
-    第一个可选参数 startpath  默认值 '.'
+    第一个可选参数 start_path  默认值 '.'
     第二个参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
     """
 
-    for dirlist, filelist in gen_filetree(startpath=startpath,
+    for dirlist, filelist in gen_filetree(start_path=start_path,
                                           filetype=filetype):
         for f in filelist:
             filename = os.path.join(os.path.join(*dirlist), f)
