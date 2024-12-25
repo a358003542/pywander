@@ -21,16 +21,16 @@ def compare_dict_include(d, include=None):
 
     return True : d totally contain the second dict
 
->>> compare_dict_include({'a':1},{})
-True
->>> compare_dict_include({'a':1},{'a':2})
-False
->>> compare_dict_include({'a':1},{'a':1})
-True
->>> compare_dict_include({'a':1,'b':2},{'a':1})
-True
->>> compare_dict_include({'a':1,'b':2},{'b':2})
-True
+    >>> compare_dict_include({'a':1},{})
+    True
+    >>> compare_dict_include({'a':1},{'a':2})
+    False
+    >>> compare_dict_include({'a':1},{'a':1})
+    True
+    >>> compare_dict_include({'a':1,'b':2},{'a':1})
+    True
+    >>> compare_dict_include({'a':1,'b':2},{'b':2})
+    True
     """
     include = include if include is not None else {}
 
@@ -49,14 +49,14 @@ def check_dict_has(d, has=None):
     """
     does the dict object has some keys
 
->>> check_dict_has({'a':1,'b':2},[])
-True
->>> check_dict_has({'a':1,'b':2},['a'])
-True
->>> check_dict_has({'a':1,'b':2},['a','c'])
-False
->>> check_dict_has({'a':1,'b':2},['a','b'])
-True
+    >>> check_dict_has({'a':1,'b':2},[])
+    True
+    >>> check_dict_has({'a':1,'b':2},['a'])
+    True
+    >>> check_dict_has({'a':1,'b':2},['a','c'])
+    False
+    >>> check_dict_has({'a':1,'b':2},['a','b'])
+    True
 
     """
     has = has if has is not None else []
@@ -77,8 +77,8 @@ def merge_dict(*args):
     ref : http://stackoverflow.com/questions/38987/\
     how-can-i-merge-two-python-dictionaries-in-a-single-expression
 
->>> merge_dict({'a': 1, 'b': 2}, {'b': 10, 'c': 11})
-{'a': 1, 'b': 10, 'c': 11}
+    >>> merge_dict({'a': 1, 'b': 2}, {'b': 10, 'c': 11})
+    {'a': 1, 'b': 10, 'c': 11}
 
     """
 
@@ -97,8 +97,8 @@ def sorted_dict_by_value(d, **kwargs):
     """
     sorted dict by it's value
 
->>> sorted_dict_by_value({'andy':5,'Andy':1,'black':9,'Black':55})
-[('Andy', 1), ('andy', 5), ('black', 9), ('Black', 55)]
+    >>> sorted_dict_by_value({'andy':5,'Andy':1,'black':9,'Black':55})
+    [('Andy', 1), ('andy', 5), ('black', 9), ('Black', 55)]
 
     """
     return sorted(d.items(), key=lambda i: i[1], **kwargs)

@@ -19,30 +19,28 @@ logger = logging.getLogger(__name__)
 
 def humanize_bytes(n, precision=1):
     """
-    # based on Author: Doug Latornell's work
-    # Licence: MIT
-    # URL: http://code.activestate.com/recipes/577081/
-
     Return a humanized string representation of a number of bytes.
 
->>> humanize_bytes(1)
-'1 B'
->>> humanize_bytes(1024)
-'1.0 KiB'
->>> humanize_bytes(1024 * 123)
-'123.0 KiB'
->>> humanize_bytes(1024 * 12342)
-'12.1 MiB'
->>> humanize_bytes(1024 * 12342, 2)
-'12.05 MiB'
->>> humanize_bytes(1024 * 1234, 2)
-'1.21 MiB'
->>> humanize_bytes(1024 * 1234 * 1111, 2)
-'1.31 GiB'
->>> humanize_bytes(1024 * 1234 * 1111 * 1024)
-'1.3 TiB'
->>>
+    Keyword arguments:
+    real -- the real part (default 0.0)
+    imag -- the imaginary part (default 0.0)
 
+    >>> humanize_bytes(1)
+    '1 B'
+    >>> humanize_bytes(1024)
+    '1.0 KiB'
+    >>> humanize_bytes(1024 * 123)
+    '123.0 KiB'
+    >>> humanize_bytes(1024 * 12342)
+    '12.1 MiB'
+    >>> humanize_bytes(1024 * 12342, 2)
+    '12.05 MiB'
+    >>> humanize_bytes(1024 * 1234, 2)
+    '1.21 MiB'
+    >>> humanize_bytes(1024 * 1234 * 1111, 2)
+    '1.31 GiB'
+    >>> humanize_bytes(1024 * 1234 * 1111 * 1024)
+    '1.3 TiB'
     """
     abbrevs = [
         (1 << 80, 'YiB'),
