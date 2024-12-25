@@ -4,13 +4,13 @@
 import logging
 import requests
 import threading
-from datetime import datetime
+from datetime import timezone
 from dateutil.relativedelta import relativedelta
 
 from my_fake_useragent import UserAgent
 
 from .cache_utils import func_cache, cachedb
-from pywander.datetime import timestamp_current, timestamp_to_dt
+from pywander.datetime import timestamp_current, timestamp_to_dt, dt_current
 
 logger = logging.getLogger(__name__)
 
@@ -39,10 +39,15 @@ def use_cache_callback_requests_web(cache_data, func, args, kwargs,
     data_dt = timestamp_to_dt(timestamp)
 
     if use_cache_oldest_dt is None:
-        target_dt = datetime.now() - relativedelta(
-            seconds=14)  # default 14 days
+        target_dt = dt_current() - relativedelta(seconds=14)  # default 14 days
     else:
         target_dt = use_cache_oldest_dt
+
+
+    if data_dt.tzinfo is None:
+        data_dt.replace(tzinfo=timezone.utc)
+    if target_dt.tzinfo is None:
+        target_dt.replace(tzinfo=timezone.utc)
 
     if data_dt < target_dt:  # too old then we will re-excute the function
         t = threading.Thread(target=_update_requests_web,

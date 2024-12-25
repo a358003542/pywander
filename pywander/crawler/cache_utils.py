@@ -4,14 +4,14 @@
 import os
 import logging
 from functools import wraps
-from datetime import datetime
+from datetime import timezone
 from dateutil.relativedelta import relativedelta
 
 from diskcache import Cache
 
 from pywander.functools import lazy
 from pywander.unique_key import build_unique_key
-from pywander.datetime import timestamp_current, timestamp_to_dt
+from pywander.datetime import timestamp_current, timestamp_to_dt, dt_current
 from pywander.config import config
 
 logger = logging.getLogger(__name__)
@@ -87,10 +87,14 @@ def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_
     data_dt = timestamp_to_dt(timestamp)
 
     if use_cache_oldest_dt is None:
-        target_dt = datetime.now() - relativedelta(
-            seconds=86400 * 14)  # default 14 days
+        target_dt = dt_current() - relativedelta(seconds=86400 * 14)  # default 14 days
     else:
         target_dt = use_cache_oldest_dt
+
+    if data_dt.tzinfo is None:
+        data_dt.replace(tzinfo=timezone.utc)
+    if target_dt.tzinfo is None:
+        target_dt.replace(tzinfo=timezone.utc)
 
     if data_dt < target_dt:  # too old then we will re-excute the function
         key = cache_data.get('key')
