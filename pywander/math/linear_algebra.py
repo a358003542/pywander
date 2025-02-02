@@ -16,13 +16,31 @@ am : [argumented matrix] combine m and b to a entire linear system matrix
 import numpy as np
 
 
+def dimension_of_linear_combination(*vec):
+    vec_num = len(vec)
+
+    matrix = np.column_stack(vec)
+    # 计算矩阵的秩
+    rank = np.linalg.matrix_rank(matrix)
+    # 判断秩
+    if rank == vec_num:
+        print(f'这组向量的线性组合组成的向量空间维度为 {rank} ,等于向量数,这组向量是线性无关的.')
+
+    if rank == 1:
+        print(f'这组向量的线性组合是向量空间中的一条直线.')
+    elif rank == 2:
+        print(f'这组向量的线性组合是向量空间中的一个平面.')
+    else:
+        print(f'这组向量的线性组合是向量空间中的{rank}维空间 $\\mathbb{{R}}^{rank}$ .')
+
+
 def can_form_plane(vec1, vec2):
     # 将两个向量按列拼接成矩阵
     matrix = np.column_stack((vec1, vec2))
     # 计算矩阵的秩
     rank = np.linalg.matrix_rank(matrix)
     # 判断秩是否为 2
-    return rank == 2
+    return bool(rank == 2)
 
 
 def can_form_3d_space(vec1, vec2, vec3):
