@@ -90,6 +90,59 @@ def col_vector_to_row_vector(col_v):
         raise ValueError("please input the column vector.")
 
 
+def l2norm(v):
+    """
+    get the l2 norm of a vector
+    """
+    return np.linalg.norm(v)
+
+
+def vector_length(v):
+    """
+    向量的长度
+    """
+    return l2norm(v)
+
+
+def cosine_similarity(v1, v2):
+    """
+    calc the cosine similarity between two vectors.
+    Parameters
+    ----------
+    v1
+    v2
+
+    Returns
+    -------
+
+    """
+    cosine = np.dot(v1, v2) / (vector_length(v1) * vector_length(v2))
+    return cosine
+
+
+def normalize_vector(vector):
+    """
+    对向量进行 L2 归一化
+    """
+    norm = l2norm(vector)
+    if norm == 0:
+        return vector
+    return vector / norm
+
+
+def cosine_similarity_after_normalization(vector1, vector2):
+    """
+    先对向量进行归一化，再计算余弦相似度
+
+    和cosine_similarity必然输出一样的结果 也就是余弦相似度本质上就和向量长度无关
+    """
+    normalized_vector1 = normalize_vector(vector1)
+    normalized_vector2 = normalize_vector(vector2)
+    # 由于向量已归一化，模长都为 1，余弦相似度就是点积
+    # 所以某些情况下向量已经归一化了 这个时候直接计算点积就得到余弦相似度了
+    return np.dot(normalized_vector1, normalized_vector2)
+
+
 def swap_rows(m, row_num_1, row_num_2):
     """
     Gaussian elimination basic operation 1
@@ -139,38 +192,8 @@ def combine_system(m, b):
     return np.hstack((m, b.reshape(b.size, 1)))
 
 
-def l2norm(v):
-    """
-    get the l2 norm of a vector
-    """
-    return np.linalg.norm(v)
-
-
-def dot_product(v1, v2):
-    """
-    get the dot product of two vectors
-    """
-    return np.dot(v1, v2)
-
-
 def matrix_multiplication(m1, m2):
     """
     notice: ndim=1 array is a vector, can not apply here.
     """
     return np.matmul(m1, m2)
-
-
-def cos(v1, v2):
-    """
-    calc the cosine similarity between two vectors.
-    Parameters
-    ----------
-    v1
-    v2
-
-    Returns
-    -------
-
-    """
-    cosine = np.dot(v1, v2) / (l2norm(v1) * l2norm(v2))
-    return cosine
