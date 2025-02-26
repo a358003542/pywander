@@ -4,7 +4,9 @@ linear algebra
 the prefix explanation
 
 a : an array np.array([1, 2, 3])
-v : a vector for example row vector row_v1:  np.array([1, 2, 3]) \
+v : 一维数组 行向量 列向量 都是不同的，在某些情况下必须严格区别
+    1d array:  np.array([1, 2, 3])
+    row_vector  np.array([[1,2,3]])
     col vector col_v1 np.array([[2],[0],[0]])
 m : the linear equation system left matrix 
 b : the linear equation right b array 
@@ -14,6 +16,80 @@ am : [argumented matrix] combine m and b to a entire linear system matrix
 """
 
 import numpy as np
+
+
+def is_1d_array(arr):
+    """
+    1d array 这是最常见的数据结构形式
+    1d array: np.array([1, 2, 3])
+    """
+    # 方法一：使用 ndim 属性判断
+    # 方法二：使用 shape 属性判断
+    return arr.ndim == 1 or len(arr.shape) == 1
+
+
+def is_row_vector(arr):
+    """
+    是否是行向量
+    """
+    # 首先检查数组的维度是否为 2
+    if arr.ndim == 2:
+        # 再检查数组的形状是否为 (1, n) 的形式
+        if arr.shape[0] == 1:
+            return True
+    return False
+
+def is_column_vector(arr):
+    """
+    是否是列向量
+    """
+    # 首先检查数组是否为二维数组
+    if arr.ndim == 2:
+        # 然后检查数组的第二维（列）长度是否为 1
+        return arr.shape[1] == 1
+    return False
+
+def to_row_vector(one_d_array):
+    """
+    转成行向量
+    要求输入参数为1d array
+    """
+    if is_1d_array(one_d_array):
+        row_vector = one_d_array.reshape(1, -1)
+        return row_vector
+    raise Exception('please input 1d array')
+
+
+def to_column_vector(one_d_array):
+    """
+    转成列向量
+    要求输入参数为1d array
+    """
+    if is_1d_array(one_d_array):
+        return one_d_array.reshape(-1, 1)
+    else:
+        raise ValueError("please input 1d array.")
+
+
+def column_vector_to_row_vector(col_v):
+    """
+    列向量转成行向量
+    直接用transpose即可，本函数严格要求输入是列向量
+    """
+    if is_column_vector(col_v):
+        return col_v.transpose()
+    else:
+        raise ValueError("please input the column vector.")
+
+def row_vector_to_column_vector(row_v):
+    """
+    行向量转成列向量
+    直接用transpose即可，本函数严格要求输入是行向量
+    """
+    if is_row_vector(row_v):
+        return row_v.transpose()
+    else:
+        raise ValueError("please input the row vector.")
 
 
 def dimension_of_linear_combination(*vec):
@@ -52,42 +128,8 @@ def can_form_3d_space(vec1, vec2, vec3):
     return bool(rank == 3)
 
 
-def is_1d_row_vector(arr):
-    # 方法一：使用 ndim 属性判断
-    # 方法二：使用 shape 属性判断
-    return arr.ndim == 1 or len(arr.shape) == 1
 
 
-def row_vector_to_col_vector(row_v):
-    """
-    行向量转成列向量
-    """
-    if is_1d_row_vector(row_v):
-        return row_v.reshape(-1, 1)
-    else:
-        raise ValueError("please input the row vector.")
-
-
-def is_column_vector(arr):
-    """
-    笑死 感觉ai比我会编程
-    我准备动几下的脑细胞这下彻底沉睡了
-    """
-    # 首先检查数组是否为二维数组
-    if arr.ndim == 2:
-        # 然后检查数组的第二维（列）长度是否为 1
-        return arr.shape[1] == 1
-    return False
-
-
-def col_vector_to_row_vector(col_v):
-    """
-    列向量转成行向量
-    """
-    if is_column_vector(col_v):
-        return col_v.reshape(1, -1)
-    else:
-        raise ValueError("please input the column vector.")
 
 
 def l2norm(v):
