@@ -15,15 +15,12 @@ def write_json(file, data):
     """
     wirte data to json file, use a temporary file as a medium
     """
-    fp = tempfile.NamedTemporaryFile(mode='wt', encoding='utf8', delete=False)
-    try:
+    with tempfile.NamedTemporaryFile(mode='wt', encoding='utf8', delete_on_close=False) as fp:
         json.dump(data, fp, indent=4, ensure_ascii=False)
         fp.close()
-    except Exception as e:
-        logger.error(f"write data to tempfile {fp.name} failed!!! \n"
-                     f"{e}")
-    finally:
-        shutil.move(fp.name, file)
+        logger.debug(f'create a temporary file: {fp.name}')
+        shutil.copyfile(fp.name, file)
+        # shutil.move(fp.name, file)
 
 
 def get_json_file(json_filename, default_data=None):

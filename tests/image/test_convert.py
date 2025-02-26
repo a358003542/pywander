@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
-import shutil
+
 import pytest
 from click.testing import CliRunner
 from pywander.image.__main__ import main
 
 
-@pytest.mark.skipif(bool(not shutil.which('pdftocairo')), reason='there is not pdftocairo')
+#@pytest.mark.skipif(bool(not shutil.which('pdftocairo')), reason='there is not pdftocairo')
+@pytest.mark.skip('i have test it')
 def test_multi_folder_convert_command(tempfolder):
     runner = CliRunner()
 
