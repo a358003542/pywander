@@ -4,6 +4,8 @@
 """
 import numpy as np
 from scipy.special import expit
+
+from pywander.datasets import load_mnist_csv_data
 from pywander.math.linear_algebra import to_row_vector, row_vector_to_column_vector, to_column_vector
 
 
@@ -243,22 +245,6 @@ def scale_to_range(arr, min_val=0.001, max_val=0.999):
     return scaled_arr
 
 
-def load_mnist_csv_data(filename):
-    data = []
-
-    with open(filename) as f:
-        for line in f:
-            label = line[0]
-            image_data = line[2:]
-            image_data = image_data.strip()
-            image_data_list = image_data.split(',')
-            image_data2 = np.asarray(image_data_list, dtype=float)
-
-            data.append((label, image_data2))
-
-    return data
-
-
 if __name__ == '__main__':
     import logging
 
@@ -271,8 +257,8 @@ if __name__ == '__main__':
         label_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         nn.set_label_list(label_list)
 
-        train_data = load_mnist_csv_data('mnist_dataset/mnist_train.csv')
-        test_data = load_mnist_csv_data('mnist_dataset/mnist_test.csv')
+        train_data = load_mnist_csv_data('mnist', 'mnist_train.csv')
+        test_data = load_mnist_csv_data('mnist','mnist_test.csv')
 
         score_card = []
 
@@ -301,8 +287,8 @@ if __name__ == '__main__':
         label_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         nn.set_label_list(label_list)
 
-        train_data = load_mnist_csv_data('mnist_dataset/mnist_train.csv')
-        test_data = load_mnist_csv_data('mnist_dataset/mnist_test.csv')
+        train_data = load_mnist_csv_data('mnist', 'mnist_train.csv')
+        test_data = load_mnist_csv_data('mnist','mnist_test.csv')
 
         score_card = []
 

@@ -20,7 +20,6 @@ def write_json(file, data):
         fp.close()
         logger.debug(f'create a temporary file: {fp.name}')
         shutil.copyfile(fp.name, file)
-        # shutil.move(fp.name, file)
 
 
 def get_json_file(json_filename, default_data=None):

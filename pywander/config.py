@@ -1,42 +1,76 @@
-
-
 import importlib
+import sys
 import os
+import logging
 
-from pywander.functools import lazy
+from pywander.pathlib import normalized_path
 
-DEFAULT_CONFIG = {
-    "APP_NAME": 'pywander'
-}
+"""
+明了胜过隐晦，除了极个别的私密配置，其他所有配置请在程序文件开头明明白白地声明出来，如果觉得太多了可以放在另外一个 `config.py`文件下，这个
+`config.py` 文件下面简称为配置文件。
+
+私密配置请参考 `.env` 环境变量的那一套做法。
+
+所有配置的key为大写字母形式，不得以下划线开头。
+
+配置加载之后的实际效果和在代码开头声明的效果应该是等同的。
+
+一个典型的用法如下所示：
+
+from pywander.config import load_config, get_default_config_path
+APP_NAME = 'test'
+config_path = get_config_path(APP_NAME)
+globals().update(load_config(config_path))
+
+"""
+logger = logging.getLogger(__name__)
+
+def import_from_path(module_name, file_path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
-def get_config(config_module=None):
-    config = {}
+def lazy_import_from_path(module_name, file_path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    spec.loader = importlib.util.LazyLoader(spec.loader)
 
-    for k, v in DEFAULT_CONFIG.items():
-        if k.isupper():
-            config[k] = v
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
-    if config_module is None:
-        config_module = os.environ.get('CONFIG_MODULE')
 
-    if config_module:
-        mod = importlib.import_module(config_module)
+def load_config(config_path, module_name='config'):
+    """
+    加载配置文件
 
-        for k in dir(mod):
+    所有配置的key为大写字母形式，不得以下划线开头。
+    """
+    try:
+        config = import_from_path(module_name, config_path)
+    except FileNotFoundError:
+        logger.warning(f'can not found: {config_path}. ')
+        return {}
+
+    new_config = {}
+    for k in dir(config):
+        if k:
+            if k[0] == '_':
+                continue
+
             if k.isupper():
-                v = getattr(mod, k)
-                config[k] = v
+                v = getattr(config, k)
+                new_config[k] = v
 
-    return config
+    return new_config
 
 
-def lazy_get_config(config_module=None):
+def get_config_path(app_name='test'):
     """
-    各个模块导入都不会加载，会在实际使用config时才实际执行。
+    获取配置文件路径
     """
-
-    return lazy(get_config, dict)(config_module)
-
-
-config = lazy_get_config()
+    return normalized_path(os.path.join('~', 'Pywander', app_name, 'config.py'))

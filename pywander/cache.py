@@ -9,10 +9,10 @@ from dateutil.relativedelta import relativedelta
 
 from diskcache import Cache
 
-from pywander.functools import lazy
+from pywander.pathlib import mkdirs
 from pywander.unique_key import build_unique_key
 from pywander.datetime import timestamp_current, timestamp_to_dt, dt_current
-from pywander.config import config
+from pywander.pathlib import normalized_path
 
 logger = logging.getLogger(__name__)
 
@@ -50,39 +50,28 @@ class CacheDB(object):
         return self.cache.get(key, **kwargs)
 
 
-def get_cachedb():
+def get_cachedb_path(app_name='test'):
+    """
+    获取缓存文件路径
+    """
+    return normalized_path(os.path.join('~', 'Pywander', app_name, 'cachedb'))
+
+
+def get_cachedb(app_name='test'):
     """ 
     默认的cachedb对象
     """
-    APP_NAME = config.get('APP_NAME')
+    cachedb_path = get_cachedb_path(app_name=app_name)
 
-    if APP_NAME == 'pywander':
-        logger.warning("你还没有加载好自己的应用配置文件")
-        raise Exception("请配置好CONFIG_MODULE环境变量")
+    if not os.path.exists(cachedb_path):
+        mkdirs(cachedb_path)
 
-    user_data_path = os.path.expanduser(
-        os.path.join('~', 'AppData', 'Roaming', APP_NAME))
-
-    if not os.path.exists(user_data_path):
-        os.mkdir(user_data_path)
-
-    cache_path = os.path.join(user_data_path, 'cache')
-    cachedb = CacheDB(cache_path)
+    cachedb = CacheDB(cachedb_path)
 
     return cachedb
 
 
-def lazy_get_cachedb():
-    """
-    """
-
-    return lazy(get_cachedb, CacheDB)()
-
-
-cachedb = lazy_get_cachedb()
-
-
-def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_dt=None):
+def default_use_cache_callback(cachedb, cache_data, func, args, kwargs, use_cache_oldest_dt=None):
     timestamp = cache_data.get('timestamp', timestamp_current())
     data_dt = timestamp_to_dt(timestamp)
 
@@ -111,7 +100,7 @@ def default_use_cache_callback(cache_data, func, args, kwargs, use_cache_oldest_
                 f'execute func {func.__name__} got no data return.')
 
 
-def func_cache(use_key='', use_cache_oldest_dt=None,
+def func_cache(cachedb, use_key='', use_cache_oldest_dt=None,
                use_cache_callback=default_use_cache_callback):
     """
     this decorator will decorator a function and try to return a value based on
@@ -130,7 +119,7 @@ def func_cache(use_key='', use_cache_oldest_dt=None,
 
             if cache_data:
                 logger.info('read data from cache ')
-                use_cache_callback(cache_data, func, args, kwargs,
+                use_cache_callback(cachedb, cache_data, func, args, kwargs,
                                    use_cache_oldest_dt=use_cache_oldest_dt)
                 return cache_data.get('data')
             else:
