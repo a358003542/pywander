@@ -2,14 +2,7 @@
 # -*-coding:utf-8-*-
 
 
-def bigfile_read(
-    filename,
-    process_line=None,
-    line_start=0,
-    line_count=10000,
-    mode="r",
-    encoding="utf8",
-):
+def bigfile_read(filename, process_line=None, line_start=0, line_count=10000, mode="r", encoding="utf8"):
     """
     Keyword arguments:
     filename 要处理的文件名

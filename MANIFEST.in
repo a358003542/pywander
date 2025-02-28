@@ -4,5 +4,4 @@ include *.rst
 include setup.cfg
 include LICENSE
 include .gitignore
-recursive-include tests *.py
-
+recursive-exclude tests *.py
