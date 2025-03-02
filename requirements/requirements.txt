@@ -8,3 +8,4 @@ my_fake_useragent
 diskcache
 pyparsing
 lxml
+dill

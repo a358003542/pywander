@@ -23,6 +23,10 @@ def get_datasets_path(*args, app_name='test'):
     return path
 
 def load_mnist_csv_data(*args):
+    """
+    灰度图现在定义是0为黑，255为白，从黑到白为从0到255的整数值。
+    mnist里面的数据是个反的，为了和现代灰度图标准统一，最好将mnist的图片数据预处理下。
+    """
     file_path = get_datasets_path(*args)
 
     data = []
@@ -34,7 +38,7 @@ def load_mnist_csv_data(*args):
             image_data = image_data.strip()
             image_data_list = image_data.split(',')
             image_data2 = np.asarray(image_data_list, dtype=float)
-
+            image_data2 = 255.0 - image_data2
             data.append((label, image_data2))
 
     return data
