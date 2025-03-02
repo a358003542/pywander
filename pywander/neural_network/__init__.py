@@ -154,8 +154,8 @@ if __name__ == '__main__':
 
 
     def train_simple_fnn():
-        epochs = 5
-        learning_rate = 0.006
+        epochs = 3
+        learning_rate = 0.01
 
         nn = SimpleFNN(input_nodes=28 * 28, output_nodes=10, hidden_nodes=100, learning_rate=learning_rate)
         label_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
