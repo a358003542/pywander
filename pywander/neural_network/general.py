@@ -38,18 +38,52 @@ class NeuralNetwork(nn.Module):
         return self.model(inputs)
 
     def to_device(self):
+        for module in self.children():
+            module.to(self.device)
+
         self.to(self.device)
 
+    def train_one(self, inputs, targets):
+        """
+        单个训练模式
+        """
+        self.train()
+
+        inputs, targets = inputs.to(self.device), targets.to(self.device)
+
+        outputs = self.forward(inputs)
+        loss = self.loss_function(outputs, targets)
+
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+
+        self.train_counter += 1
+
+        if self.train_counter % 20 == 0:
+            self.train_progress.append(loss.item())
+
+        if self.train_counter % 3000 == 0:
+            print(f"trained by: {self.__class__.__name__} "
+                  f"loss: {loss.item():>7f}  train_counter: {self.train_counter:>5d}")
+
+        return loss.item()
+
+    def reset_train_counter(self):
+        """
+        主要是针对train_one单个训练模式 批次训练流程是在外面控制的
+        """
+        self.train_counter = 0
 
     def train_batch2(self, dataloader):
         """
         通过dataloader批次训练
 
-        批次训练更有效率，但就这个简单的网络加上这里入门级别的配置造成效果不是很好，暂时这里先转成单个训练模式
+        某些情况下可能需要强制转为单个训练模式
         """
         self.train_counter = 0
         size = len(dataloader.dataset)
-        self.model.train()
+        self.train()
 
         for batch, (inputs_batch, targets_batch) in enumerate(dataloader):
             for inputs, targets in zip(inputs_batch, targets_batch):
@@ -74,11 +108,11 @@ class NeuralNetwork(nn.Module):
         """
         通过dataloader批次训练
 
-        批次训练更有效率，但就这个简单的网络加上这里入门级别的配置造成效果不是很好，暂时这里先转成单个训练模式
+        批次训练更有效率
         """
         self.train_counter = 0
         size = len(dataloader.dataset)
-        self.model.train()
+        self.train()
 
         for batch, (inputs_batch, targets_batch) in enumerate(dataloader):
             inputs, targets = inputs_batch.to(self.device), targets_batch.to(self.device)
@@ -105,7 +139,7 @@ class NeuralNetwork(nn.Module):
         """
         size = len(dataloader.dataset)
         num_batches = len(dataloader)
-        self.model.eval()
+        self.eval()
 
         test_loss, correct = 0, 0
         with torch.no_grad():
