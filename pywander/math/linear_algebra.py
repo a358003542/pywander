@@ -4,14 +4,20 @@ linear algebra
 the prefix explanation
 
 a : an array np.array([1, 2, 3])
-v : 一维数组 行向量 列向量 都是不同的，在某些情况下必须严格区别
+
+v : 行向量和列向量和1d_array
+    一般应用场景是不需要确立所谓数学意义上严格的行向量和列向量的，但在某些情景下，要求实现列向量和行向量的点积输出是一个矩阵，
+    这个时候行向量和列向量和1d_array都需要严格进行区分，如下所示：
+
     1d array:  np.array([1, 2, 3])
     row_vector  np.array([[1,2,3]])
-    col vector col_v1 np.array([[2],[0],[0]])
-m : the linear equation system left matrix 
-b : the linear equation right b array 
-am : [argumented matrix] combine m and b to a entire linear system matrix 
+    col_vector  np.array([[2],[0],[0]])
 
+m : the linear equation system left matrix
+
+b : the linear equation right b array
+
+am : [argumented matrix] combine m and b to a entire linear system matrix
 
 """
 

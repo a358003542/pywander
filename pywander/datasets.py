@@ -1,15 +1,13 @@
 import os
 
-import numpy as np
 import pandas as pd
 import torch
-
-from pywander.pathlib import normalized_path
-from torch.utils.data import Dataset, DataLoader
-
+from torch.utils.data import Dataset
 from torchvision import datasets as torchvision_datasets
 from torchvision.transforms import ToTensor
 
+from pywander.pathlib import normalized_path
+from pywander.utils.plot_utils import image_plot
 
 
 def get_datasets_folder(app_name='test'):
@@ -86,15 +84,19 @@ def load_mnist_test_data(line_count=-1):
     return load_mnist_csv_data('mnist', 'mnist_test.csv', line_count=line_count)
 
 
-class FashionMNIST(torchvision_datasets.FashionMNIST):
-    def __init__(self,train: bool = True) -> None:
-        super().__init__(get_datasets_folder(), train=train, transform=ToTensor())
+def plot_mnist_image(image_data, label, ax=None, **kwargs):
+    if ax is None:
+        import matplotlib.pyplot as plt
+        ax = plt.gca()
 
-def plot_mnist_image(value, label):
-    value = value.reshape(28,28)
-    import matplotlib.pyplot as plt
-    plt.title("label = " + str(label))
-    plt.imshow(value, interpolation='none', cmap='gray')
+    image_data = image_data.reshape(28, 28)
+    title = f"label = {label}"
+    image_plot(ax, image_data, title=title, cmap='gray', interpolation='none', **kwargs)
+
+
+class FashionMNIST(torchvision_datasets.FashionMNIST):
+    def __init__(self, train: bool = True) -> None:
+        super().__init__(get_datasets_folder(), train=train, transform=ToTensor())
 
 
 class MnistDataset(Dataset):
@@ -111,15 +113,13 @@ class MnistDataset(Dataset):
         value = self.df.iloc[index, 1:].to_numpy(dtype='float') / 255.0
         sample = torch.FloatTensor(value)
 
-        label = self.df.iloc[index,0]
+        label = self.df.iloc[index, 0]
         target = torch.zeros(10)
         target[label] = 1.0
         return sample, target
 
-    def plot_image(self, index):
+    def plot_image(self, index, ax=None):
         value = self.df.iloc[index, 1:].to_numpy(dtype='float')
         label = self.df.iloc[index, 0]
-        plot_mnist_image(value, label)
 
-
-
+        plot_mnist_image(ax, value, label)
