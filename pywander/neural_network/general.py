@@ -1,6 +1,7 @@
-import pandas as pd
 import torch
 from torch import nn as nn
+
+from pywander.utils.plot_utils import line_plot
 
 
 def get_torch_device_type():
@@ -159,6 +160,9 @@ class NeuralNetwork(nn.Module):
         correct /= size
         print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
-    def plot_progress(self):
-        df = pd.DataFrame(self.train_progress, columns=['loss'])
-        df.plot(ylim=(0, 1.0), figsize=(16, 8), alpha=0.1, marker='.', grid=True, yticks=(0, 0.25, 0.5))
+    def plot_progress(self, ax=None, **kwargs):
+        if ax is None:
+            import matplotlib.pyplot as plt
+            ax = plt.gca()
+
+        line_plot(ax, y_values=self.train_progress, marker='.', y_lim=(0, 1.0), y_label='loss', **kwargs)
