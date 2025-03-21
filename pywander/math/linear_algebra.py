@@ -1,6 +1,8 @@
 """
 linear algebra
 
+本脚本只考虑基于numpy的ndarray的情况，对向量，矩阵等各个数学运算提供支持。
+
 the prefix explanation
 
 a : an array np.array([1, 2, 3])
@@ -135,14 +137,22 @@ def can_form_3d_space(vec1, vec2, vec3):
 
 
 
+def l1norm(v):
+    """
+    返回向量的l1范数
 
+    注意本函数只考虑向量或者一维数组的情况
+    """
+    return np.linalg.norm(v, 1)
 
 
 def l2norm(v):
     """
-    get the l2 norm of a vector
+    返回向量的l2范数
+
+    注意本函数只考虑向量或者一维数组的情况
     """
-    return np.linalg.norm(v)
+    return np.linalg.norm(v, 2)
 
 
 def vector_length(v):
@@ -168,14 +178,47 @@ def cosine_similarity(v1, v2):
     return cosine
 
 
-def normalize_vector(vector):
+def normalize_l1(vector):
+    """
+    对向量进行 L1 归一化
+
+    注意本函数只考虑向量或者一维数组的情况
+    """
+    norm = l1norm(vector)
+    if norm == 0:
+        return vector
+    return vector / norm
+
+
+def normalize_l2(vector):
     """
     对向量进行 L2 归一化
+
+    注意本函数只考虑向量或者一维数组的情况
     """
     norm = l2norm(vector)
     if norm == 0:
         return vector
     return vector / norm
+
+
+def minmax_scale(arr, feature_range=(0.01, 0.99)):
+    """
+    将数组中的所有数字缩放到指定的范围 [min_val, max_val]
+
+    `sklearn.preprocessing.minmax_scale` 太重了，是专门针对机器学习那一套流程而设计的
+
+    本函数只关注于一些简单的原型设计，就是简单的一维数组进行minmax缩放
+    """
+    min_val = feature_range[0]
+    max_val = feature_range[1]
+
+    # 找到数组中的最小值和最大值
+    arr_min = np.min(arr)
+    arr_max = np.max(arr)
+    # 进行线性缩放
+    scaled_arr = min_val + (arr - arr_min) / (arr_max - arr_min) * (max_val - min_val)
+    return scaled_arr
 
 
 def cosine_similarity_after_normalization(vector1, vector2):
@@ -184,8 +227,8 @@ def cosine_similarity_after_normalization(vector1, vector2):
 
     和cosine_similarity必然输出一样的结果 也就是余弦相似度本质上就和向量长度无关
     """
-    normalized_vector1 = normalize_vector(vector1)
-    normalized_vector2 = normalize_vector(vector2)
+    normalized_vector1 = normalize_l2(vector1)
+    normalized_vector2 = normalize_l2(vector2)
     # 由于向量已归一化，模长都为 1，余弦相似度就是点积
     # 所以某些情况下向量已经归一化了 这个时候直接计算点积就得到余弦相似度了
     return np.dot(normalized_vector1, normalized_vector2)

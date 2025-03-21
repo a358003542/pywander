@@ -1,7 +1,13 @@
 import torch
 from torch import nn as nn
+import torch.nn.functional as F
 
 from pywander.utils.plot_utils import line_plot
+
+"""
+本脚本提供了神经网络编程的通用性支持，同时基于pytorch的Tensor来对一些向量、矩阵等数学运算提供支持。
+
+"""
 
 
 def get_torch_device_type():
@@ -166,3 +172,40 @@ class NeuralNetwork(nn.Module):
             ax = plt.gca()
 
         line_plot(ax, y_values=self.train_progress, marker='.', y_lim=(0, 1.0), y_label='loss', **kwargs)
+
+
+def normalize_sum(m):
+    """
+    认为矩阵第一个维度为样本计数  第二个维度是实际的数据向量
+
+    对 矩阵中的各个数据向量 进行 求和归一化
+
+    所谓求和归一化就是向量各个元素除以该向量各个元素之和，在元素都为正数的情况下等于L1归一化
+
+    注意本函数只考虑torch的张量的二阶矩阵情况
+    """
+    sum_m = torch.sum(m, dim=1, keepdim=True)
+    return  m / sum_m
+
+
+def normalize_l1(m):
+    """
+    认为矩阵第一个维度为样本计数  第二个维度是实际的数据向量
+
+    对 矩阵中的各个数据向量 进行 L1 归一化
+
+    注意本函数只考虑torch的张量的二阶矩阵情况
+    """
+    return F.normalize(m, p=1, dim=1)
+
+
+def normalize_l2(m):
+    """
+    认为矩阵第一个维度为样本计数  第二个维度是实际的数据向量
+
+    对 矩阵中的各个数据向量 进行 L2 归一化
+
+    注意本函数只考虑torch的张量的二阶矩阵情况
+
+    """
+    return F.normalize(m, p=2, dim=1)
