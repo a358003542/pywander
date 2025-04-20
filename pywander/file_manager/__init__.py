@@ -75,10 +75,8 @@ def batch_run_python_script(root='.', out_suffix='.out', err_suffix='.err'):
                 # 打开文件以写入标准错误
                 with open(file_error_path, 'wt', encoding='utf8') as stderr_file:
                     # 运行子进程，并将标准输出和标准错误分别重定向到文件
-                    result = subprocess.run(['python', file_path],
-                                            stdout=stdout_file,
-                                            stderr=stderr_file,
-                                            text=True)
+                    result = subprocess.run(f'python {file_path}', stdout=stdout_file, stderr=stderr_file,
+                                            text=True, shell=True)
 
             # 检查返回码
             if result.returncode == 0:
