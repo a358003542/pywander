@@ -9,7 +9,7 @@ import shutil
 
 from PIL import Image
 
-from pywander.pathlib import mkdirs
+from pywander.path import mkdirs
 from pywander.encoding import convert_encoding
 from pywander.exceptions import PdftocairoProcessError, PillowProcessError, \
     InkscapeProcessError

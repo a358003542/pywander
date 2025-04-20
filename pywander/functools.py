@@ -50,3 +50,13 @@ def sumall(*args):
     """
     args = flatten(args)
     return sum(args)
+
+def default_func(n):
+    print(n)
+
+def mathematical_induction(n, func=default_func):
+    if n==1:
+        return default_func(1)
+    else:
+        return mathematical_induction(n-1)
+

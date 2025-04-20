@@ -6,7 +6,7 @@ from torch.utils.data import Dataset
 from torchvision import datasets as torchvision_datasets
 from torchvision.transforms import ToTensor
 
-from pywander.pathlib import normalized_path
+from pywander.path import normalized_path
 from pywander.utils.plot_utils import image_plot
 
 

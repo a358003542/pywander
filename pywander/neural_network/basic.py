@@ -8,11 +8,9 @@
 
 import numpy as np
 from scipy.special import expit, logit
-from sklearn.preprocessing import minmax_scale
 
-from pywander.datasets import load_mnist_csv_data, load_mnist_test_data, load_mnist_train_data
-from pywander.math.linear_algebra import to_row_vector, to_column_vector, row_vector_to_column_vector
-
+from pywander.datasets import load_mnist_test_data, load_mnist_train_data
+from pywander.math.linear_algebra import to_row_vector, to_column_vector, row_vector_to_column_vector, minmax_scale
 
 class NeuralNetwork:
     def __init__(self, input_nodes=1, output_nodes=1, learning_rate=0.3, feature_range=(0.01, 0.99)):

@@ -3,7 +3,7 @@ import sys
 import os
 import logging
 
-from pywander.pathlib import normalized_path
+from pywander.path import normalized_path
 
 """
 明了胜过隐晦，除了极个别的私密配置，其他所有配置请在程序文件开头明明白白地声明出来，如果觉得太多了可以放在另外一个 `config.py`文件下，这个
