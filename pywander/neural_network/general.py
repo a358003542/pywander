@@ -174,6 +174,23 @@ class NeuralNetwork(nn.Module):
         line_plot(ax, y_values=self.train_progress, marker='.', y_lim=(0, 1.0), y_label='loss', **kwargs)
 
 
+def l1norm(v):
+    """
+    返回向量的l1范数
+
+    注意本函数只考虑 一阶张量 也就是向量时候的情况
+    """
+    return torch.abs(v).sum()
+
+
+def l2norm(v):
+    """
+    返回向量的l2范数
+
+    注意本函数只考虑 一阶张量 也就是向量时候的情况
+    """
+    return torch.norm(v)
+
 def normalize_sum(m):
     """
     认为矩阵第一个维度为样本计数  第二个维度是实际的数据向量

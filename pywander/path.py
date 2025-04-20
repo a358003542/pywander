@@ -198,6 +198,42 @@ def get_filename(path):
     else:
         raise ValueError
 
+
+def gen_all_file(start_path='.', filetype="", exclude_folder_name=None):
+    """
+    本函数是一个生成器函数。
+
+    利用os.walk 遍历某个目录，收集其内的文件，返回一系列的文件绝对路径。
+
+    第一个可选参数 start_path  默认值 '.'
+    第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
+    如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
+    第三个可选参数 exclude_folder_name 列出一些想要排除文件夹的名字
+
+    """
+    for root, dirs, files in os.walk(start_path):
+        if exclude_folder_name is not None:
+            for exclude_folder in exclude_folder_name:
+                if exclude_folder in dirs:
+                    # 将不会再访问
+                    dirs.remove(exclude_folder)
+
+        folder_path = to_absolute_path(os.path.join(root))
+
+        for file in files:
+            file_path = os.path.join(folder_path, file)
+
+            file_name, file_ext = os.path.splitext(file)
+            if filetype:
+                if re.search(filetype, file_ext):
+                    yield file_path
+            else:
+                yield file_path
+
+
+
+
+
 def remove_window_illegal_symbol(s):
     """
     移除windows下的非法字符
@@ -207,49 +243,3 @@ def remove_window_illegal_symbol(s):
     """
     new_s = re.sub(r'[/\\:*?"<>|]','',s)
     return new_s
-
-def gen_filetree(start_path='.', filetype=""):
-    """
-    利用os.walk 遍历某个目录，收集其内的文件，返回
-    (文件路径列表, 本路径下的文件列表)
-    比如:
-    (['shortly'], ['shortly.py'])
-(['shortly', 'templates'], ['shortly.py'])
-(['shortly', 'static'], ['shortly.py'])
-
-    第一个可选参数 start_path  默认值 '.'
-    第二个参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
-    如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
-    """
-    for root, dirs, files in os.walk(start_path):
-        filelist = []
-        for f in files:
-            file_name, file_ext = os.path.splitext(f)
-            if filetype:
-                if re.search(filetype, file_ext):
-                    filelist.append(f)
-            else:
-                filelist = files
-        if filelist:  # 空文件夹不加入
-            dirlist = root.split(os.path.sep)
-            dirlist = dirlist[1:]
-            if dirlist:
-                yield dirlist, filelist
-            else:
-                yield ['.'], filelist
-
-
-def gen_allfile(start_path='.', filetype=""):
-    """
-    利用os.walk 遍历某个目录，收集其内的文件，返回符合条件的文件路径名
-    是一个生成器。
-    第一个可选参数 start_path  默认值 '.'
-    第二个参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
-    如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
-    """
-
-    for dirlist, filelist in gen_filetree(start_path=start_path,
-                                          filetype=filetype):
-        for f in filelist:
-            filename = os.path.join(os.path.join(*dirlist), f)
-            yield filename

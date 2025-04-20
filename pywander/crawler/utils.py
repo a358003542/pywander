@@ -9,7 +9,7 @@ from urllib.parse import urlsplit, urljoin, urldefrag
 
 import requests
 from my_fake_useragent import UserAgent
-from pywander.pathlib import mkdirs, to_absolute_path
+from pywander.path import mkdirs, to_absolute_path
 
 logger = logging.getLogger(__name__)
 

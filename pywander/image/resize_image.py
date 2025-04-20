@@ -7,7 +7,7 @@ import os
 from PIL import Image
 import click
 
-from pywander.pathlib import mkdirs
+from pywander.path import mkdirs
 
 logger = logging.getLogger(__name__)
 

@@ -9,21 +9,16 @@ from dateutil.relativedelta import relativedelta
 
 from diskcache import Cache
 
-from pywander.pathlib import mkdirs
+from pywander.path import mkdirs
 from pywander.unique_key import build_unique_key
 from pywander.datetime import timestamp_current, timestamp_to_dt, dt_current
-from pywander.pathlib import normalized_path
+from pywander.path import normalized_path, to_absolute_path
 
 logger = logging.getLogger(__name__)
 
 
 class CacheDB(object):
     """
-    {
-        "data": ...,
-        "timestamp": ...
-    }
-
     """
     _instance = None
 
@@ -39,29 +34,60 @@ class CacheDB(object):
 
     @property
     def directory(self):
-        return self._cache._directory
+        return self._cache.directory
 
     def set(self, key, value, **kwargs):
         """
+        设置缓存值
         """
         self.cache.set(key, value, **kwargs)
 
     def get(self, key, **kwargs):
+        """
+        获取缓存值
+        """
         return self.cache.get(key, **kwargs)
 
+    def add(self, key, value, **kwargs):
+        """
+        初始化缓存值
+        """
+        return self.cache.add(key, value, **kwargs)
 
-def get_cachedb_path(app_name='test'):
+    def has_key(self, key):
+        """
+        检查key是否存在
+        """
+        return key in self.cache
+
+
+
+def get_cachedb(root='.'):
+    """
+    从某个文件夹下获取缓存数据库 默认是当前文件夹下
+    """
+    cachedb_path = to_absolute_path(os.path.join(root, 'cachedb'))
+
+    if not os.path.exists(cachedb_path):
+        mkdirs(cachedb_path)
+
+    cachedb = CacheDB(cachedb_path)
+
+    return cachedb
+
+
+def get_default_cachedb_path(app_name='test'):
     """
     获取缓存文件路径
     """
     return normalized_path(os.path.join('~', 'Pywander', app_name, 'cachedb'))
 
 
-def get_cachedb(app_name='test'):
+def get_default_cachedb(app_name='test'):
     """ 
     默认的cachedb对象
     """
-    cachedb_path = get_cachedb_path(app_name=app_name)
+    cachedb_path = get_default_cachedb_path(app_name=app_name)
 
     if not os.path.exists(cachedb_path):
         mkdirs(cachedb_path)
@@ -85,7 +111,8 @@ def default_use_cache_callback(cachedb, cache_data, func, args, kwargs, use_cach
     if target_dt.tzinfo is None:
         target_dt.replace(tzinfo=timezone.utc)
 
-    if data_dt < target_dt:  # too old then we will re-excute the function
+    # too old then we will re-excute the function
+    if data_dt < target_dt:
         key = cache_data.get('key')
         data = func(*args, **kwargs)
 
@@ -94,10 +121,8 @@ def default_use_cache_callback(cachedb, cache_data, func, args, kwargs, use_cach
             cache_data['timestamp'] = str(timestamp_current())
 
             cachedb.set(key, cache_data)
-            return data  # not important
         else:
-            raise Exception(
-                f'execute func {func.__name__} got no data return.')
+            raise Exception(f'execute func {func.__name__} got no data return.')
 
 
 def func_cache(cachedb, use_key='', use_cache_oldest_dt=None,

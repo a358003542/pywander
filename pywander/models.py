@@ -2,7 +2,7 @@ import os
 import dill
 import logging
 
-from pywander.pathlib import normalized_path
+from pywander.path import normalized_path
 
 logger = logging.getLogger(__name__)
 

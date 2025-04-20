@@ -1,6 +1,19 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+import hashlib
+
+
+def calculate_file_hash(file_path):
+    """
+    计算目标文件hash值
+    """
+    hash_object = hashlib.sha256()
+    with open(file_path, 'rb') as file:
+        for chunk in iter(lambda: file.read(4096), b""):
+            hash_object.update(chunk)
+    return hash_object.hexdigest()
+
 
 def bigfile_read(filename, process_line=None, line_start=1, line_count=-1, mode="r", encoding="utf8"):
     """
