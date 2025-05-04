@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-from pywander.exceptions import NotIntegerError
 import pytest
-from pywander.math import is_even, is_odd, is_prime, prime, fibonacci
+from pywander.exceptions import NotIntegerError
+from pywander.math.arithmetic import is_odd, prime, fibonacci, is_prime, is_even
 
 
 def test_is_even():

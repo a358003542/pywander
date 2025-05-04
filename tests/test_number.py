@@ -2,7 +2,7 @@
 # -*-coding:utf-8-*-
 
 import pytest
-from pywander.number import radix_conversion
+from pywander.math.arithmetic import radix_conversion
 from pywander.exceptions import OutOfChoiceError
 
 

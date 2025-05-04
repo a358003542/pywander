@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+"""
+编码转换问题
+"""
 
 def convert_encoding(origin_string, origin_encoding, to_encoding,
                      errors='ignore'):
