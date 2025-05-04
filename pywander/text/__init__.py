@@ -1,14 +1,7 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-"""
-short text process tools
-
-"""
 
 import re
 
-from ..zhnumber import int_zhnumber
+from .zh_number import zh_number_to_int
 from ..exceptions import GuessFailed
 
 
@@ -23,12 +16,12 @@ def multi_delimiter_split(string, delimiters='', split_whitespace=True,
 
 
     """
-    expr_one = '\s' if split_whitespace else ''
+    expr_one = r'\s' if split_whitespace else ''
 
     expr = '[{0}{1}]'.format(delimiters, expr_one)
 
     if remove_whitespace:
-        expr = '\s*' + expr + '\s*'
+        expr = r'\s*' + expr + r'\s*'
 
     res = re.split(expr, string)
 
@@ -37,7 +30,7 @@ def multi_delimiter_split(string, delimiters='', split_whitespace=True,
 
 def int_number(string):
     """
-    类似 int_zhnumber 函数，不过假如了 "132" 的 这样的数字字符支持
+    类似 int_zh_number 函数，不过假如了 "132" 的 这样的数字字符支持
 
     :param string:
     :return:
@@ -46,7 +39,7 @@ def int_number(string):
         return int(string)
     except ValueError:
         try:
-            return int_zhnumber(string)
+            return zh_number_to_int(string)
         except Exception as e:
             raise e
 
@@ -85,3 +78,5 @@ def guess_volume_id(string):
             pass
 
     raise GuessFailed
+
+

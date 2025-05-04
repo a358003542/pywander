@@ -1,33 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pywander.nlp.text import guess_chapter_id
-
-from pywander.zhnumber import int_zhnumber, zhnumber
-
-
-def test_zhnumber():
-    assert zhnumber(0) == '零'
-    assert zhnumber(1) == '一'
-    assert zhnumber(11) == '一十一'
-    assert zhnumber(15156) == '一万五千一百五十六'
-    assert zhnumber(101) == '一百零一'
-    assert zhnumber(1001) == '一千零一'
-    assert zhnumber(10000001) == '一千万零一'
+from pywander.text import guess_chapter_id, zh_number_to_int
+from pywander.text.zh_number import zh_number
 
 
-def test_int_zhnumber():
-    assert int_zhnumber('一') == 1
-    assert int_zhnumber('十一') == 11
-    assert int_zhnumber('二十二') == 22
-    assert int_zhnumber('一百零三') == 103
-    assert int_zhnumber('三百四十五') == 345
+def test_zh_number():
+    assert zh_number(0) == '零'
+    assert zh_number(1) == '一'
+    assert zh_number(11) == '一十一'
+    assert zh_number(15156) == '一万五千一百五十六'
+    assert zh_number(101) == '一百零一'
+    assert zh_number(1001) == '一千零一'
+    assert zh_number(10000001) == '一千万零一'
 
-    assert int_zhnumber('1万6千') == 16000
+
+def test_zh_number_to_int():
+    assert zh_number_to_int('一') == 1
+    assert zh_number_to_int('十一') == 11
+    assert zh_number_to_int('二十二') == 22
+    assert zh_number_to_int('一百零三') == 103
+    assert zh_number_to_int('三百四十五') == 345
+
+    assert zh_number_to_int('1万6千') == 16000
 
 
-def test_zhnumber_all():
-    assert int_zhnumber(zhnumber(15156)) == 15156
+def test_zh_number_all():
+    assert zh_number_to_int(zh_number(15156)) == 15156
 
 
 def test_guess_chapter_id():

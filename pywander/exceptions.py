@@ -78,12 +78,12 @@ class RequireArgumentError(Exception):
     """
 
 
-class FatalError():
-    """Fatal Error, the program need shutdown imediately"""
+class FatalError(Exception):
+    """Fatal Error, the program need shutdown immediately"""
 
 
 class NotIntegerError(ValueError):
-    """Need input is a integer"""
+    """Need input is an integer"""
 
 
 class NotFloatError(ValueError):
@@ -102,7 +102,7 @@ class NotSupportedWarning(UserWarning):
     """This feature is not supported, program will ignore it."""
 
 
-class UnDefinedError():
+class UnDefinedError(Exception):
     """UndefinedError, lately we will talk about it. """
 
 
