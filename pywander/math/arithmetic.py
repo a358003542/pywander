@@ -3,6 +3,19 @@ from typing import Union
 
 from pywander.exceptions import OutOfChoiceError, NotIntegerError, OutOfRangeError
 
+def is_divisible(a, b):
+    """
+    a 是否被 b 整除
+    """
+    if (not isinstance(a, int)) or (not isinstance(b, int)):
+        raise NotIntegerError
+
+    if a % b == 0:
+        return True
+    else:
+        return False
+
+
 def is_even(n):
     """is this number is even, required n is an integer.
 
@@ -92,16 +105,6 @@ pywander.exceptions.OutOfChoiceError: radix is out of choice.
 
 def is_prime(n):
     """test input integer n is a prime.
-    >>> is_prime(0)
-    False
-    >>> is_prime(-5)
-    False
-    >>> is_prime(-5.2)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-      File "__init__.py", line 12, in is_prime
-        raise NotIntegerError
-    pywander.exceptions.NotIntegerError
     >>> is_prime(5)
     True
     >>> is_prime(123)
@@ -110,6 +113,8 @@ def is_prime(n):
     """
     if not isinstance(n, int):
         raise NotIntegerError
+    if n<=1:
+        raise OutOfRangeError("prime need greater than 1")
 
     if n == 2:
         return True
@@ -124,7 +129,7 @@ def is_prime(n):
 def gen_prime(n):
     """generate n prime"""
     count = 0
-    x = 1
+    x = 2
     while count < n:
         if is_prime(x):
             count += 1
@@ -132,9 +137,9 @@ def gen_prime(n):
         x += 1
 
 
-def gen2_prime(n):
+def gen_prime2(n):
     """generate prime smaller than n"""
-    for x in range(n):
+    for x in range(2, n):
         if is_prime(x):
             yield x
 
@@ -145,10 +150,7 @@ def last_gen(genobj):
     :param genobj:
     :return:
     """
-    for i in genobj:
-        last_e = i
-
-    return last_e
+    return list(genobj)[-1]
 
 
 def prime(n):
@@ -168,8 +170,8 @@ def gen_fibonacci(n):
     a, b = 0, 1
 
     while count < n:
-        yield a
         a, b = b, a + b
+        yield a
         count += 1
 
 
@@ -181,33 +183,19 @@ def fibonacci(n):
         return last_gen(gen_fibonacci(n))
 
 
-def gen_factorial(stop, start=1):
-    """start*....stop factorial generator default start=1"""
-    if not isinstance(stop, int):
-        raise NotIntegerError
-    if not isinstance(start, int):
-        raise NotIntegerError
+def factorial(n):
+    """factorial n!"""
+    return math.factorial(n)
 
-    count = 0
-    m = start
-    n = stop - start + 1
-    if stop <= 0:
-        raise OutOfRangeError("负数和零的阶乘没有意义")
-    elif stop < start:
-        raise ValueError("终值应该比初值大")
-    else:
-        while count < n:
-            yield start
-            start = start * (m + 1)
-            m += 1
-            count += 1
+def gcd(*integers):
+    """
+    最大公约数
+    """
+    return math.gcd(*integers)
 
 
-def factorial(stop, start=1):
-    """start*....stop factorial"""
-    if stop <= 0:
-        raise OutOfRangeError("负数和零的阶乘没有意义")
-    elif stop < start:
-        raise ValueError("终值应该比初值大")
-    else:
-        return last_gen(gen_factorial(stop, start))
+def lcm(*integers):
+    """
+    最小公倍数
+    """
+    return math.lcm(*integers)
