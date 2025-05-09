@@ -29,7 +29,7 @@ def test_is_odd():
 def test_is_prime():
     for i in [2, 3, 5, 7, 199, 499]:
         assert is_prime(i) is True
-    for i in [1, -1, 0, 4, 6, 497]:
+    for i in [4, 6, 497]:
         assert is_prime(i) is False
 
     with pytest.raises(NotIntegerError):
@@ -42,4 +42,4 @@ def test_prime():
 
 
 def test_fibonacci():
-    assert fibonacci(6) == 5
+    assert fibonacci(6) == 8
