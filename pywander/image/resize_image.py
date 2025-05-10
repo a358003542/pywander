@@ -12,31 +12,34 @@ from pywander.path import mkdirs
 logger = logging.getLogger(__name__)
 
 
-def resize_image(inputimg, width=0, height=0, outputdir='', outputname=''):
+def resize_image(input_img, width=0, height=0, outputdir='', outputname=''):
     """
-    width and height if you only specify one parameter of them, then the another will dismissed.
-    if you given a overhigh height, then there maybe output a image not resize at all.
+    调整图片尺寸，保持图片的长宽比。
+
+    宽度高度只需要指定一个即可，另外一个会自动计算得到。
+
+    如果指定宽度或高度超过了原始尺寸，那么将不会进行操作。
     """
-    imgname, imgext = os.path.splitext(os.path.basename(inputimg))
+    img_name, img_ext = os.path.splitext(os.path.basename(input_img))
 
     if not os.path.exists(os.path.abspath(outputdir)):
         mkdirs(outputdir)
 
     if not outputname:
-        outputname = imgname + '_resized' + imgext
+        outputname = img_name + '_resized' + img_ext
     else:
-        output_imgname, ext = os.path.splitext(outputname)
+        output_img_name, ext = os.path.splitext(outputname)
         if not ext:
-            outputname = output_imgname + '_resized' + imgext
-        elif ext != imgext:
+            outputname = output_img_name + '_resized' + img_ext
+        elif ext != img_ext:
             raise Exception(
                 'outputname ext is not the same as the intput image')
 
     try:
-        im = Image.open(os.path.abspath(inputimg))
+        im = Image.open(os.path.abspath(input_img))
         ori_w, ori_h = im.size
 
-        if width == 0 and height != 0:  # given height and make width meanful
+        if width == 0 and height != 0:
             width = ori_w
         elif width != 0 and height == 0:
             height = ori_h
@@ -56,13 +59,16 @@ def resize_image(inputimg, width=0, height=0, outputdir='', outputname=''):
         logger.debug(f'pillow resize target ({width},{height})')
         im.thumbnail((width, height))
 
-        logger.info(os.path.abspath(inputimg))
+        logger.info(os.path.abspath(input_img))
 
-        outputimg = os.path.join(os.path.abspath(outputdir), outputname)
+        output_img = os.path.join(os.path.abspath(outputdir), outputname)
 
-        logger.debug(f'pillow resize output image to {outputimg}')
-        im.save(outputimg)
-        click.echo('{0} saved.'.format(outputimg))
-        return outputimg
+        logger.debug(f'pillow resize output image to {output_img}')
+        im.save(output_img)
+        click.echo('{0} saved.'.format(output_img))
+        return output_img
     except IOError:
-        logging.error('IOError, I can not resize {}'.format(inputimg))
+        logging.error('IOError, I can not resize {}'.format(input_img))
+
+    return None
+

@@ -44,21 +44,23 @@ def main():
 @click.argument('inputimgs', type=click.Path(), nargs=-1, required=True)
 @click.option('--width', default=0, type=int, help="the output image width")
 @click.option('--height', default=0, help="the output image height")
-@click.option('--outputdir', default="", help="the image output dir")
+@click.option('--outputdir', default="", help="the image output directory")
 @click.option('--outputname', default="", help="the image output name")
 def resize(inputimgs, width, height, outputdir, outputname):
     """
-    resize your image, width height you must give one default is zero.
+    调整图片尺寸，保持图片的长宽比。
+
+    宽度高度只需要指定一个即可，另外一个会自动计算得到。
     """
 
-    for inputimg in inputimgs:
-        outputimg = resize_image(inputimg, width=width, height=height,
+    for input_img in inputimgs:
+        output_img = resize_image(input_img, width=width, height=height,
                                  outputdir=outputdir, outputname=outputname)
 
-        if outputimg:
-            click.echo("process: {} done.".format(inputimg))
+        if output_img:
+            click.echo("process: {} done.".format(input_img))
         else:
-            click.echo("process: {} failed.".format(inputimg))
+            click.echo("process: {} failed.".format(input_img))
 
 
 @main.command()
@@ -67,7 +69,7 @@ def resize(inputimgs, width, height, outputdir, outputname):
               help='print verbose info')
 @click.argument('inputimgs', type=click.Path(), nargs=-1, required=True)
 @click.option('--dpi', default=150, type=int, help="the output image dpi")
-@click.option('--format', default="png", help="the output image format")
+@click.option('--imgformat', default="png", help="the output image format")
 @click.option('--outputdir', default="", help="the image output dir")
 @click.option('--outputname', default="", help="the image output name")
 @click.option('--pdftocairo-fix-encoding', default="",
@@ -76,24 +78,26 @@ def resize(inputimgs, width, height, outputdir, outputname):
               help='overwrite the output image file, default is overwrite')
 @click.option('--transparent', is_flag=True,
               help="pdf convert to png|tiff can turn transparent on")
-def convert(inputimgs, dpi, format, outputdir, outputname,
+def convert(inputimgs, dpi, imgformat, outputdir, outputname,
             pdftocairo_fix_encoding, overwrite, transparent=False):
     """
+    图片格式转换
+
     support image format: \n
       - pillow : png <-> jpg <-> gif <-> eps <-> tiff <-> bmp <-> ppm \n
-      - inkscape: svg -> pdf | png | ps | eps \n
+      - inkscape: svg |svgz -> pdf | png | ps | eps \n
       - pdftocairo: pdf -> png | jpeg | ps | eps | svg \n
     """
-    for inputimg in inputimgs:
-        outputimg = convert_image(inputimg, outputformat=format, dpi=dpi,
+    for input_img in inputimgs:
+        output_img = convert_image(input_img, outputformat=imgformat, dpi=dpi,
                                   outputdir=outputdir, outputname=outputname,
                                   pdftocairo_fix_encoding=pdftocairo_fix_encoding,
                                   overwrite=overwrite, transparent=transparent)
 
-        if outputimg:
-            click.echo("process: {} done.".format(inputimg))
+        if output_img:
+            click.echo("process: {} done.".format(input_img))
         else:
-            click.echo("process: {} failed.".format(inputimg))
+            click.echo("process: {} failed.".format(input_img))
 
 
 if __name__ == '__main__':
