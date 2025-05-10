@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-import sys
 import logging
 import os.path
 import subprocess
@@ -10,127 +9,81 @@ import shutil
 from PIL import Image
 
 from pywander.path import mkdirs
-from pywander.text.encoding import convert_encoding
 from pywander.exceptions import PdftocairoProcessError, PillowProcessError, \
     InkscapeProcessError
-from .utils import detect_output_file_exist
+from .utils import detect_output_file_exist, fix_filename_encoding_problem
 
 logger = logging.getLogger(__name__)
 
 pillow_support = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp', 'ppm']
 
 
-def convert_image_by_pillow(inputimg, outputdir, output_imgname, outputname='',
-                            outputformat='png', overwrite=True,
-                            dpi=150):
+def convert_image_by_pillow(input_img, outputdir, output_img_name, outputformat='png', overwrite=True):
     """
 
     """
-    outputimg = detect_output_file_exist(outputdir, output_imgname,
-                                         outputformat,
-                                         overwrite)
-    if not outputimg:
+    output_img = detect_output_file_exist(outputdir, output_img_name, outputformat, overwrite)
+    if not output_img:
         return None
 
-    if inputimg == outputimg:
+    if input_img == output_img:
         raise FileExistsError
 
     try:
-        img = Image.open(inputimg)
-        img.save(outputimg)
-        logger.info('{0} saved.'.format(outputimg))
-        return outputimg
+        img = Image.open(input_img)
+        img.save(output_img)
+        logger.info('{0} saved.'.format(output_img))
+        return output_img
     except FileNotFoundError as e:
         raise PillowProcessError(
-            f"process image: {inputimg} raise FileNotFoundError")
+            f"process image: {input_img} raise FileNotFoundError")
     except IOError:
-        raise PillowProcessError(f"process image: {inputimg} raise IOError")
+        raise PillowProcessError(f"process image: {input_img} raise IOError")
 
 
-def convert_image_by_inkscape(inputimg, outputdir, output_imgname,
-                              outputname='', outputformat='png', overwrite=True,
-                              dpi=150):
-    outputimg = detect_output_file_exist(outputdir, output_imgname,
-                                         outputformat,
-                                         overwrite)
-    if not outputimg:
+def convert_image_by_inkscape(input_img, outputdir, output_img_name, outputformat='png', overwrite=True, dpi=150):
+    output_img = detect_output_file_exist(outputdir, output_img_name, outputformat, overwrite)
+    if not output_img:
         return None
 
-    if inputimg == outputimg:
+    if input_img == output_img:
         raise FileExistsError
 
-    if outputformat == 'png':
-        outflag = 'e'
-    elif outputformat == 'pdf':
-        outflag = 'A'
-    elif outputformat == 'ps':
-        outflag = 'P'
-    elif outputformat == 'eps':
-        outflag = 'E'
-
     if shutil.which('inkscape'):
-        process_cmd = ['inkscape', '-zC',
-                       '-f', inputimg, '-{0}'.format(outflag),
-                       outputimg, '-d', str(dpi)]
+        process_cmd = ['inkscape', f'--export-type={outputformat}', '-d', str(dpi), input_img]
         logger.debug(f'start call cmd {process_cmd}')
         subprocess.check_call(process_cmd)
-        return outputimg  # only retcode is zero
+        # only retcode is zero
+        return output_img
     else:
-        raise InkscapeProcessError("inkscape commond not found.")
+        raise InkscapeProcessError("inkscape command not found.")
 
 
-def fix_filename_encoding_problem(output_imgname, outputformat, overwrite=True,
-                                  pdftocairo_fix_encoding=''):
-    if 'win32' == sys.platform.lower():
-        if pdftocairo_fix_encoding:
-            output_imgname2 = convert_encoding(output_imgname,
-                                               'utf8',
-                                               pdftocairo_fix_encoding)
-
-            if overwrite:
-                os.replace('{}.{}'.format(output_imgname2,
-                                          outputformat),
-                           '{}.{}'.format(output_imgname,
-                                          outputformat))
-            else:
-                try:
-                    os.rename('{}.{}'.format(output_imgname2,
-                                             outputformat),
-                              '{}.{}'.format(output_imgname,
-                                             outputformat))
-                except FileExistsError as e:
-                    logger.info(
-                        'FileExists , i will do nothing.')
-                    os.remove('{}.{}'.format(output_imgname2,
-                                             outputformat))
-
-
-def convert_image_by_pdftocairo(inputimg, outputdir, output_imgname,
+def convert_image_by_pdftocairo(input_img, outputdir, output_img_name,
                                 outputname='', outputformat='png',
                                 overwrite=True,
                                 dpi=150, pdftocairo_fix_encoding='',
                                 transparent=False):
-    outputimg = detect_output_file_exist(outputdir, output_imgname,
-                                         outputformat,
-                                         overwrite)
-    if not outputimg:
+    output_img = detect_output_file_exist(outputdir, output_img_name, outputformat, overwrite)
+    if not output_img:
         return None
 
     if not shutil.which('pdftocairo'):
-        raise PdftocairoProcessError("pdftocairo commond not found.")
+        raise PdftocairoProcessError("pdftocairo command not found.")
 
-    currdir = os.path.abspath(os.curdir)
+    cur_dir = os.path.abspath(os.curdir)
     os.chdir(outputdir)
+
     map_dict = {i: '-{}'.format(i) for i in
                 ['png', 'pdf', 'ps', 'eps', 'jpeg', 'svg']}
 
-    outflag = map_dict[outputformat]
+    out_flag = map_dict[outputformat]
 
     try:
         if outputformat in ['png', 'jpeg']:
-            # png jpeg without ext so use the output_imgname
-            process_cmd = ['pdftocairo', outflag, '-singlefile', '-r', str(dpi),
-                           inputimg, output_imgname]
+            # png jpeg without ext so use the output_img_name
+            process_cmd = ['pdftocairo', out_flag, '-singlefile', '-r', str(dpi),
+                           input_img, output_img_name]
 
             if transparent and outputformat == 'png':
                 process_cmd.insert(2, '-transp')
@@ -138,79 +91,68 @@ def convert_image_by_pdftocairo(inputimg, outputdir, output_imgname,
             logger.debug(f'start call cmd {process_cmd}')
             subprocess.check_call(process_cmd)
 
-            fix_filename_encoding_problem(output_imgname,
+            fix_filename_encoding_problem(output_img_name,
                                           outputformat,
                                           overwrite=overwrite,
                                           pdftocairo_fix_encoding=pdftocairo_fix_encoding)
         else:
-            process_cmd = ['pdftocairo', outflag, '-r', str(dpi), inputimg,
+            process_cmd = ['pdftocairo', out_flag, '-r', str(dpi), input_img,
                            outputname]
             if transparent and outputformat == 'tiff':
                 process_cmd.insert(2, '-transp')
 
             logger.debug(f'start call cmd {process_cmd}')
             subprocess.check_call(process_cmd)
-        return outputimg  # only retcode is zero
     finally:
-        os.chdir(currdir)
+        os.chdir(cur_dir)
+        return output_img
 
 
-def convert_image(inputimg, outputformat='png', dpi=150, outputdir='',
+def convert_image(input_img, outputformat='png', dpi=150, outputdir='',
                   outputname='', pdftocairo_fix_encoding='',
                   overwrite=True, transparent=False):
     """
-    - intputimg 输入图片
+    - intput_img 输入图片
     - outputformat
     - dpi 输出图片dpi
     - overwrite 图片是否覆写
     - outputname 输出图片名 带后缀
-    - output_imgname 输出图片名 不带后缀
-    本函数若图片转换成功则返回目标目标在系统中的路径，否则返回None。
-    文件basedir路径默认和inputimg相同，若有更进一步的需求，则考虑
+    - output_img_name 输出图片名 不带后缀
+
+    本函数若图片转换成功则返回目标在系统中的路径，否则返回None。
+    文件basedir路径默认和input_img相同
     """
-    inputimg = os.path.abspath(inputimg)
+    input_img = os.path.abspath(input_img)
 
     outputdir = os.path.abspath(outputdir)
     if not os.path.exists(outputdir):
         mkdirs(outputdir)
 
-    imgname, imgext = os.path.splitext(os.path.basename(inputimg))
+    img_name, img_ext = os.path.splitext(os.path.basename(input_img))
 
     if not outputname:
-        outputname = imgname + '.{}'.format(outputformat)
-        output_imgname = imgname
+        outputname = img_name + '.{}'.format(outputformat)
+        output_img_name = img_name
     else:
-        output_imgname, ext = os.path.splitext(outputname)
+        output_img_name, ext = os.path.splitext(outputname)
         if not ext:
-            outputname = output_imgname + '.{}'.format(outputformat)
+            outputname = output_img_name + '.{}'.format(outputformat)
         elif ext != outputformat:
             raise Exception(
                 'outputname ext is not the same as the outputformat')
 
     try:
-        if imgext[1:] in pillow_support and outputformat in pillow_support:
-            return convert_image_by_pillow(inputimg, outputdir, output_imgname,
-                                           outputname=outputname,
-                                           outputformat=outputformat,
-                                           dpi=dpi, overwrite=overwrite)
-        elif imgext[1:] in ['svg', 'svgz'] and outputformat in ['png', 'pdf',
-                                                                'ps',
-                                                                'eps']:
-            return convert_image_by_inkscape(inputimg, outputdir,
-                                             output_imgname,
-                                             outputname=outputname,
-                                             outputformat=outputformat,
+        if img_ext[1:] in pillow_support and outputformat in pillow_support:
+            return convert_image_by_pillow(input_img, outputdir, output_img_name, outputformat=outputformat,
+                                           overwrite=overwrite)
+
+        elif img_ext[1:] in ['svg', 'svgz'] and outputformat in ['png', 'pdf', 'ps', 'eps']:
+            return convert_image_by_inkscape(input_img, outputdir, output_img_name, outputformat=outputformat,
                                              dpi=dpi, overwrite=overwrite)
 
-        elif imgext[1:] in ['pdf'] and outputformat in ['png', 'jpeg', 'ps',
-                                                        'eps',
-                                                        'svg']:
-            return convert_image_by_pdftocairo(inputimg, outputdir,
-                                               output_imgname,
-                                               outputname=outputname,
-                                               outputformat=outputformat,
-                                               dpi=dpi,
-                                               overwrite=overwrite,
+        elif img_ext[1:] in ['pdf'] and outputformat in ['png', 'jpeg', 'ps', 'eps', 'svg']:
+            return convert_image_by_pdftocairo(input_img, outputdir, output_img_name, outputname=outputname,
+                                               outputformat=outputformat, dpi=dpi, overwrite=overwrite,
                                                pdftocairo_fix_encoding=pdftocairo_fix_encoding,
                                                transparent=transparent)
     except PillowProcessError as e:
@@ -219,3 +161,5 @@ def convert_image(inputimg, outputformat='png', dpi=150, outputdir='',
         logger.error(e)
     except PdftocairoProcessError as e:
         logger.error(e)
+
+    return None
