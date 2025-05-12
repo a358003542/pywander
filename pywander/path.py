@@ -201,9 +201,12 @@ def get_filename(path):
 
 def gen_all_file(start_path='.', filetype="", exclude_folder_name=None):
     """
-    本函数是一个生成器函数。
+    利用os.walk 遍历某个目录，收集其内的文件，返回一系列的文件*绝对*路径。
 
-    利用os.walk 遍历某个目录，收集其内的文件，返回一系列的文件绝对路径。
+    list(gen_all_file('pywander', filetype='py$'))
+    ['D:\\github\\pywander\\pywander\\cache.py',
+    'D:\\github\\pywander\\pywander\\common.py',
+     ...
 
     第一个可选参数 start_path  默认值 '.'
     第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
@@ -231,6 +234,58 @@ def gen_all_file(start_path='.', filetype="", exclude_folder_name=None):
                 yield file_path
 
 
+def gen_all_file2(start_path='.', filetype="", exclude_folder_name=None):
+    """
+    利用os.walk 遍历某个目录，收集其内的文件，返回一系列的文件的*相对*路径。
+
+    list(gen_all_file2('pywander', filetype='py$'))
+    ['pywander\\cache.py',
+    'pywander\\common.py',
+
+    第一个可选参数 start_path  默认值 '.'
+    第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
+    如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
+    第三个可选参数 exclude_folder_name 列出一些想要排除文件夹的名字
+
+    """
+    for file_path in gen_all_file(start_path=start_path, filetype=filetype,
+                                  exclude_folder_name=exclude_folder_name):
+        yield os.path.relpath(file_path)
+
+
+def gen_all_file3(start_path='.', filetype="", exclude_folder_name=None):
+    """
+    利用os.walk 遍历某个目录，收集其内的文件，返回 (文件路径列表, 本路径下的文件列表)
+
+    list(gen_all_file3('pywander', filetype='py$'))
+    [(['pywander'], 'cache.py'),
+     (['pywander'], 'common.py'),
+
+    第一个可选参数 start_path  默认值 '.'
+    第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
+    如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
+    第三个可选参数 exclude_folder_name 列出一些想要排除文件夹的名字
+    """
+    for file_path in gen_all_file2(start_path=start_path, filetype=filetype,
+                                  exclude_folder_name=exclude_folder_name):
+        root, file_name = os.path.split(file_path)
+        dirlist = root.split(os.path.sep)
+        item = (dirlist, file_name)
+        yield item
+
+
+def remove_first_directory(path):
+    """
+    移除文件路径的第一个目录
+
+    >>> remove_first_directory('pywander\\cache.py')
+    'cache.py'
+    """
+    path_split = path.split(os.path.sep)
+    if len(path_split) > 1:
+        return os.path.join(*path_split[1:])
+    else:
+        raise ValueError(f'输入有误，给定的文件路径没有目录')
 
 
 
@@ -241,5 +296,5 @@ def remove_window_illegal_symbol(s):
     >>> remove_window_illegal_symbol('ad >> ? / e  dddd ?')
     'ad    e  dddd '
     """
-    new_s = re.sub(r'[/\\:*?"<>|]','',s)
+    new_s = re.sub(r'[/\\:*?"<>|]', '', s)
     return new_s

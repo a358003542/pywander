@@ -1,4 +1,4 @@
-from pywander.file import gen_bigfile_read
+from pywander.file.utils import gen_bigfile_read
 
 import pytest
 
