@@ -20,6 +20,17 @@ resize image
 pywander_image resize --help
 ```
 
+### pywander_file
+扫描该文件夹下的某种类型文件
+```
+pywander_file scan --help
+```
+
+执行该文件夹下的所有python脚本
+```
+pywander_file run --help
+```
+
 ## TEST
 local environment run 
 ```
