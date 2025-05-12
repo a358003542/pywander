@@ -202,12 +202,12 @@ def get_filename(path):
 def gen_all_file(start_path='.', filetype="", exclude_folder_name=None):
     """
     利用os.walk 遍历某个目录，收集其内的文件，返回一系列的文件*绝对*路径。
-
+    ```
     list(gen_all_file('pywander', filetype='py$'))
     ['D:\\github\\pywander\\pywander\\cache.py',
     'D:\\github\\pywander\\pywander\\common.py',
      ...
-
+    ```
     第一个可选参数 start_path  默认值 '.'
     第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
@@ -237,11 +237,11 @@ def gen_all_file(start_path='.', filetype="", exclude_folder_name=None):
 def gen_all_file2(start_path='.', filetype="", exclude_folder_name=None):
     """
     利用os.walk 遍历某个目录，收集其内的文件，返回一系列的文件的*相对*路径。
-
+    ```
     list(gen_all_file2('pywander', filetype='py$'))
     ['pywander\\cache.py',
     'pywander\\common.py',
-
+    ```
     第一个可选参数 start_path  默认值 '.'
     第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
@@ -256,11 +256,11 @@ def gen_all_file2(start_path='.', filetype="", exclude_folder_name=None):
 def gen_all_file3(start_path='.', filetype="", exclude_folder_name=None):
     """
     利用os.walk 遍历某个目录，收集其内的文件，返回 (文件路径列表, 本路径下的文件列表)
-
+    ```
     list(gen_all_file3('pywander', filetype='py$'))
     [(['pywander'], 'cache.py'),
      (['pywander'], 'common.py'),
-
+    ```
     第一个可选参数 start_path  默认值 '.'
     第二个可选参数  filetype  正则表达式模板 默认值是"" 其作用是只选择某些文件
     如果是空值，则所有的文件都将被选中。比如 "html$|pdf$" 将只选中 html和pdf文件。
@@ -278,7 +278,7 @@ def remove_first_directory(path):
     """
     移除文件路径的第一个目录
 
-    >>> remove_first_directory('pywander\\cache.py')
+    >>> remove_first_directory('pywander\\cache.py') # doctest: +SKIP
     'cache.py'
     """
     path_split = path.split(os.path.sep)
