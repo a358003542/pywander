@@ -199,3 +199,84 @@ def lcm(*integers):
     最小公倍数
     """
     return math.lcm(*integers)
+
+def get_leading_digit_and_magnitude(num):
+    """
+    获取浮点数的第一位有效数字和其数量级
+
+    参数:
+        num (float): 输入的浮点数
+
+    返回:
+        tuple: (第一位有效数字, 数量级)
+    """
+    if num == 0:
+        return (0, 0)
+
+    # 处理负数
+    num = abs(num)
+
+    # 计算数量级（10的幂）
+    magnitude = math.floor(math.log10(num))
+
+    # 计算第一位有效数字
+    leading_digit = int(num / (10 ** magnitude))
+
+    return (leading_digit, magnitude)
+
+
+class Interval:
+    def __init__(self, lower, upper, include_lower=True, include_upper=True):
+        self.lower = lower
+        self.upper = upper
+        self.include_lower = include_lower
+        self.include_upper = include_upper
+
+    def __contains__(self, number):
+        """使区间对象支持 'in' 操作符"""
+        left = self.lower <= number if self.include_lower else self.lower < number
+        right = number <= self.upper if self.include_upper else number < self.upper
+        return left and right
+
+def calc_approximate_range(a, epi_digit, epi_mag):
+    epi = epi_digit * 10 ** epi_mag
+    return a - epi, a + epi
+
+def get_approximate_number(a, A):
+    """
+    a 给定的待修正的近似数
+    A 准确数
+    """
+    digit, mag = get_leading_digit_and_magnitude(a)
+
+    epi_digit = 99
+    epi_mag = mag - 1
+
+    # 最小mag确定
+    approximate_range = calc_approximate_range(a, epi_digit, epi_mag)
+    while A in Interval(*approximate_range):
+        epi_mag = epi_mag - 1
+        approximate_range = calc_approximate_range(a, epi_digit, epi_mag)
+    epi_mag = epi_mag + 1
+
+    # 最小digit确定
+    approximate_range = calc_approximate_range(a, epi_digit, epi_mag)
+    while A in Interval(*approximate_range):
+        epi_digit = epi_digit - 1
+        approximate_range = calc_approximate_range(a, epi_digit, epi_mag)
+    epi_digit = epi_digit + 1
+
+    print(format_float(epi_digit, epi_mag))
+    return epi_digit, epi_mag
+
+
+def format_float(digit, mag):
+    """
+    根据digit整数和mag指数来输出小数
+    """
+    # 计算并格式化为小数形式
+    result = digit * (10 ** mag)
+    formatted = f"{result:.{abs(mag)}f}"  # 根据指数确定小数位数
+    return formatted
+
+
