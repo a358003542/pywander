@@ -122,4 +122,4 @@ class MnistDataset(Dataset):
         value = self.df.iloc[index, 1:].to_numpy(dtype='float')
         label = self.df.iloc[index, 0]
 
-        plot_mnist_image(ax, value, label)
+        plot_mnist_image(value, label, ax=ax)
