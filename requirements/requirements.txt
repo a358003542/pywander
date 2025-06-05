@@ -12,4 +12,4 @@ lxml
 dill
 pandas
 torch==2.7.0+cu126
-torchvision==0.21.0
+torchvision==0.22.0
