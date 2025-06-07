@@ -14,6 +14,20 @@ convert image
 ```
 pywander_image convert --help
 ```
+
+将某个pdf图片文件转成png格式
+```text
+pywander_image.exe convert .\book_cover.pdf   
+```
+
+将某个svgz通过inkscape转成pdf格式
+```
+pywander_image.exe convert --imgformat pdf .\f11-08_tc_big.svgz 
+```
+
+建议安装inkscape到默认的 `C:\\Program Files` 那里，那样命令行工具将可以直接调用，否则你可能需要配置PATH环境变量。 
+
+
 resize image
 
 ```text

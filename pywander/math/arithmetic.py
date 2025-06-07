@@ -49,6 +49,66 @@ def round_half_up(n, decimals=0):
     return math.floor(n * multiplier + 0.5) / multiplier
 
 
+class BinaryFlags:
+    MAX_FLAGS = 32  # 限制为32位
+
+    def __init__(self, initial_flags: int = 0) -> None:
+        """初始化32位标志位，超出部分将被截断"""
+        self._flags = initial_flags & 0xFFFFFFFF  # 确保在32位范围内
+
+    def _validate_bit(self, flag_bit: int) -> None:
+        """验证标志位索引是否在有效范围内 (0-31)"""
+        if not (isinstance(flag_bit, int) and 0 <= flag_bit < self.MAX_FLAGS):
+            raise ValueError(f"标志位索引必须在 0-{self.MAX_FLAGS - 1} 范围内: {flag_bit}")
+
+    def set_flag(self, flag_bit: int) -> None:
+        """设置指定位置的标志位为 1"""
+        self._validate_bit(flag_bit)
+        self._flags |= 1 << flag_bit
+
+    def clear_flag(self, flag_bit: int) -> None:
+        """清除指定位置的标志位为 0"""
+        self._validate_bit(flag_bit)
+        self._flags &= ~(1 << flag_bit)
+
+    def toggle_flag(self, flag_bit: int) -> None:
+        """切换指定位置的标志位 (1→0 或 0→1)"""
+        self._validate_bit(flag_bit)
+        self._flags ^= 1 << flag_bit
+
+    def check_flag(self, flag_bit: int) -> bool:
+        """检查指定位置的标志位是否为 1"""
+        self._validate_bit(flag_bit)
+        return (self._flags & (1 << flag_bit)) != 0
+
+    def get_flags(self) -> int:
+        """获取当前所有标志位的整数值（32位无符号）"""
+        return self._flags
+
+    def set_all_flags(self) -> None:
+        """设置所有32位标志位为 1"""
+        self._flags = 0xFFFFFFFF
+
+    def clear_all_flags(self) -> None:
+        """清除所有32位标志位为 0"""
+        self._flags = 0
+
+    def __str__(self) -> str:
+        """返回32位二进制字符串表示"""
+        return f"{self._flags:032b}"
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}({str(self)})'
+
+    def __eq__(self, other: object) -> bool:
+        """支持与其他标志对象或整数比较"""
+        if isinstance(other, BinaryFlags):
+            return self._flags == other._flags
+        elif isinstance(other, int):
+            return self._flags == other & 0xFFFFFFFF
+        return False
+
+
 def radix_conversion(number: Union[int, str], output_radix, input_radix=10) -> str:
     """
     数字进制转换函数

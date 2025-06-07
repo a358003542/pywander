@@ -72,14 +72,11 @@ def resize(inputimgs, width, height, outputdir, outputname):
 @click.option('--imgformat', default="png", help="the output image format")
 @click.option('--outputdir', default="", help="the image output dir")
 @click.option('--outputname', default="", help="the image output name")
-@click.option('--pdftocairo-fix-encoding', default="",
-              help="In Windows,the pdftocairo fix encoding")
 @click.option('--overwrite/--no-overwrite', default=True,
               help='overwrite the output image file, default is overwrite')
 @click.option('--transparent', is_flag=True,
               help="pdf convert to png|tiff can turn transparent on")
-def convert(inputimgs, dpi, imgformat, outputdir, outputname,
-            pdftocairo_fix_encoding, overwrite, transparent=False):
+def convert(inputimgs, dpi, imgformat, outputdir, outputname, overwrite, transparent=False):
     """
     图片格式转换
 
@@ -91,7 +88,6 @@ def convert(inputimgs, dpi, imgformat, outputdir, outputname,
     for input_img in inputimgs:
         output_img = convert_image(input_img, outputformat=imgformat, dpi=dpi,
                                   outputdir=outputdir, outputname=outputname,
-                                  pdftocairo_fix_encoding=pdftocairo_fix_encoding,
                                   overwrite=overwrite, transparent=transparent)
 
         if output_img:
