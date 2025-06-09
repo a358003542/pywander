@@ -11,6 +11,7 @@ from PIL import Image
 from pywander.unique_key import random_md5
 from pywander.path import mkdirs
 from pywander.exceptions import PdftocairoProcessError, PillowProcessError, InkscapeProcessError
+from pywander.utils.command_utils import get_command_path
 from .utils import detect_output_file_exist
 
 logger = logging.getLogger(__name__)
@@ -49,13 +50,7 @@ def convert_image_by_inkscape(input_img, outputdir, output_img_name, outputforma
     if input_img == output_img:
         raise FileExistsError
 
-    inkscape_command = 'inkscape'
-    if shutil.which('inkscape'):
-        pass
-    elif shutil.which('inkscape', path='C:\\Program Files\\Inkscape\\bin'):
-        inkscape_command = shutil.which('inkscape', path='C:\\Program Files\\Inkscape\\bin')
-    else:
-        raise InkscapeProcessError("inkscape command not found.")
+    inkscape_command = get_command_path('inkscape')
 
     process_cmd = [inkscape_command, f'--export-type={outputformat}', '-d', str(dpi), input_img]
     logger.debug(f'start call cmd {process_cmd}')

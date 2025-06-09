@@ -13,6 +13,9 @@ def convert_encoding(origin_string, origin_encoding, to_encoding,
 
 
 def print_encoding_convert_tab(string, encoding_list=None, errors='ignore'):
+    """
+    猜测某个乱码中文字符的可能字符编码和内容
+    """
     try:
         from tabulate import tabulate
         tabulate_can_not_use = False
@@ -34,8 +37,7 @@ def print_encoding_convert_tab(string, encoding_list=None, errors='ignore'):
 
             table.append([encoding, origin_encoding, s])
 
-    headers = ['assume_encoding_now', 'assume_encoding_origin',
-               'recover_string']
+    headers = ['assume_encoding_now', 'assume_encoding_origin', 'recover_string']
     if tabulate_can_not_use:
         print('  |'.join(headers))
         print('-------------------------')
