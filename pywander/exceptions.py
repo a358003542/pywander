@@ -118,6 +118,8 @@ class PillowProcessError(Exception):
 class InkscapeProcessError(Exception):
     pass
 
+class PandocProcessError(Exception):
+    pass
 
 class PdftocairoProcessError(Exception):
     pass
