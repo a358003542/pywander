@@ -28,7 +28,7 @@ pywander_file run --help
 ```text
 pywander_file run scripts
 ```
-执行当前文件夹下的scripts文件夹下的所有python脚本文件，有文件hash改动优化，假设某个python脚本为test.py，输出内容在test.py.out文件那里，可能的错误信息在test.py.err文件那里。
+执行当前文件夹下的scripts文件夹下的所有python脚本文件，有文件hash跟踪改动的优化设计，假设某个python脚本为test.py，输出内容在test.py.out文件那里，可能的错误信息在test.py.err文件那里。
 
 ### pywander_image
 convert image
