@@ -13,7 +13,8 @@ pandas虽然也有绘图功能，但感觉让事情变得复杂了。就算是�
 """
 
 import numpy as np
-
+from abc import ABC, abstractmethod
+import matplotlib.patches as mpatches
 
 def _process_ax_args(ax, title='', x_label='', y_label='', x_lim=None, y_lim=None):
     # 标题
@@ -90,6 +91,137 @@ def pie_plot(ax, values, title='', x_label='', y_label='', x_lim=None, y_lim=Non
     _process_ax_args(ax, title=title, x_label=x_label, y_label=y_label, x_lim=x_lim, y_lim=y_lim)
 
     ax.pie(values, autopct='%2.0f%%', startangle=90, **kwargs)
+
+
+class PlotType(ABC):
+    """图形绘制基类，所有图形类型需继承此类并实现draw方法"""
+
+    @abstractmethod
+    def draw(self, ax, **kwargs):
+        pass
+
+class Points(PlotType):
+    """绘制多个点"""
+
+    def __init__(self, *vectors, **kwargs):
+        self.vectors = vectors
+        self.kwargs = kwargs  # 存储点样式参数
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {**self.kwargs, **kwargs}
+        x_values, y_values = zip(*self.vectors)
+        ax.scatter(x_values, y_values, **combined_kwargs)
+
+
+class Lines(PlotType):
+    """绘制直线段"""
+
+    def __init__(self, *vectors, **kwargs):
+        self.vectors = vectors
+        self.kwargs = kwargs  # 存储线样式参数
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {**self.kwargs, **kwargs}
+        x_values, y_values = zip(*self.vectors)
+        ax.plot(x_values, y_values, **combined_kwargs)
+
+
+class Arrow(PlotType):
+    """绘制箭头（基于 mpatches.FancyArrowPatch 实现，默认带箭头）"""
+    def __init__(self, start, end, arrowstyle="->,head_width=6,head_length=10", **kwargs):
+        self.start = start  # 起点坐标 (x, y)
+        self.end = end      # 终点坐标 (x, y)
+        self.arrowstyle = arrowstyle  # 箭头样式（默认带箭头）
+        self.kwargs = kwargs  # 其他样式参数
+
+    def draw(self, ax, **kwargs):
+        # 合并样式：默认样式 → 实例化样式 → 绘制时样式
+        combined_kwargs = {
+            "color": "black",    # 默认颜色
+            "linewidth": 1.5,      # 默认线宽
+            "arrowstyle": self.arrowstyle,  # 确保使用箭头样式
+            **self.kwargs,**kwargs
+        }
+        # 创建带箭头的补丁
+        arrow = mpatches.FancyArrowPatch(
+            self.start,
+            self.end,
+            **combined_kwargs
+        )
+        ax.add_patch(arrow)
+
+class Circle(PlotType):
+    """绘制圆形"""
+
+    def __init__(self, center, radius, **kwargs):
+        self.center = center  # (x, y) 中心点
+        self.radius = radius  # 半径
+        self.kwargs = kwargs  # 存储圆形样式参数
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {**self.kwargs, **kwargs}
+        circle = mpatches.Circle(self.center, self.radius, **combined_kwargs)
+        ax.add_patch(circle)
+
+
+class Rectangle(PlotType):
+    """绘制矩形"""
+
+    def __init__(self, xy, width, height, **kwargs):
+        self.xy = xy  # 左下角坐标 (x, y)
+        self.width = width  # 宽度
+        self.height = height  # 高度
+        self.kwargs = kwargs  # 存储矩形样式参数
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {**self.kwargs, **kwargs}
+        rect = mpatches.Rectangle(self.xy, self.width, self.height, **combined_kwargs)
+        ax.add_patch(rect)
+
+
+class Ellipse(PlotType):
+    """绘制椭圆（明确指定angle参数）"""
+
+    def __init__(self, center, width, height, angle=0, **kwargs):
+        self.center = center  # (x, y) 中心点
+        self.width = width  # 水平轴长度
+        self.height = height  # 垂直轴长度
+        self.angle = angle  # 旋转角度（度）
+        self.kwargs = kwargs  # 存储椭圆样式参数
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {**self.kwargs, **kwargs}
+        # 明确使用angle=self.angle传递参数
+        ellipse = mpatches.Ellipse(
+            self.center, self.width, self.height, angle=self.angle, **combined_kwargs
+        )
+        ax.add_patch(ellipse)
+
+
+class Polygon(PlotType):
+    """绘制多边形"""
+
+    def __init__(self, *vectors, **kwargs):
+        self.vectors = vectors  # 多边形顶点坐标
+        self.kwargs = kwargs  # 存储多边形样式参数
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {
+            "fill": False,
+            **self.kwargs,**kwargs
+        }
+
+        polygon = mpatches.Polygon(self.vectors, **combined_kwargs)
+        ax.add_patch(polygon)
+
+
+def draw(ax, *objects, **kwargs):
+    """绘制所有图形对象"""
+    for obj in objects:
+        if isinstance(obj, PlotType):
+            obj.draw(ax, **kwargs)
+        else:
+            raise TypeError(f"不支持的绘制对象类型: {type(obj)}")
 
 
 def set_matplotlib_support_chinese(font='SimHei'):
