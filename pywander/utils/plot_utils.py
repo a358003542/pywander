@@ -16,6 +16,7 @@ import numpy as np
 from abc import ABC, abstractmethod
 import matplotlib.patches as mpatches
 
+
 def _process_ax_args(ax, title='', x_label='', y_label='', x_lim=None, y_lim=None):
     # 标题
     if title:
@@ -41,12 +42,13 @@ def _process_ax_args(ax, title='', x_label='', y_label='', x_lim=None, y_lim=Non
 def line_plot(ax, x_values=None, y_values=None, title='', x_label='', y_label='', x_tick_labels=None, x_lim=None,
               y_lim=None, **kwargs):
     """
+    一般数据绘图：直线图
+
     kwargs 各个参数参见 `matplotlib.lines.Line2D` 文档
 
     https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D
 
     matplotlib 推荐的风格
-    A helper function to make a graph.
     """
     if x_values is None and y_values is None:
         raise Exception(f'x_values, y_values, 至少要给定一个')
@@ -66,10 +68,21 @@ def line_plot(ax, x_values=None, y_values=None, title='', x_label='', y_label=''
 
 def scatter_plot(ax, x_values, y_values, title='', x_label='', y_label='', x_lim=None, y_lim=None, **kwargs):
     """
-    散点图
+    一般数据绘图：散点图
     """
     _process_ax_args(ax, title=title, x_label=x_label, y_label=y_label, x_lim=x_lim, y_lim=y_lim)
 
+    ax.scatter(x_values, y_values, **kwargs)
+
+
+def math_func_plot(ax, x_values, math_func, title='', x_label='', y_label='', x_lim=None, y_lim=None, **kwargs):
+    """
+    一般数据绘图：函数绘图
+    """
+    _process_ax_args(ax, title=title, x_label=x_label, y_label=y_label, x_lim=x_lim, y_lim=y_lim)
+
+    y_values = [math_func(x) for x in x_values]
+    ax.grid(True)
     ax.scatter(x_values, y_values, **kwargs)
 
 
@@ -85,7 +98,7 @@ def image_plot(ax, image_data, cmap=None, interpolation=None, vmin=None, vmax=No
 
 def pie_plot(ax, values, title='', x_label='', y_label='', x_lim=None, y_lim=None, **kwargs):
     """
-    绘制饼状图
+    一般数据绘图：绘制饼状图
     :return:
     """
     _process_ax_args(ax, title=title, x_label=x_label, y_label=y_label, x_lim=x_lim, y_lim=y_lim)
@@ -100,6 +113,47 @@ class PlotType(ABC):
     def draw(self, ax, **kwargs):
         pass
 
+
+class Grid(PlotType):
+    """
+    绘制网格线
+    """
+
+    def __init__(self, origin_min, origin_max, x_ticks=None, y_ticks=None, **kwargs):
+        self.origin_min = origin_min
+        self.origin_max = origin_max
+        self.x_ticks = x_ticks  # x轴刻度（如5表示每隔5单位一个刻度）
+        self.y_ticks = y_ticks  # y轴刻度
+        self.kwargs = kwargs
+
+    def draw(self, ax, **kwargs):
+        combined_kwargs = {
+            "linestyle": "--",
+            "linewidth": 0.8,
+            "color": "gray",
+            "alpha": 0.7,
+            **self.kwargs, **kwargs}
+
+        ax.set_xlim(self.origin_min[0] - 1, self.origin_max[0] + 1)
+        ax.set_ylim(self.origin_min[1] - 1, self.origin_max[1] + 1)
+
+        # 自定义刻度（如果指定）
+        if self.x_ticks is not None:
+            ax.set_xticks(np.arange(
+                self.origin_min[0] - 1,
+                self.origin_max[0] + 1,
+                self.x_ticks
+            ))
+        if self.y_ticks is not None:
+            ax.set_yticks(np.arange(
+                self.origin_min[1] - 1,
+                self.origin_max[1] + 1,
+                self.y_ticks
+            ))
+
+        ax.grid(True, **combined_kwargs)
+
+
 class Points(PlotType):
     """绘制多个点"""
 
@@ -113,7 +167,7 @@ class Points(PlotType):
         ax.scatter(x_values, y_values, **combined_kwargs)
 
 
-class Lines(PlotType):
+class Segments(PlotType):
     """绘制直线段"""
 
     def __init__(self, *vectors, **kwargs):
@@ -128,19 +182,20 @@ class Lines(PlotType):
 
 class Arrow(PlotType):
     """绘制箭头（基于 mpatches.FancyArrowPatch 实现，默认带箭头）"""
+
     def __init__(self, start, end, arrowstyle="->,head_width=6,head_length=10", **kwargs):
         self.start = start  # 起点坐标 (x, y)
-        self.end = end      # 终点坐标 (x, y)
+        self.end = end  # 终点坐标 (x, y)
         self.arrowstyle = arrowstyle  # 箭头样式（默认带箭头）
         self.kwargs = kwargs  # 其他样式参数
 
     def draw(self, ax, **kwargs):
         # 合并样式：默认样式 → 实例化样式 → 绘制时样式
         combined_kwargs = {
-            "color": "black",    # 默认颜色
-            "linewidth": 1.5,      # 默认线宽
+            "color": "black",  # 默认颜色
+            "linewidth": 1.5,  # 默认线宽
             "arrowstyle": self.arrowstyle,  # 确保使用箭头样式
-            **self.kwargs,**kwargs
+            **self.kwargs, **kwargs
         }
         # 创建带箭头的补丁
         arrow = mpatches.FancyArrowPatch(
@@ -149,6 +204,7 @@ class Arrow(PlotType):
             **combined_kwargs
         )
         ax.add_patch(arrow)
+
 
 class Circle(PlotType):
     """绘制圆形"""
@@ -208,7 +264,7 @@ class Polygon(PlotType):
     def draw(self, ax, **kwargs):
         combined_kwargs = {
             "fill": False,
-            **self.kwargs,**kwargs
+            **self.kwargs, **kwargs
         }
 
         polygon = mpatches.Polygon(self.vectors, **combined_kwargs)
@@ -216,7 +272,9 @@ class Polygon(PlotType):
 
 
 def draw(ax, *objects, **kwargs):
-    """绘制所有图形对象"""
+    """
+    通用绘图接口
+    """
     for obj in objects:
         if isinstance(obj, PlotType):
             obj.draw(ax, **kwargs)
