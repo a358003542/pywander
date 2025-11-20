@@ -5,15 +5,18 @@ linear algebra
 
 the prefix explanation
 
-a : an array np.array([1, 2, 3])
+arr : numpy ndarray object
 
-v : 行向量和列向量和1d_array
-    一般应用场景是不需要确立所谓数学意义上严格的行向量和列向量的，但在某些情景下，要求实现列向量和行向量的点积输出是一个矩阵，
-    这个时候行向量和列向量和1d_array都需要严格进行区分，如下所示：
+vec : vector 向量
+    数学上向量的概念一般是不需要区分是否是列向量还是行向量，这个时候就简单的用 1d array来表达。
 
     1d array:  np.array([1, 2, 3])
-    row_vector  np.array([[1,2,3]])
-    col_vector  np.array([[2],[0],[0]])
+
+    如果需要区分，那么就将行向量表达为 1×n 矩阵，列向量为n×1 矩阵 即：
+
+    行向量  np.array([[1,2,3]])
+
+    列向量  np.array([[2],[0],[0]])
 
 m : the linear equation system left matrix
 
