@@ -26,7 +26,10 @@ am : [argumented matrix] combine m and b to a entire linear system matrix
 
 """
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[math]") from e
 
 
 def is_1d_array(arr):

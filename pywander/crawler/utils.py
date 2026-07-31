@@ -7,8 +7,12 @@ import os
 from enum import Enum
 from urllib.parse import urlsplit, urljoin, urldefrag
 
-import requests
-from my_fake_useragent import UserAgent
+try:
+    import requests
+    from my_fake_useragent import UserAgent
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[crawler]") from e
+
 from pywander.path import mkdirs, to_absolute_path
 
 logger = logging.getLogger(__name__)

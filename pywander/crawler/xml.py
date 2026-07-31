@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
-
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[crawler]") from e
 
 
 def load_xml(text):

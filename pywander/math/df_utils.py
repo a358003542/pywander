@@ -2,8 +2,12 @@
 # -*-coding:utf-8-*-
 
 import logging
-import pandas as pd
-import numpy as np
+
+try:
+    import pandas as pd
+    import numpy as np
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[math]") from e
 
 logger = logging.getLogger(__name__)
 

@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 # -*-coding:utf-8-*-
 
+
 import os
 import logging
 from functools import wraps
 from datetime import timezone
 from dateutil.relativedelta import relativedelta
 
-from diskcache import Cache
+
+try:
+    from diskcache import Cache
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[file]") from e
+
 
 from pywander.path import mkdirs
 from pywander.unique_key import build_unique_key
@@ -59,7 +65,6 @@ class CacheDB(object):
         检查key是否存在
         """
         return key in self.cache
-
 
 
 def get_cachedb(root='.'):

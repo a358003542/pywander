@@ -7,7 +7,7 @@
 import os
 import subprocess
 
-from pywander.cache import get_cachedb
+from pywander.file.cache import get_cachedb
 from pywander.file.utils import calculate_file_hash
 
 from pywander.path import gen_all_file

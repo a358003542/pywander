@@ -1,5 +1,16 @@
 ## CHANGE_LOG
 
+### 0.12.0
+依赖优化，默认只强制安装click和python-dateutil模块了，其他成为备选项。
+
+```text
+pip install pywander[file]
+pip install pywander[crawler]
+pip install pywander[image]
+pip install pywander[math]
+```
+
+
 ### 0.11.0
 为防止本项目过于臃肿和依赖太繁杂，将文本处理和神经网络部分已移到另外的项目中去了。
 

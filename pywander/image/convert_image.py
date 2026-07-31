@@ -6,7 +6,10 @@ import os.path
 import subprocess
 import shutil
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[image]") from e
 
 from pywander.unique_key import random_md5
 from pywander.path import mkdirs
