@@ -6,7 +6,11 @@ javascript文件硬分析来获取必要的信息
 """
 
 import json
-import pyparsing as pp
+
+try:
+    import pyparsing as pp
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[crawler]") from e
 
 
 def pp_action_remove(tokens):
@@ -40,9 +44,9 @@ ident = pp.Word(pp.identchars, pp.identbodychars)
 
 pp_var_definition = (
     pp.Literal("var")
-    + ident.setResultsName("name")
+    + ident.set_results_name("name")
     + "="
-    + pp.restOfLine.setResultsName("value")
+    + pp.restOfLine.set_results_name("value")
 )
 
 def parse_var_definition(text):

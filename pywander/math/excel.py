@@ -1,6 +1,11 @@
-import numpy as np
-
 from datetime import datetime
+
+try:
+    import numpy as np
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[math]") from e
+
+
 
 def to_excel_int_time(dt):
     """

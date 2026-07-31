@@ -4,7 +4,11 @@
 import logging
 import os
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[image]") from e
+
 import click
 
 from pywander.path import mkdirs

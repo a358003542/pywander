@@ -2,10 +2,14 @@
 # -*-coding:utf-8-*-
 
 import logging
-import requests
 import threading
 from datetime import timezone
 from dateutil.relativedelta import relativedelta
+
+try:
+    import requests
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[crawler]") from e
 
 from pywander.datetime import timestamp_current, timestamp_to_dt, dt_current
 from pywander.crawler.utils import ua

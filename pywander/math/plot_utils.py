@@ -12,9 +12,13 @@ pandas虽然也有绘图功能，但感觉让事情变得复杂了。就算是�
 约定本脚本所有绘图函数都需要指定ax
 """
 
-import numpy as np
 from abc import ABC, abstractmethod
-import matplotlib.patches as mpatches
+
+try:
+    import numpy as np
+    import matplotlib.patches as mpatches
+except ImportError as e:
+    raise ImportError("请运行: pip install pywander[math]") from e
 
 
 def _process_ax_args(ax, title='', x_label='', y_label='', x_lim=None, y_lim=None):
