@@ -3,6 +3,8 @@
 
 from functools import reduce
 
+from pywander.list import flatten
+
 
 def build_compose_function(*funcs):
     """
@@ -18,25 +20,6 @@ def build_stream_function(*funcs):
     """
 
     return reduce(lambda f, g: lambda d: g(f(d)), funcs)
-
-
-def flatten(inlst):
-    """
-    make multiple layer list or tuple to one dimension list
-
-        >>> flatten((1,2,(3,4),((5,6))))
-        [1, 2, 3, 4, 5, 6]
-        >>> flatten([[1,2,3],[[4,5],[6]]])
-        [1, 2, 3, 4, 5, 6]
-
-    """
-    lst = []
-    for x in inlst:
-        if not isinstance(x, (list, tuple)):
-            lst.append(x)
-        else:
-            lst += flatten(x)
-    return lst
 
 
 def sumall(*args):

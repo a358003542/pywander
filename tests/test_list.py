@@ -112,7 +112,7 @@ def test_nearly_ordered_list():
     test_data = [WordEntry(item.get('content'), item.get('map')) for item in test_data]
 
     my_list = NearlyOrderedList(test_data)
-    my_list.find_anomaly_intervals(init_size=20, min_size=5)
+    abnormal_data = my_list.find_anomaly_intervals(min_size=3)
 
     # 制造错误数据
     test_data[2], test_data[5] = test_data[5], test_data[2]
@@ -120,12 +120,15 @@ def test_nearly_ordered_list():
     test_data[50], test_data[51] = test_data[51], test_data[50]
 
     my_list = NearlyOrderedList(test_data)
-    abnormal_data = my_list.find_anomaly_intervals(init_size=20, min_size=5)
+    abnormal_data,_ = my_list.find_anomaly_intervals(min_size=5)
 
-    assert test_data[2] in abnormal_data
-    assert test_data[5] in abnormal_data
-    assert test_data[49] in abnormal_data
-    assert test_data[50] in abnormal_data
-    assert test_data[51] in abnormal_data
+    from pywander.list import flatten
+    data = flatten(abnormal_data)
+
+    assert test_data[2] in data
+    assert test_data[5] in data
+    assert test_data[49] in data
+    assert test_data[50] in data
+    assert test_data[51] in data
 
 
