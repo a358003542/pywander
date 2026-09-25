@@ -3,8 +3,11 @@ import sys
 import os
 import logging
 
+from platformdirs import PlatformDirs
+
 from pywander.path import normalized_path
 from pywander.json import get_json_data
+from pywander import __appname__, __appauthor__
 
 """
 明了胜过隐晦，除了极个别的私密配置，其他所有配置请在程序文件开头明明白白地声明出来，如果觉得太多了可以放在另外一个 `config.py`文件下，这个
@@ -19,7 +22,7 @@ from pywander.json import get_json_data
 一个典型的用法如下所示：
 
 from pywander.config import load_config, get_default_config_path
-APP_NAME = 'test'
+APP_NAME = 'Pywander'
 config_path = get_config_path(APP_NAME)
 globals().update(load_config(config_path))
 
@@ -57,15 +60,15 @@ DEFUALT_CONFIG = {
 }
 
 
-def load_home_config(app_name='test', module_name='config'):
+def load_user_config(module_name='config'):
     """
-    加载配置文件
+    加载默认配置文件
 
     所有配置的key为大写字母形式，不得以下划线开头。
     """
-    config_path = get_config_path(app_name=app_name)
+    config_path = get_default_config_path()
 
-    saved_module_name = f'pywander_{app_name}_{module_name}'
+    saved_module_name = f'pywander_{module_name}'
     try:
         config = import_from_path(module_name, config_path, saved_module_name=saved_module_name)
     except ImportError as e:
@@ -88,12 +91,12 @@ def load_home_config(app_name='test', module_name='config'):
     return new_config
 
 
-def get_config_path(app_name='test'):
+def get_default_config_path():
     """
-    获取配置文件路径
+    获取默认配置文件路径
     """
-    return normalized_path(os.path.join('~', 'Pywander', app_name, 'config.py'))
-
+    dirs = PlatformDirs(__appname__, __appauthor__, ensure_exists=True)
+    return normalized_path(os.path.join(dirs.user_data_dir, "config.py"))
 
 def load_current_config(config_name='pywander.json'):
     if not os.path.exists(config_name):
@@ -121,6 +124,6 @@ def load_all_config():
     再加载当前文件夹下的配置文件
     """
     config = DEFUALT_CONFIG
-    config.update(load_home_config())
+    config.update(load_user_config())
     config.update(load_current_config())
     return config

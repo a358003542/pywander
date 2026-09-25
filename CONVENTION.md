@@ -35,25 +35,36 @@ key2: value2
 
 配置加载之后的实际效果和在代码开头声明的效果应该是等同的。
 
-配置文件默认在  `os.path.join('~', 'Pywander', app_name, 'config.py')` 如果找不到则不进行更新动作。
-
-### 缓存
-缓存文件默认在 `os.path.join('~', 'Pywander', app_name, 'cachedb')` .
-
-### 数据集
-数据集文件默认在 `os.path.join('~', 'Pywander', app_name, 'datasets')`
-
-### 模型
-模型文件默认在 `os.path.join('~', 'Pywander', app_name, 'models')`
-
-### 应用名app_name
-用户对应用名的唯一性负全责，如果脚本没有指定应用名，那么默认的应用名为 `test` .
-
-### 当前工作目录的额外配置
+#### 当前工作目录的额外配置
 当前工作目录新建 `pywander.json` 将作为额外配置加载进去，并具有最高优先级。
 
-### 可执行程序查找和调用
+#### 可执行程序查找和调用
 可执行程序先按照给定的名字测试，如果能够正常执行则没有问题。如果找不到可以通过配置文件 `command_name.upper() + '_COMMAND_PATH' 来配置
+
+
+### 应用在用户操作系统中的文件
+应用在操作系统中的文件统一用 `platformdirs` 模块来管理
+
+```text
+dirs = PlatformDirs("Pywander", "Wander")
+```
+
+其中 `Pywander` 为应用名， `Wander` 为应用作者名。
+
+那么应用在用户操作系统中所有的文件都位于如下根目录中：
+
+```text
+dirs.user_data_dir
+```
+
+然后有：
+
+- 配置文件 `os.path.join(dirs.user_data_dir,  "config.py" )`
+- 缓存文件 `os.path.join(dirs.user_data_dir,  "cachedb" )`
+- 数据集文件 `os.path.join(dirs.user_data_dir,  "datasets" )`
+- 模型文件 `os.path.join(dirs.user_data_dir,  "models"`
+
+
 
 ### 线性代数
 #### 行向量和列向量和1d_array

@@ -9,3 +9,4 @@ pyparsing
 lxml
 pandas
 pillow
+platformdirs>=4.0

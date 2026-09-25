@@ -7,7 +7,7 @@ import logging
 from functools import wraps
 from datetime import timezone
 from dateutil.relativedelta import relativedelta
-
+from platformdirs import PlatformDirs
 
 try:
     from diskcache import Cache
@@ -19,6 +19,8 @@ from pywander.path import mkdirs
 from pywander.unique_key import build_unique_key
 from pywander.datetime import timestamp_current, timestamp_to_dt, dt_current
 from pywander.path import normalized_path, to_absolute_path
+from pywander import __appname__, __appauthor__
+
 
 logger = logging.getLogger(__name__)
 
@@ -81,18 +83,18 @@ def get_cachedb(root='.'):
     return cachedb
 
 
-def get_default_cachedb_path(app_name='test'):
+def get_default_cachedb_path():
     """
     获取缓存文件路径
     """
-    return normalized_path(os.path.join('~', 'Pywander', app_name, 'cachedb'))
+    dirs = PlatformDirs(__appname__, __appauthor__, ensure_exists=True)
+    return normalized_path(os.path.join(dirs.user_data_dir, "cachedb"))
 
-
-def get_default_cachedb(app_name='test'):
+def get_default_cachedb():
     """ 
     默认的cachedb对象
     """
-    cachedb_path = get_default_cachedb_path(app_name=app_name)
+    cachedb_path = get_default_cachedb_path()
 
     if not os.path.exists(cachedb_path):
         mkdirs(cachedb_path)
