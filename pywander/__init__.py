@@ -5,6 +5,7 @@
 a general python module
 """
 
-__version__ = '0.12.2'
+__version__ = '0.13.0'
 
-
+__appname__ = 'Pywander'
+__appauthor__ = 'Wander'
